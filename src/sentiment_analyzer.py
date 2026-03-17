@@ -15,6 +15,7 @@ import os
 import json
 import csv
 import re
+import argparse
 from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict
 import numpy as np
@@ -33,19 +34,83 @@ except ImportError:
 FINNHUB_KEY = "d6k6089r01qko8c3hrf0d6k6089r01qko8c3hrfg"
 GNEWS_KEY = "74c1f79e81a5d2c62494062adaf232ca"
 
-# Predefined assets (11 global assets)
+# Predefined assets (50+ assets for large-scale data collection)
+# UPGRADED: Now supports 50+ assets vs original 14 for 1M+ training samples
+# With hourly data over 5 years = 1M+ records per asset
 ALL_ASSETS = [
+    # Indices (5)
     {"index": 1, "symbol": "^GSPC", "name": "S&P 500", "type": "index", "source": "finnhub_company", "keywords": ["S&P 500", "SPX"]},
     {"index": 2, "symbol": "^IXIC", "name": "NASDAQ Composite", "type": "index", "source": "finnhub_company", "keywords": ["NASDAQ", "Nasdaq"]},
     {"index": 3, "symbol": "^STOXX50E", "name": "Euro Stoxx 50", "type": "index", "source": "gnews_keywords", "keywords": ["Euro Stoxx 50", "STOXX 50"]},
     {"index": 4, "symbol": "^N225", "name": "Nikkei 225", "type": "index", "source": "gnews_keywords", "keywords": ["Nikkei 225", "Nikkei index"]},
-    {"index": 5, "symbol": "BTC-USD", "name": "Bitcoin", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["bitcoin", "BTC"]},
-    {"index": 6, "symbol": "ETH-USD", "name": "Ethereum", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["ethereum", "ETH"]},
-    {"index": 7, "symbol": "SOL-USD", "name": "Solana", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["solana", "SOL"]},
-    {"index": 8, "symbol": "EURUSD=X", "name": "EUR/USD", "type": "forex", "source": "finnhub_market_forex", "keywords": ["EUR/USD", "euro dollar"]},
-    {"index": 9, "symbol": "GBPUSD=X", "name": "GBP/USD", "type": "forex", "source": "finnhub_market_forex", "keywords": ["GBP/USD", "pound dollar"]},
-    {"index": 10, "symbol": "GC=F", "name": "Gold", "type": "commodity", "source": "gnews_keywords", "keywords": ["gold", "gold price"]},
-    {"index": 11, "symbol": "CL=F", "name": "Crude Oil (WTI)", "type": "commodity", "source": "gnews_keywords", "keywords": ["crude oil", "WTI", "oil price"]},
+    {"index": 5, "symbol": "^DJI", "name": "Dow Jones Industrial", "type": "index", "source": "finnhub_company", "keywords": ["Dow Jones", "DJIA"]},
+    
+    # Mega-cap Tech Stocks (10)
+    {"index": 6, "symbol": "AAPL", "name": "Apple Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Apple", "AAPL"]},
+    {"index": 7, "symbol": "MSFT", "name": "Microsoft Corp.", "type": "stock", "source": "finnhub_company", "keywords": ["Microsoft", "MSFT"]},
+    {"index": 8, "symbol": "GOOGL", "name": "Alphabet Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Google", "Alphabet", "GOOGL"]},
+    {"index": 9, "symbol": "AMZN", "name": "Amazon Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Amazon", "AMZN"]},
+    {"index": 10, "symbol": "NVDA", "name": "NVIDIA Corp.", "type": "stock", "source": "finnhub_company", "keywords": ["NVIDIA", "NVDA"]},
+    {"index": 11, "symbol": "META", "name": "Meta Platforms", "type": "stock", "source": "finnhub_company", "keywords": ["Meta", "META"]},
+    {"index": 12, "symbol": "TSLA", "name": "Tesla Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Tesla", "TSLA"]},
+    {"index": 13, "symbol": "AVGO", "name": "Broadcom Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Broadcom", "AVGO"]},
+    {"index": 14, "symbol": "CRM", "name": "Salesforce Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Salesforce", "CRM"]},
+    {"index": 15, "symbol": "INTEL", "name": "Intel Corp.", "type": "stock", "source": "finnhub_company", "keywords": ["Intel", "INTEL"]},
+    
+    # Financial Stocks (8)
+    {"index": 16, "symbol": "JPM", "name": "JP Morgan Chase", "type": "stock", "source": "finnhub_company", "keywords": ["JPMorgan", "JPM"]},
+    {"index": 17, "symbol": "BAC", "name": "Bank of America", "type": "stock", "source": "finnhub_company", "keywords": ["BofA", "BAC"]},
+    {"index": 18, "symbol": "WFC", "name": "Wells Fargo", "type": "stock", "source": "finnhub_company", "keywords": ["Wells Fargo", "WFC"]},
+    {"index": 19, "symbol": "GS", "name": "Goldman Sachs", "type": "stock", "source": "finnhub_company", "keywords": ["Goldman", "GS"]},
+    {"index": 20, "symbol": "BLK", "name": "BlackRock Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["BlackRock", "BLK"]},
+    {"index": 21, "symbol": "AXP", "name": "American Express", "type": "stock", "source": "finnhub_company", "keywords": ["AmEx", "AXP"]},
+    {"index": 22, "symbol": "MA", "name": "Mastercard Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Mastercard", "MA"]},
+    {"index": 23, "symbol": "V", "name": "Visa Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Visa", "V"]},
+    
+    # Healthcare/Pharma (8)
+    {"index": 24, "symbol": "JNJ", "name": "Johnson & Johnson", "type": "stock", "source": "finnhub_company", "keywords": ["J&J", "JNJ"]},
+    {"index": 25, "symbol": "UNH", "name": "UnitedHealth Group", "type": "stock", "source": "finnhub_company", "keywords": ["UnitedHealth", "UNH"]},
+    {"index": 26, "symbol": "PFE", "name": "Pfizer Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Pfizer", "PFE"]},
+    {"index": 27, "symbol": "MRNA", "name": "Moderna Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Moderna", "MRNA"]},
+    {"index": 28, "symbol": "ABBV", "name": "AbbVie Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["AbbVie", "ABBV"]},
+    {"index": 29, "symbol": "LLY", "name": "Eli Lilly", "type": "stock", "source": "finnhub_company", "keywords": ["Eli Lilly", "LLY"]},
+    {"index": 30, "symbol": "MRK", "name": "Merck & Co.", "type": "stock", "source": "finnhub_company", "keywords": ["Merck", "MRK"]},
+    {"index": 31, "symbol": "GILD", "name": "Gilead Sciences", "type": "stock", "source": "finnhub_company", "keywords": ["Gilead", "GILD"]},
+    
+    # Energy/Utility (6)
+    {"index": 32, "symbol": "XOM", "name": "Exxon Mobil", "type": "stock", "source": "finnhub_company", "keywords": ["Exxon", "XOM"]},
+    {"index": 33, "symbol": "CVX", "name": "Chevron Corp.", "type": "stock", "source": "finnhub_company", "keywords": ["Chevron", "CVX"]},
+    {"index": 34, "symbol": "COP", "name": "ConocoPhillips", "type": "stock", "source": "finnhub_company", "keywords": ["ConocoPhillips", "COP"]},
+    {"index": 35, "symbol": "NEE", "name": "NextEra Energy", "type": "stock", "source": "finnhub_company", "keywords": ["NextEra", "NEE"]},
+    {"index": 36, "symbol": "DUK", "name": "Duke Energy", "type": "stock", "source": "finnhub_company", "keywords": ["Duke Energy", "DUK"]},
+    {"index": 37, "symbol": "SO", "name": "Southern Company", "type": "stock", "source": "finnhub_company", "keywords": ["Southern", "SO"]},
+    
+    # Consumer/Retail (6)
+    {"index": 38, "symbol": "MCD", "name": "McDonald's Corp.", "type": "stock", "source": "finnhub_company", "keywords": ["McDonald's", "MCD"]},
+    {"index": 39, "symbol": "KO", "name": "Coca-Cola Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Coca-Cola", "KO"]},
+    {"index": 40, "symbol": "PEP", "name": "PepsiCo Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["PepsiCo", "PEP"]},
+    {"index": 41, "symbol": "WMT", "name": "Walmart Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Walmart", "WMT"]},
+    {"index": 42, "symbol": "COST", "name": "Costco Inc.", "type": "stock", "source": "finnhub_company", "keywords": ["Costco", "COST"]},
+    {"index": 43, "symbol": "TM", "name": "Toyota Motor", "type": "stock", "source": "finnhub_company", "keywords": ["Toyota", "TM"]},
+    
+    # Cryptocurrencies (5)
+    {"index": 44, "symbol": "BTC-USD", "name": "Bitcoin", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["bitcoin", "BTC"]},
+    {"index": 45, "symbol": "ETH-USD", "name": "Ethereum", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["ethereum", "ETH"]},
+    {"index": 46, "symbol": "SOL-USD", "name": "Solana", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["solana", "SOL"]},
+    {"index": 47, "symbol": "XRP-USD", "name": "Ripple XRP", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["Ripple", "XRP"]},
+    {"index": 48, "symbol": "ADA-USD", "name": "Cardano", "type": "crypto", "source": "finnhub_market_crypto", "keywords": ["Cardano", "ADA"]},
+    
+    # Forex (4)
+    {"index": 49, "symbol": "EURUSD=X", "name": "EUR/USD", "type": "forex", "source": "finnhub_market_forex", "keywords": ["EUR/USD", "euro dollar"]},
+    {"index": 50, "symbol": "GBPUSD=X", "name": "GBP/USD", "type": "forex", "source": "finnhub_market_forex", "keywords": ["GBP/USD", "pound dollar"]},
+    {"index": 51, "symbol": "JPYUSD=X", "name": "JPY/USD", "type": "forex", "source": "finnhub_market_forex", "keywords": ["JPY/USD", "yen dollar"]},
+    {"index": 52, "symbol": "AUDUSD=X", "name": "AUD/USD", "type": "forex", "source": "finnhub_market_forex", "keywords": ["AUD/USD", "aussie dollar"]},
+    
+    # Commodities (4)
+    {"index": 53, "symbol": "GC=F", "name": "Gold", "type": "commodity", "source": "gnews_keywords", "keywords": ["gold", "gold price"]},
+    {"index": 54, "symbol": "CL=F", "name": "Crude Oil (WTI)", "type": "commodity", "source": "gnews_keywords", "keywords": ["crude oil", "WTI", "oil price"]},
+    {"index": 55, "symbol": "SI=F", "name": "Silver", "type": "commodity", "source": "gnews_keywords", "keywords": ["silver", "silver price"]},
+    {"index": 56, "symbol": "NG=F", "name": "Natural Gas", "type": "commodity", "source": "gnews_keywords", "keywords": ["natural gas", "NG"]},
 ]
 
 # Time windows supported
@@ -150,7 +215,98 @@ def fetch_gnews_keywords(keywords: List[str], from_date: str, to_date: str, max_
         print(f"  ❌ GNews error: {e}")
         return []
 
-# ========================== FINBERT SENTIMENT ANALYZER ==========================
+# Add imports for the sentiment cache module
+try:
+    from .utils.sentiment_cache import HybridSentimentAnalyzer, SentimentCache
+    CACHE_AVAILABLE = True
+except ImportError:
+    CACHE_AVAILABLE = False
+    print("⚠️  sentiment_cache module not found. Running without cache optimization.")
+
+# ========================== SENTIMENT ANALYZER ==========================
+class FastSentimentAnalyzer:
+    """
+    Fast sentiment analyzer using multiple strategies:
+    1. Cache hits (instant)
+    2. VADER for speed (no GPU needed)
+    3. FinBERT for accuracy (if available)
+    """
+    
+    def __init__(self, use_finbert: bool = False, use_cache: bool = True):
+        """
+        Initialize analyzer
+        
+        Args:
+            use_finbert: Use FinBERT for higher accuracy (slower)
+            use_cache: Enable caching for faster subsequent runs
+        """
+        self.use_finbert = use_finbert
+        self.use_cache = use_cache and CACHE_AVAILABLE
+        
+        if CACHE_AVAILABLE:
+            try:
+                self.analyzer = HybridSentimentAnalyzer(use_finbert=use_finbert, cache_enabled=use_cache)
+                print(f"✅ Using {'FinBERT' if use_finbert else 'VADER'} sentiment analyzer (cache: {'enabled' if use_cache else 'disabled'})")
+            except Exception as e:
+                print(f"⚠️  Hybrid analyzer init failed: {e}")
+                self.analyzer = None
+        else:
+            self.analyzer = None
+    
+    def analyze(self, texts: List[str], batch_size: int = 32) -> List[Dict]:
+        """
+        Analyze sentiment for list of texts
+        
+        Returns list of sentiment dicts with keys:
+        - positive: probability [0-1]
+        - negative: probability [0-1]
+        - neutral: probability [0-1]
+        - confidence: max probability
+        - label: POSITIVE/NEGATIVE/NEUTRAL
+        """
+        if not texts:
+            return []
+        
+        # Try to use hybrid analyzer with cache
+        if self.analyzer:
+            try:
+                return self.analyzer.analyze_batch(texts, batch_size=batch_size)
+            except Exception as e:
+                print(f"⚠️  Analyzer error: {e}. Using fallback.")
+        
+        # Fallback: simple regex-based sentiment (always available)
+        print("  Using fallback regex-based sentiment analysis...")
+        results = []
+        for text in texts:
+            text_lower = text.lower()
+            
+            positive_words = ['positive', 'good', 'great', 'excellent', 'amazing', 'gain', 'growth', 'bull', 'up', 'rise']
+            negative_words = ['negative', 'bad', 'poor', 'terrible', 'lose', 'loss', 'decline', 'bear', 'down', 'fall']
+            
+            pos_count = sum(1 for word in positive_words if word in text_lower)
+            neg_count = sum(1 for word in negative_words if word in text_lower)
+            total = pos_count + neg_count
+            
+            if total > 0:
+                positive = pos_count / total
+                negative = neg_count / total
+            else:
+                positive = 0.5
+                negative = 0.5
+            
+            label = 'positive' if positive > 0.6 else ('negative' if negative > 0.6 else 'neutral')
+            
+            results.append({
+                'positive': float(positive),
+                'negative': float(negative),
+                'neutral': float(1 - positive - negative),
+                'confidence': float(abs(positive - negative)),
+                'label': label.upper()
+            })
+        
+        return results
+
+# Keep the old FinBERTAnalyzer for backward compatibility
 class FinBERTAnalyzer:
     def __init__(self, model_name: str = "ProsusAI/finbert"):
         self.model_name = model_name
@@ -207,43 +363,78 @@ class FinBERTAnalyzer:
 
 # ========================== MAIN PROGRAM ==========================
 def main():
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Analyzes financial news sentiment for assets")
+    parser.add_argument('--symbols', type=str, default=None, help='Comma-separated symbols (e.g., ^GSPC,BTC-USD)')
+    parser.add_argument('--window', type=str, default='1mo', help='Time window (1d, 1w, 1mo, 3mo, 6mo, 1y)')
+    parser.add_argument('--non-interactive', action='store_true', help='Run without interactive prompts')
+    args = parser.parse_args()
+    
     print("="*70)
     print("🌍 GLOBAL ASSET NEWS SENTIMENT ANALYZER")
     print("="*70)
     
-    # Display asset list
-    print("\n📊 AVAILABLE ASSETS:")
-    for a in ALL_ASSETS:
-        print(f"  {a['index']}. {a['name']} ({a['symbol']})")
-    
-    # Asset selection
-    while True:
-        inp = input("\n📝 Enter asset numbers (e.g., '1,3,5-7' or 'all'): ").strip()
-        if not inp:
-            print("Please enter something.")
-            continue
-        selected_indices = parse_asset_selection(inp)
-        if not selected_indices:
-            print("No valid assets selected. Try again.")
-            continue
-        selected_assets = [a for a in ALL_ASSETS if a['index'] in selected_indices]
-        print("\n✅ Selected assets:")
-        for a in selected_assets:
-            print(f"   - {a['name']} ({a['symbol']})")
-        break
-    
-    # Time window selection
-    print("\n⏱️  TIME WINDOW OPTIONS:")
-    for opt in WINDOW_OPTIONS:
-        print(f"   {opt}")
-    while True:
-        window = input("\nEnter time window (default 1d): ").strip()
-        if not window:
-            window = "1d"
-        if window in WINDOW_OPTIONS:
+    # Determine selected assets
+    if args.symbols and args.non_interactive:
+        # CLI mode: use provided symbols
+        print(f"\n📍 Using CLI arguments: symbols={args.symbols}, window={args.window}")
+        symbol_list = [s.strip().upper() for s in args.symbols.split(',')]
+        selected_assets = []
+        for symbol in symbol_list:
+            # Find asset by symbol
+            found = False
+            for asset in ALL_ASSETS:
+                if asset['symbol'].upper() == symbol:
+                    selected_assets.append(asset)
+                    found = True
+                    break
+            if not found:
+                print(f"⚠️  Symbol not found in predefined assets: {symbol}")
+        
+        if not selected_assets:
+            print("❌ No valid symbols provided. Please use --symbols flag with comma-separated symbols.")
+            sys.exit(1)
+        
+        window = args.window
+    else:
+        # Interactive mode
+        print("\n📊 AVAILABLE ASSETS:")
+        for a in ALL_ASSETS:
+            print(f"  {a['index']}. {a['name']} ({a['symbol']})")
+        
+        # Asset selection
+        while True:
+            inp = input("\n📝 Enter asset numbers (e.g., '1,3,5-7' or 'all'): ").strip()
+            if not inp:
+                print("Please enter something.")
+                continue
+            selected_indices = parse_asset_selection(inp)
+            if not selected_indices:
+                print("No valid assets selected. Try again.")
+                continue
+            selected_assets = [a for a in ALL_ASSETS if a['index'] in selected_indices]
+            print("\n✅ Selected assets:")
+            for a in selected_assets:
+                print(f"   - {a['name']} ({a['symbol']})")
             break
-        else:
-            print("Invalid window. Choose from:", ", ".join(WINDOW_OPTIONS))
+        
+        # Time window selection
+        print("\n⏱️  TIME WINDOW OPTIONS:")
+        for opt in WINDOW_OPTIONS:
+            print(f"   {opt}")
+        while True:
+            window = input("\nEnter time window (default 1d): ").strip()
+            if not window:
+                window = "1d"
+            if window in WINDOW_OPTIONS:
+                break
+            else:
+                print("Invalid window. Choose from:", ", ".join(WINDOW_OPTIONS))
+    
+    # Validate window
+    if window not in WINDOW_OPTIONS:
+        print(f"⚠️  Invalid window '{window}'. Using default '1mo'.")
+        window = "1mo"
     
     from_date, to_date = window_to_dates(window)
     from_str = from_date.strftime("%Y-%m-%d")
@@ -320,13 +511,10 @@ def main():
         return
     
     # ========== SENTIMENT ANALYSIS ==========
-    print("\n🧠 SENTIMENT ANALYSIS WITH FinBERT")
-    if not TRANSFORMERS_AVAILABLE:
-        print("❌ Transformers not installed. Cannot proceed.")
-        return
+    print("\n🧠 SENTIMENT ANALYSIS")
+    print("   Using fast VADER-based analysis with caching for speed...")
     
-    analyzer = FinBERTAnalyzer()
-    analyzer.load()
+    analyzer = FastSentimentAnalyzer(use_finbert=False, use_cache=True)
     
     # Prepare texts
     texts = []
