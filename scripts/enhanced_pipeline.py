@@ -39,6 +39,21 @@ from src.rl.integrated_pipeline      import build_patchtst_signals
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OUTPUT_DIR = "data/output"
 
+# Per-asset-class HMM mapping
+HMM_MAP = {
+    "^GSPC":    "equity",
+    "^IXIC":    "equity",
+    "BTC-USD":  "crypto",
+    "ETH-USD":  "crypto",
+    "GC=F":     "commodity",
+    "CL=F":     "commodity",
+    "SI=F":     "commodity",
+    "EURUSD=X": "forex",
+    "GBPUSD=X": "forex",
+    "USDJPY=X": "forex",
+    "USDNGN=X": "forex",
+}
+
 # Best config from experiments
 BEST_WEIGHTS   = [1.2, 1.2, 1.0, 0.6]
 AGENT_MAP      = {
@@ -177,11 +192,23 @@ def run_enhanced(symbols, risk_profile="moderate",
     results = []
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # Load HMM
-    hmm = PretrainedHMMRegime()
-    hmm.load()
-    if hmm.model is None:
-        hmm.train()
+    # Load per-asset-class HMMs
+    import joblib
+    _hmm_cache = {}
+    def get_hmm(sym):
+        asset_class = HMM_MAP.get(sym, "forex")
+        if asset_class not in _hmm_cache:
+            path = f"data/models/hmm_{asset_class}.pkl"
+            if os.path.exists(path):
+                _hmm_cache[asset_class] = joblib.load(path)
+                print(f"  📂 Loaded HMM ({asset_class}) ← {path}")
+            else:
+                # fallback to pretrained
+                hmm_fallback = PretrainedHMMRegime()
+                hmm_fallback.load()
+                _hmm_cache[asset_class] = hmm_fallback
+                print(f"  ⚠️  HMM fallback (pretrained) for {asset_class}")
+        return _hmm_cache[asset_class]
 
     for sym in symbols:
         print(f"\n  ── {sym} ──────────────────────")
@@ -224,11 +251,21 @@ def run_enhanced(symbols, risk_profile="moderate",
         print(f"    PatchTST 5d forecast: {pred_return*100:+.2f}%  "
               f"→ ${pred_price:,.4f}")
 
-        # HMM regime
+        # HMM regime — use asset-class-specific model
         try:
-            regime = hmm.predict(df.tail(60))
-        except Exception:
+            hmm_model = get_hmm(sym)
+            df_hmm = df.tail(60).copy()
+            # Add required features
+            delta = df_hmm["Close"].diff()
+            gain  = delta.clip(lower=0).rolling(14).mean()
+            loss  = (-delta.clip(upper=0)).rolling(14).mean()
+            df_hmm["RSI"] = 100 - (100 / (1 + gain / (loss + 1e-9)))
+            df_hmm["sentiment_mean"] = 0.0
+            df_hmm = df_hmm.dropna()
+            regime = hmm_model.predict(df_hmm)
+        except Exception as e:
             regime = "sideways"
+            print(f"    ⚠️  HMM fallback: {e}")
         print(f"    HMM regime: {regime}")
 
         # Build signals for RL
