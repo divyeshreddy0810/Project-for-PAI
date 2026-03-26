@@ -167,7 +167,7 @@ def run_integrated(sym: str, name: str,
     signals_train = build_patchtst_signals(df_train, patchtst)
     # Add macro + sentiment features
     print(f"  Adding macro+sentiment features...")
-    macro_train   = build_macro_signals(df_train)
+    macro_train   = build_macro_signals(df_train, asset_sym=symbol)
     signals_train = np.concatenate([signals_train, macro_train], axis=1)
     print(f"  ✅ Enriched state dim: {signals_train.shape[1]} features")
 

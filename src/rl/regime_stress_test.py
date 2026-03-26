@@ -144,8 +144,9 @@ def evaluate_period(agent, agent_type, df_window):
     except Exception:
         pass
 
+    sym_hint = getattr(df_w, '_sym', None)
     sig = build_patchtst_signals(df_w, ptst)
-    mac = build_macro_signals(df_w)
+    mac = build_macro_signals(df_w, asset_sym=sym_hint)
     sig = np.concatenate([sig, mac], axis=1)
     sig = apply_weights(sig, BEST_WEIGHTS)
 

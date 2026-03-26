@@ -277,7 +277,10 @@ def run_enhanced(symbols, risk_profile="moderate",
             gain  = delta.clip(lower=0).rolling(14).mean()
             loss  = (-delta.clip(upper=0)).rolling(14).mean()
             df_hmm["RSI"] = 100 - (100 / (1 + gain / (loss + 1e-9)))
-            df_hmm["sentiment_mean"] = 0.0
+            # Use real FinBERT sentiment for HMM features
+            from src.rl.macro_sentiment_features import load_sentiment_features
+            _sent = load_sentiment_features(asset_sym=sym)
+            df_hmm["sentiment_mean"] = float(_sent.get("mean", 0.05))
             df_hmm = df_hmm.dropna()
             regime = hmm_model.predict(df_hmm)
         except Exception as e:

@@ -32,7 +32,27 @@ from src.utils.trade_logger import TradeLogger
 # ── Multimodal consensus ──────────────────────────────────────
 try:
     from src.regime.pretrained_hmm import get_pretrained_hmm
+    import joblib as _joblib
     _PRETRAINED_HMM = get_pretrained_hmm()
+    # Per-asset-class HMMs
+    _HMM_CLASS_MAP = {
+        "^GSPC":"equity","^IXIC":"equity","^DJI":"equity",
+        "BTC-USD":"crypto","ETH-USD":"crypto","SOL-USD":"crypto",
+        "GC=F":"commodity","CL=F":"commodity","SI=F":"commodity",
+        "EURUSD=X":"forex","GBPUSD=X":"forex","USDJPY=X":"forex",
+        "USDNGN=X":"forex","EURNGN=X":"forex","USDZAR=X":"forex",
+    }
+    _HMM_CACHE = {}
+    def _get_hmm_for(sym):
+        cls = _HMM_CLASS_MAP.get(sym, "forex")
+        if cls not in _HMM_CACHE:
+            path = f"data/models/hmm_{cls}.pkl"
+            import os
+            if os.path.exists(path):
+                _HMM_CACHE[cls] = _joblib.load(path)
+            else:
+                _HMM_CACHE[cls] = _PRETRAINED_HMM
+        return _HMM_CACHE[cls]
 except Exception as _e:
     _PRETRAINED_HMM = None
 
@@ -279,7 +299,20 @@ def score_asset(asset: dict, risk: str,
         return None
 
     try:
-        regime = run_regime(ALGO["regime"], df)
+        # Use per-asset-class HMM
+        try:
+            import numpy as np, pandas as pd
+            df_hmm = df.tail(60).copy()
+            delta = df_hmm["Close"].diff()
+            gain  = delta.clip(lower=0).rolling(14).mean()
+            loss  = (-delta.clip(upper=0)).rolling(14).mean()
+            df_hmm["RSI"] = 100 - (100/(1 + gain/(loss+1e-9)))
+            df_hmm["sentiment_mean"] = 0.05
+            df_hmm = df_hmm.dropna()
+            hmm_model = _get_hmm_for(sym)
+            regime = hmm_model.predict(df_hmm)
+        except Exception as e:
+            regime = run_regime(ALGO["regime"], df)
     except Exception:
         regime = "sideways"
 
