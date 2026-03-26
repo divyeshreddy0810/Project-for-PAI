@@ -397,3 +397,38 @@ class PatchTSTForecaster:
                 "model":            "PatchTST",
             }
         }
+
+    def save(self, path: str):
+        """Save trained PatchTST model to disk."""
+        import torch, os, pickle
+        if self.model is None:
+            raise RuntimeError("No model to save — call fit_from_df first")
+        os.makedirs(os.path.dirname(path) if os.path.dirname(path) else ".", exist_ok=True)
+        torch.save({
+            "model_state":  self.model.state_dict(),
+            "cfg":          self.cfg,
+            "trained":      self.trained,
+            "target_mean":  getattr(self, "target_mean", None),
+            "target_std":   getattr(self, "target_std",  None),
+            "scaler":       getattr(self, "scaler",      None),
+        }, path)
+        print(f"  💾 PatchTST saved → {path}")
+
+    def load(self, path: str):
+        """Load trained PatchTST model from disk."""
+        import torch
+        from src.forecast.patchtst_forecast import PatchTST
+        ckpt = torch.load(path, map_location=self.device)
+        self.cfg         = ckpt["cfg"]
+        self.trained     = ckpt["trained"]
+        if ckpt.get("target_mean") is not None:
+            self.target_mean = ckpt["target_mean"]
+        if ckpt.get("target_std") is not None:
+            self.target_std  = ckpt["target_std"]
+        if ckpt.get("scaler") is not None:
+            self.scaler      = ckpt["scaler"]
+        self.model = PatchTST(self.cfg).to(self.device)
+        self.model.load_state_dict(ckpt["model_state"])
+        self.model.eval()
+        print(f"  📂 PatchTST loaded ← {path}")
+

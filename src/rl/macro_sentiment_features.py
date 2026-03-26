@@ -93,11 +93,13 @@ def fetch_sp500_regime(start="2004-01-01", end="2026-03-25") -> pd.Series:
     return fetch_macro_regime(start=start, end=end, asset_sym=None)
 
 
-def load_sentiment_features(sentiment_file="data/output/latest.json") -> dict:
+def load_sentiment_features(sentiment_file="data/output/latest.json",
+                            asset_sym=None) -> dict:
     """
     Load FinBERT sentiment from existing sentiment_analyzer output.
     Returns dict with mean and trend per symbol.
     Used for LIVE signals only — returns latest reading.
+    If asset_sym provided, returns that asset's sentiment specifically.
     """
     if not os.path.exists(sentiment_file):
         print(f"  ⚠️  Sentiment file not found: {sentiment_file}")
@@ -110,6 +112,23 @@ def load_sentiment_features(sentiment_file="data/output/latest.json") -> dict:
         assets = data.get("assets", [])
         if not assets:
             return {"mean": 0.05, "trend": 0.0}
+
+        # Per-asset sentiment lookup
+        if asset_sym:
+            for a in assets:
+                sym = a.get("symbol","")
+                if sym == asset_sym or sym.replace("=X","") == asset_sym.replace("=X",""):
+                    mean_val = a.get("overall_mean",
+                               a.get("sentiment_mean", 0.05))
+                    try:
+                        mean_val = float(mean_val)
+                    except (TypeError, ValueError):
+                        mean_val = 0.05
+                    return {"mean": mean_val, "trend": 0.0,
+                            "source": "finbert"}
+            # Asset not found in sentiment file — use neutral
+            print(f"  ⚠️  No sentiment for {asset_sym} — using neutral 0.05")
+            return {"mean": 0.05, "trend": 0.0, "source": "stub"}
 
         all_means = [a.get("overall_mean", 0.05) for a in assets]
         sent_mean = float(np.mean(all_means))
@@ -217,7 +236,9 @@ def build_macro_signals(df: pd.DataFrame,
     n = len(df)
     result = np.zeros((n, 4), dtype=np.float32)
 
-    if n > 30:
+    # Use proxy for long historical training runs (>200 rows)
+    # Use real FinBERT for recent/live windows (<= 200 rows)
+    if n > 200:
         # Historical training — use time-varying momentum proxy
         sentiment_proxy = build_sentiment_proxy(df)
         result[:, 3] = sentiment_proxy
@@ -226,10 +247,11 @@ def build_macro_signals(df: pd.DataFrame,
               f"mean={proxy_mean:.3f}  range={sentiment_proxy.min():.3f}"
               f"-{sentiment_proxy.max():.3f}")
     else:
-        # Live signals — use real FinBERT
-        sentiment = load_sentiment_features()
+        # Live/recent signals — use real FinBERT per asset
+        sentiment = load_sentiment_features(asset_sym=asset_sym)
         result[:, 3] = float(sentiment["mean"])
-        print(f"  ✅ Sentiment (live FinBERT): mean={sentiment['mean']:.3f}")
+        src_tag = sentiment.get("source", "finbert")
+        print(f"  ✅ Sentiment ({src_tag}): {asset_sym} mean={sentiment['mean']:.3f}")
 
     if not macro_df.empty:
         for col_idx, col_name in enumerate(["vix","rate","regime"]):

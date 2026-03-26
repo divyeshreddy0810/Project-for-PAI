@@ -242,10 +242,27 @@ def run_enhanced(symbols, risk_profile="moderate",
         df_train = df.iloc[:n_train].reset_index(drop=True)
         df_recent= df.iloc[-90:].reset_index(drop=True)  # last 90 days
 
-        # PatchTST forecast
-        print(f"    Training PatchTST...")
+        # PatchTST forecast — load saved model or train + save
+        safe_sym = sym.replace("^","").replace("-","_").replace("=","")
+        ptst_path = f"data/models/patchtst_{safe_sym}.pt"
         ptst = PatchTSTForecaster()
-        ptst.fit_from_df(df_train, verbose=False)
+
+        if os.path.exists(ptst_path):
+            try:
+                ptst.load(ptst_path)
+                print(f"    📂 Loaded PatchTST ← {ptst_path}")
+            except Exception:
+                print(f"    ⚠️  PatchTST load failed — retraining...")
+                ptst.fit_from_df(df_train, verbose=False)
+                ptst.save(ptst_path)
+                print(f"    💾 PatchTST saved → {ptst_path}")
+        else:
+            print(f"    Training PatchTST...")
+            ptst.fit_from_df(df_train, verbose=False)
+            os.makedirs("data/models", exist_ok=True)
+            ptst.save(ptst_path)
+            print(f"    💾 PatchTST saved → {ptst_path}")
+
         pred_return = ptst.predict_return(df_recent)
         pred_price  = current_price * (1 + pred_return)
         print(f"    PatchTST 5d forecast: {pred_return*100:+.2f}%  "
