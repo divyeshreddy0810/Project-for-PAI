@@ -151,11 +151,11 @@ def run_comparison():
         # Build enriched signals
         print(f"  Building signals...")
         sig_tr=build_patchtst_signals(df_tr, ptst)
-        mac_tr=build_macro_signals(df_tr)
+        mac_tr=build_macro_signals(df_tr, asset_sym=sym)
         sig_tr=np.concatenate([sig_tr, mac_tr], axis=1)
 
         sig_te=build_patchtst_signals(df_te, ptst)
-        mac_te=build_macro_signals(df_te)
+        mac_te=build_macro_signals(df_te, asset_sym=sym)
         sig_te=np.concatenate([sig_te, mac_te], axis=1)
 
         env_tr=TradingEnvironment(df_tr, sig_tr)

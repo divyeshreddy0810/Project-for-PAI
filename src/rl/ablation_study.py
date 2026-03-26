@@ -169,12 +169,12 @@ def run_ablation():
         ptst=PatchTSTForecaster()
         ptst.fit_from_df(df_tr,verbose=False)
         sig_tr=build_patchtst_signals(df_tr,ptst)
-        mac_tr=build_macro_signals(df_tr)
+        mac_tr=build_macro_signals(df_tr, asset_sym=sym)
         sig_tr=np.concatenate([sig_tr,mac_tr],axis=1)
         sig_tr=apply_weights(sig_tr, BEST_WEIGHTS)
 
         sig_te=build_patchtst_signals(df_te,ptst)
-        mac_te=build_macro_signals(df_te)
+        mac_te=build_macro_signals(df_te, asset_sym=sym)
         sig_te=np.concatenate([sig_te,mac_te],axis=1)
         sig_te=apply_weights(sig_te, BEST_WEIGHTS)
 
