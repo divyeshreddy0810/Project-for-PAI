@@ -1,0 +1,22 @@
+{
+  "name": "Ensemble+Agreement",
+  "symbol": "^GSPC",
+  "regime": "hmm",
+  "forecaster": "lgbm",
+  "trader": "ensemble",
+  "agreement_only": true,
+  "lgbm_weight": 0.6,
+  "risk_profile": "aggressive",
+  "portfolio_value": 100000.0,
+  "horizons": [5, 10, 15, 20],
+  "train_window_days": 200,
+  "test_window_days": 50,
+  "step_days": 20,
+  "data_period": "2y",
+  "cost_bps": 10.0,
+  "sentiment_mean": 0.05,
+  "sentiment_trend": 0.0,
+  "hmm_states": 3,
+  "use_real_sentiment": true,
+  "min_up_probability": 0.6
+}

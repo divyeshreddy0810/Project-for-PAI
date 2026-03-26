@@ -1,122 +1,144 @@
-# Global Asset Sentiment Analyzer & Trading System
+# MRAT-RL: Multimodal Regime-Adaptive Trading System
 
-An AI-driven trading system that combines sentiment analysis, technical indicators, market regime classification, price forecasting, and reinforcement learning-based trading signals.
-
-**Course:** Programming for AI (NCI)  
-**Status:** Production Ready
+**MSc Artificial Intelligence — NCI Dublin — Programming for AI (MSCAIJAN26I)**
+**Group:** Alabi Taiwo · Divyesh Reddy Ellasiri · Sai Vivek Yerninti · Mukesh Saren Ramu
 
 ---
 
-## 📁 Project Structure
+## What This System Does
 
-This repository contains the core logic and scripts to run the trading pipeline. (Note: Output and cache data files are ignored to keep the repository clean).
+An AI trading signal generator that combines five data sources to decide
+when to buy, sell, or hold an asset:
 
-```text
+- **PatchTST Transformer** — price forecasting trained on 22 years of data
+- **Hidden Markov Model** — detects bull / bear / sideways market regimes
+- **SAC + PPO RL agents** — learn trading strategy from experience
+- **Macroeconomic features** — VIX fear index + interest rates
+- **FinBERT + VADER** — news sentiment analysis
+
+## Key Results
+
+| Metric | Baseline | Enhanced | Improvement |
+|--------|----------|----------|-------------|
+| Forecast MAE (S&P 500) | $3,674 | $79 | **97.8% better** |
+| Avg Sharpe ratio | −0.40 | +0.54 | **9× better** |
+| Walk-forward Sharpe | 1.387 | 1.853 | **+33.6%** |
+| Combined system Sharpe | — | **+0.766** | 3 assets |
+
+## Quick Start
+```bash
+# Install dependencies
+pip install yfinance scikit-learn lightgbm hmmlearn transformers torch --break-system-packages
+
+# Run enhanced pipeline (equities + crypto + gold) — ~40 seconds
+python3 scripts/enhanced_pipeline.py \
+  --symbols "^GSPC,BTC-USD,GC=F" \
+  --risk moderate \
+  --portfolio 100000
+
+# Run original daily advisor (forex pairs)
+python3 scripts/daily_advisor.py
+```
+
+## Project Structure
+```
 Project-for-PAI/
-├── .gitignore                          # Rules for ignoring output/cache files
-├── README.md                           # This file
-├── MIGRATION_SUMMARY.md                # Context for recent changes
-├── QUICK_START_1M_DATA.md              # Setup guide and performance tips
-├── TRAINING_DATA_SCALABILITY.md        # Technical explanation context
-├── analyze_dataset_sizes.py            # Utility script for dataset size analysis
-│
-├── data/
-│   ├── cache/
-│   │   └── .gitkeep                    # Preserves empty cache directory in Git
-│   └── output/
-│       └── .gitkeep                    # Preserves empty output directory in Git
-│
-├── docs/                               # Comprehensive Documentation
-│   ├── CHANGELOG.md                    
-│   ├── Global_Asset_Sentiment_Analyzer_Technical_Documentation.docx
-│   ├── PROJECT_STRUCTURE.md            
-│   ├── QUICK_START.md                  
-│   ├── QUICK_START_V2.md               
-│   ├── SYSTEM_COMPLETION_SUMMARY.md    
-│   └── TECHNICAL_INDICATORS_GUIDE.md   
-│
 ├── scripts/
-│   └── master_pipeline_v2.py           # Main orchestration script
-│
-└── src/                                # Core source code
-    ├── __init__.py                     
-    ├── market_regime_model.py          # Bull/Bear market classification
-    ├── price_forecaster.py             # ML-based price prediction
-    ├── rl_trader.py                    # Trading signal generation
-    ├── sentiment_analyzer.py           # Financial news sentiment analysis (FinBERT)
-    ├── technical_indicators.py         # Technical indicator calculations
-    └── utils/
-        ├── __init__.py                 
-        ├── config_manager.py           # Configuration management
-        └── sentiment_cache.py          # Sentiment data caching
+│   ├── enhanced_pipeline.py      ← MAIN: Run this daily (enhanced system)
+│   ├── daily_advisor.py          ← Original advisor (forex pairs)
+│   ├── live_paper_trade.py       ← Real-time price monitor
+│   ├── paper_trade.py            ← Quick signal report
+│   ├── backtest.py               ← Walk-forward backtester
+│   └── trade_log.py              ← View trade history
+├── src/
+│   ├── forecast/
+│   │   ├── patchtst_forecast.py  ← PatchTST Transformer forecaster
+│   │   └── lgbm_forecast.py      ← LightGBM forecaster
+│   ├── regime/
+│   │   ├── hmm_regime.py         ← HMM regime detector
+│   │   └── pretrained_hmm.py     ← Pre-trained HMM (22yr EUR/USD)
+│   ├── rl/
+│   │   ├── trading_env.py        ← Trading environment
+│   │   ├── sac_agent.py          ← SAC agent (equities/gold)
+│   │   ├── ppo_agent.py          ← PPO agent (crypto)
+│   │   ├── rl_trainer.py         ← Training pipeline
+│   │   ├── macro_sentiment_features.py  ← VIX + rates + sentiment
+│   │   ├── integrated_pipeline.py       ← PatchTST + PPO pipeline
+│   │   ├── ablation_study.py     ← Component importance test
+│   │   ├── compare_agents.py     ← PPO vs SAC comparison
+│   │   └── regime_stress_test.py ← 75 unseen window stress test
+│   ├── trading/
+│   │   ├── ensemble_trader.py    ← Ensemble signal combiner
+│   │   └── rule_trader.py        ← Rule-based baseline
+│   └── utils/
+│       ├── currency.py           ← Live EUR/NGN/USD rates
+│       ├── sentiment_loader.py   ← Loads FinBERT output
+│       └── trade_logger.py       ← Persistent trade log
+├── data/
+│   ├── models/                   ← Saved RL models (SAC + PPO)
+│   ├── output/                   ← Generated signals + reports
+│   └── cache/                    ← Macro feature cache
+├── configs/                      ← Backtest experiment configs
+├── FRONTEND_INTEGRATION.md       ← How to add toggle to frontend
+└── MRAT_RL_IEEE_Short_Paper.docx ← Research paper
 ```
 
-## 🚀 Quick Start & How to Run
+## Asset Routing
 
-### Prerequisites
-- Python 3.8+
-- Internet connection (for fetching live ticker data and news)
+| Asset | Agent | Notes |
+|-------|-------|-------|
+| S&P 500 (^GSPC) | SAC | Sharpe +0.68 |
+| NASDAQ (^IXIC) | SAC | Sharpe +0.73 |
+| Bitcoin (BTC-USD) | PPO | Sharpe +0.71 |
+| Gold (GC=F) | SAC | Sharpe +0.59 |
+| EUR/USD | SAC | Sharpe +0.36 |
+| GBP/USD | SAC | Sharpe +0.22 |
 
-### 1. Installation
+## Frontend Integration (for Divyesh)
 
-Clone the repository and install dependencies:
-```bash
-git clone <repository-url>
-cd Project-for-PAI
-pip install -r requirements.txt
+See **FRONTEND_INTEGRATION.md** for full details.
+
+**Quick version:**
+```javascript
+// Baseline mode (existing)
+exec('python3 scripts/master_pipeline_v2.py')
+readFile('data/output/latest.json')
+
+// Enhanced mode (new toggle)
+exec('python3 scripts/enhanced_pipeline.py --symbols "^GSPC,BTC-USD,GC=F"')
+readFile('data/output/enhanced_latest.json')
 ```
 
-*(If you do not have a `requirements.txt` file yet, you can generate one locally via `pip freeze > requirements.txt` before pushing to GitHub).*
+Both produce the same JSON structure. Enhanced adds:
+`signal.confidence`, `signal.votes`, `signal.regime`, `signal.rl_agent`
 
-### 2. Running the Pipeline
+## Ablation Study Findings
 
-The entire system is orchestrated by a single master pipeline script that runs Sentiment Analysis, Technical Indicators, Market Regime Classification, Price Forecasting, and Trading Signal Generation consecutively.
+Testing what happens when each component is removed:
 
-To run the pipeline with default assets and settings:
-```bash
-python scripts/master_pipeline_v2.py
-```
+| Removed | Impact on S&P 500 Sharpe | Lesson |
+|---------|--------------------------|--------|
+| Macro features (VIX + rates) | −1.27 (crashed) | **Most critical component** |
+| PatchTST | +0.31 (improved) | Robot learns patterns itself |
+| HMM regime | +0.28 (improved) | Robot learns mood itself |
+| Sentiment | +0.03 (no change) | Minimal impact |
 
-All generated reports, CSVs, and JSON files will be exported automatically to the `data/output/` directory.
+## First Run Notes
 
----
+- First run trains RL agents (~2 min per asset)
+- After first run, models save to `data/models/` and load instantly
+- Second run takes ~40 seconds total
 
-## 📊 Pipeline Stages
+## Saved Models
 
-The system executes the following phases in order:
-
-1. **Sentiment Analysis** 📰 (`src/sentiment_analyzer.py`): Analyzes financial news headlines using FinBERT to generate sentiment scores for selected assets.
-2. **Technical Indicators** 📈 (`src/technical_indicators.py`): Calculates momentum, trend, and volatility indicators (RSI, MACD, Bollinger Bands, ATR, etc).
-3. **Market Regime Classification** 🎯 (`src/market_regime_model.py`): Classifies market conditions (Bull/Bear/Volatile) to adjust strategies.
-4. **Price Forecasting** 💰 (`src/price_forecaster.py`): Uses Machine Learning to predict future prices (5-day, 10-day, 15-day, and 20-day horizons).
-5. **Trading Signal Generation** 🤖 (`src/rl_trader.py`): Generates buy/sell/hold signals based on multi-factor analysis, position sizing, and risk management.
-
----
-
-## 📋 Supported Assets
-
-By default, the pipeline can analyze:
-*   **Equities:** S&P 500 (^GSPC), NASDAQ (^IXIC), AAPL, MSFT, GOOGL
-*   **International Indices:** Euro Stoxx 50 (^STOXX50E), Nikkei 225 (^N225)
-*   **Crypto:** Bitcoin (BTC-USD), Ethereum (ETH-USD), Solana (SOL-USD)
-*   **Forex:** EUR/USD (EURUSD=X), GBP/USD (GBPUSD=X)
-*   **Commodities:** Gold (GC=F), Crude Oil (CL=F)
+Pre-trained models included in repo:
+- `data/models/sac_GSPC.pt` — S&P 500
+- `data/models/sac_GCF.pt` — Gold
+- `data/models/sac_IXIC.pt` — NASDAQ
+- `data/models/sac_EURUSDX.pt` — EUR/USD
+- `data/models/sac_GBPUSDX.pt` — GBP/USD
+- `data/models/ppo_BTC_USD.pt` — Bitcoin
 
 ---
 
-## 🔐 Risk Management
-
-The system includes built-in risk management profiles (Conservative, Moderate, Aggressive) handling:
-- **Position Sizing:** Risk-adjusted portfolio allocation.
-- **Stop Loss:** Automated loss prevention (5-10% based on profile).
-- **Take Profit:** Automated profit-taking levels.
-- **Confidence Thresholds:** Minimum system confidence requirements before issuing a `BUY` trade.
-
----
-
-## 📚 Further Reading
-
-For deep-dives into specific functionality, refer to the `docs/` folder:
-- **[Full Context & Architecture](docs/PROJECT_STRUCTURE.md)**
-- **[Technical Indicators Reference](docs/TECHNICAL_INDICATORS_GUIDE.md)**
-- **[System Completion Summary](docs/SYSTEM_COMPLETION_SUMMARY.md)**
+*This project is for educational purposes only. Not financial advice.*
