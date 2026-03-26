@@ -51,13 +51,29 @@ def fetch_interest_rate(start="2004-01-01", end="2026-03-25") -> pd.Series:
         return None
 
 
-def fetch_sp500_regime(start="2004-01-01", end="2026-03-25") -> pd.Series:
+# Map assets to appropriate macro benchmark
+_MACRO_BENCHMARK = {
+    "BTC-USD": "BTC-USD",  "ETH-USD": "BTC-USD",
+    "SOL-USD": "BTC-USD",  "BNB-USD": "BTC-USD",
+    "GC=F":    "GC=F",     "SI=F":    "GC=F",
+    "CL=F":    "CL=F",     "NG=F":    "CL=F",
+}
+# Everything else (equity, forex, indices) uses S&P 500
+
+def fetch_macro_regime(start="2004-01-01", end="2026-03-25",
+                       asset_sym=None) -> pd.Series:
     """
-    S&P 500 macro regime: price above/below 200-day SMA.
+    Per-asset macro regime: price above/below 200-day SMA.
     +1 = bull macro regime, -1 = bear macro regime.
+    Uses asset-appropriate benchmark:
+      - Crypto  → BTC-USD 200-day SMA
+      - Gold    → GC=F 200-day SMA
+      - Oil     → CL=F 200-day SMA
+      - Equity/Forex/Indices → ^GSPC 200-day SMA
     """
+    benchmark = _MACRO_BENCHMARK.get(asset_sym, "^GSPC")
     try:
-        df = yf.download("^GSPC", start=start, end=end, progress=False)
+        df = yf.download(benchmark, start=start, end=end, progress=False)
         if hasattr(df.columns,'droplevel'):
             df.columns = df.columns.droplevel(1)
         close = df["Close"]
@@ -65,12 +81,16 @@ def fetch_sp500_regime(start="2004-01-01", end="2026-03-25") -> pd.Series:
         regime = np.where(close > sma200, 1.0, -1.0)
         regime_series = pd.Series(regime, index=df.index).fillna(0)
         bull_pct = (regime_series == 1).mean() * 100
-        print(f"  ✅ SP500 macro regime: {len(regime_series)} rows  "
+        print(f"  ✅ Macro regime ({benchmark}): {len(regime_series)} rows  "
               f"bull: {bull_pct:.0f}% of time")
         return regime_series
     except Exception as e:
-        print(f"  ⚠️  SP500 regime unavailable: {e} — using neutral 0")
+        print(f"  ⚠️  Macro regime unavailable: {e} — using neutral 0")
         return None
+
+def fetch_sp500_regime(start="2004-01-01", end="2026-03-25") -> pd.Series:
+    """Legacy wrapper — kept for backward compatibility."""
+    return fetch_macro_regime(start=start, end=end, asset_sym=None)
 
 
 def load_sentiment_features(sentiment_file="data/output/latest.json") -> dict:
@@ -142,7 +162,8 @@ def build_sentiment_proxy(df: pd.DataFrame) -> np.ndarray:
 
 
 def build_macro_signals(df: pd.DataFrame,
-                        cache_dir: str = "data/cache") -> np.ndarray:
+                        cache_dir: str = "data/cache",
+                        asset_sym: str = None) -> np.ndarray:
     """
     Build macro + sentiment feature matrix aligned to df's index.
     Returns array of shape (len(df), 4):
@@ -152,7 +173,9 @@ def build_macro_signals(df: pd.DataFrame,
       col 3: sentiment mean
     """
     os.makedirs(cache_dir, exist_ok=True)
-    cache_file = os.path.join(cache_dir, "macro_features.csv")
+    # Per-asset cache to avoid cross-asset contamination
+    safe_sym = asset_sym.replace("^","").replace("-","_").replace("=","")                if asset_sym else "default"
+    cache_file = os.path.join(cache_dir, f"macro_features_{safe_sym}.csv")
 
     start = df.index[0].strftime("%Y-%m-%d") \
             if hasattr(df.index[0], 'strftime') else "2004-01-01"
@@ -173,7 +196,7 @@ def build_macro_signals(df: pd.DataFrame,
         print("  📊 Fetching macro features...")
         vix    = fetch_vix(start, end)
         rate   = fetch_interest_rate(start, end)
-        regime = fetch_sp500_regime(start, end)
+        regime = fetch_macro_regime(start=start, end=end, asset_sym=asset_sym)
 
         # Build combined dataframe
         parts = {}

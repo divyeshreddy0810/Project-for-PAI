@@ -270,7 +270,7 @@ def run_enhanced(symbols, risk_profile="moderate",
 
         # Build signals for RL
         sig_train = build_patchtst_signals(df_train, ptst)
-        mac_train = build_macro_signals(df_train)
+        mac_train = build_macro_signals(df_train, asset_sym=sym)
         sig_train = np.concatenate([sig_train, mac_train], axis=1)
         sig_train = apply_weights(sig_train, BEST_WEIGHTS)
 
@@ -285,7 +285,7 @@ def run_enhanced(symbols, risk_profile="moderate",
 
         # Get current state and RL signal
         sig_recent = build_patchtst_signals(df_recent, ptst)
-        mac_recent = build_macro_signals(df_recent)
+        mac_recent = build_macro_signals(df_recent, asset_sym=sym)
         sig_recent = np.concatenate([sig_recent, mac_recent], axis=1)
         sig_recent = apply_weights(sig_recent, BEST_WEIGHTS)
 
