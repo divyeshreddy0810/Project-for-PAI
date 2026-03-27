@@ -1,0 +1,89 @@
+
+=================================================================
+  S&P 500 (^GSPC)
+=================================================================
+  Train: 3913  Test: 1678
+  Training PatchTST...
+  Building signals...
+  🔮 Generating PatchTST predictions for 3913 timesteps...
+  ✅ PatchTST predictions: 3834/3913 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 3913 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3913, 4)  VIX_mean=0.229  Rate_mean=0.064
+  🔮 Generating PatchTST predictions for 1678 timesteps...
+  ✅ PatchTST predictions: 1599/1678 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 1678 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1678, 4)  VIX_mean=0.239  Rate_mean=0.070
+  State dim: 17
+  Training PPO (200 episodes)...
+  Training SAC (200 episodes)...
+
+  RESULTS (S&P 500):
+  PPO             return=+112.80%  sharpe=+0.66  dd=-33.92%
+  SAC             return=+120.02%  sharpe=+0.69  dd=-33.92%
+  Rule-Based      return=-65.45%  sharpe=-0.70  dd=-73.74%
+
+=================================================================
+  Bitcoin (BTC-USD)
+=================================================================
+  Train: 2944  Test: 1263
+  Training PatchTST...
+  Building signals...
+  🔮 Generating PatchTST predictions for 2944 timesteps...
+  ✅ PatchTST predictions: 2865/2944 timesteps
+  📂 Loaded macro features from cache (6902 rows)
+  ✅ Sentiment (proxy): 2944 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2944, 4)  VIX_mean=0.243  Rate_mean=0.079
+  🔮 Generating PatchTST predictions for 1263 timesteps...
+  ✅ PatchTST predictions: 1184/1263 timesteps
+  📂 Loaded macro features from cache (6902 rows)
+  ✅ Sentiment (proxy): 1263 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1263, 4)  VIX_mean=0.240  Rate_mean=0.089
+  State dim: 17
+  Training PPO (200 episodes)...
+  Training SAC (200 episodes)...
+
+  RESULTS (Bitcoin):
+  PPO             return=+19.09%  sharpe=+0.23  dd=-58.96%
+  SAC             return=-50.80%  sharpe=-1.18  dd=-58.59%
+  Rule-Based      return=-78.43%  sharpe=-0.63  dd=-83.47%
+
+=================================================================
+  Gold (GC=F)
+=================================================================
+  Train: 3908  Test: 1675
+  Training PatchTST...
+  Building signals...
+  🔮 Generating PatchTST predictions for 3908 timesteps...
+  ✅ PatchTST predictions: 3829/3908 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (proxy): 3908 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3908, 4)  VIX_mean=0.229  Rate_mean=0.064
+  🔮 Generating PatchTST predictions for 1675 timesteps...
+  ✅ PatchTST predictions: 1596/1675 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (proxy): 1675 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1675, 4)  VIX_mean=0.240  Rate_mean=0.070
+  State dim: 17
+  Training PPO (200 episodes)...
+  Training SAC (200 episodes)...
+
+  RESULTS (Gold):
+  PPO             return=+157.87%  sharpe=+0.86  dd=-23.75%
+  SAC             return=+198.73%  sharpe=+1.01  dd=-20.87%
+  Rule-Based      return=+3.82%  sharpe=+0.12  dd=-44.17%
+
+======================================================================
+  FINAL: PPO vs SAC vs RULE-BASED (Week 2 — with macro+sentiment)
+======================================================================
+  Asset        PPO Ret   SAC Ret  Rule Ret   PPO Sh   SAC Sh   Winner
+  ─────────────────────────────────────────────────────────────────
+  S&P 500     +112.8%   +120.0%    -65.4%    +0.66    +0.69       SAC
+  Bitcoin      +19.1%    -50.8%    -78.4%    +0.23    -1.18       PPO
+  Gold        +157.9%   +198.7%     +3.8%    +0.86    +1.01       SAC
+
+  Avg Sharpe — PPO: 0.58  SAC: 0.17  Rule: -0.40
+  Overall winner: PPO
+
+  💾 Results saved → data/output/ppo_vs_sac_results.json
