@@ -502,8 +502,10 @@ def main():
 
     # ── Rank signals ───────────────────────────────────────────
     active = [r for r in results if r["signal"] != "HOLD"
-              and r["confidence"] >= risk["min_confidence"]]
+              and r["confidence"] >= risk["min_confidence"]
+              and not (r["signal"] == "BUY" and r.get("pred_return", 0) < 0)]
     active.sort(key=lambda x: x["strength"], reverse=True)
+    active = active[:3]  # MAX 3 SIGNALS
 
     holds  = [r for r in results if r["signal"] == "HOLD"]
     all_sorted = active + holds
