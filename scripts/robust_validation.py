@@ -54,6 +54,26 @@ MIN_HISTORY  = 500  # Minimum history required before window starts
 RISK_PARAMS  = {"max_pos": 0.10, "sl": 0.08, "tp": 0.15}
 START_CAPITAL= 100_000.0
 BEST_WEIGHTS = [1.2, 1.2, 1.0, 0.6]
+
+def dynamic_position_size(confidence, risk_profile_max=0.10):
+    """
+    Dynamic position sizing based on consensus confidence.
+    Confidence is always 0.33/0.67/1.00 (1/2/3 models agree).
+    
+    conservative max=0.05:  0.33→1.7%  0.67→3.3%  1.00→5.0%
+    moderate     max=0.10:  0.33→3.3%  0.67→6.7%  1.00→10.0%  (old flat)
+    aggressive   max=0.20:  0.33→5.0%  0.67→15.0% 1.00→20.0%
+    
+    Scaling: non-linear — rewards high conviction signals
+    """
+    if confidence <= 0.34:      # 1/3 votes — weak signal
+        scale = 0.33
+    elif confidence <= 0.68:    # 2/3 votes — strong signal
+        scale = 0.67
+    else:                       # 3/3 votes — maximum conviction
+        scale = 1.00
+    return risk_profile_max * scale
+
 RANDOM_SEED  = 42
 
 UNIVERSE = [
@@ -315,7 +335,7 @@ def validate_asset(sym, name, asset_class, agent_type, df_full,
             if signal == "HOLD":
                 continue
 
-            pos_val = capital * RISK_PARAMS["max_pos"] * conf
+            pos_val = capital * dynamic_position_size(conf, RISK_PARAMS["max_pos"])
             # ATR-based TP/SL — sized for weekly windows
             try:
                 hi = df_hist_now["High"].values[-20:]

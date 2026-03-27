@@ -56,6 +56,13 @@ HMM_MAP = {
 
 # Best config from experiments
 BEST_WEIGHTS   = [1.2, 1.2, 1.0, 0.6]
+
+def dynamic_position_size(confidence, max_pos=0.10):
+    """Scale position by conviction: 0.33→33% 0.67→67% 1.0→100% of max."""
+    if confidence <= 0.34:   scale = 0.33
+    elif confidence <= 0.68: scale = 0.67
+    else:                    scale = 1.00
+    return max_pos * scale
 AGENT_MAP      = {
     "^GSPC":    "SAC",  # Sharpe 0.68
     "^IXIC":    "SAC",  # Sharpe 0.73
@@ -346,9 +353,7 @@ def run_enhanced(symbols, risk_profile="moderate",
         if consensus == "HOLD":
             position_size = 0.0
         else:
-            # Adjust by signal strength
-            agreement = max(buy_votes, sell_votes) / len(signals_list)
-            position_size = base_size * agreement
+            position_size = dynamic_position_size(confidence, base_size)
 
         position_value = portfolio_value * position_size
         tp_price = current_price * (1 + risk_params["tp"]) \

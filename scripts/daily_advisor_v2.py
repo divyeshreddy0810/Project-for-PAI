@@ -101,6 +101,26 @@ RISK_PROFILES = {
 
 BEST_WEIGHTS = [1.2, 1.2, 1.0, 0.6]
 
+def dynamic_position_size(confidence, risk_profile_max=0.10):
+    """
+    Dynamic position sizing based on consensus confidence.
+    Confidence is always 0.33/0.67/1.00 (1/2/3 models agree).
+    
+    conservative max=0.05:  0.33→1.7%  0.67→3.3%  1.00→5.0%
+    moderate     max=0.10:  0.33→3.3%  0.67→6.7%  1.00→10.0%  (old flat)
+    aggressive   max=0.20:  0.33→5.0%  0.67→15.0% 1.00→20.0%
+    
+    Scaling: non-linear — rewards high conviction signals
+    """
+    if confidence <= 0.34:      # 1/3 votes — weak signal
+        scale = 0.33
+    elif confidence <= 0.68:    # 2/3 votes — strong signal
+        scale = 0.67
+    else:                       # 3/3 votes — maximum conviction
+        scale = 1.00
+    return risk_profile_max * scale
+
+
 # ── HMM cache ─────────────────────────────────────────────────
 _HMM_CACHE = {}
 
@@ -266,7 +286,7 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
     if consensus == "HOLD":
         position_size = 0.0
     else:
-        position_size = base_size * confidence
+        position_size = dynamic_position_size(confidence, base_size)
 
     # ATR for daily TP/SL
     try:

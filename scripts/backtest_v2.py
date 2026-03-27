@@ -49,6 +49,12 @@ TEST_ASSETS_V1 = [
 ]
 
 BEST_WEIGHTS  = [1.2, 1.2, 1.0, 0.6]
+
+def dynamic_position_size(confidence, max_pos=0.10):
+    if confidence <= 0.34:   scale = 0.33
+    elif confidence <= 0.68: scale = 0.67
+    else:                    scale = 1.00
+    return max_pos * scale
 START_CAPITAL = 100_000.0
 START_DATE    = "2025-03-26"
 END_DATE      = "2026-03-26"
@@ -249,7 +255,7 @@ def run_backtest_v2(assets, label="V2"):
 
             # Trade sizing
             pos_size  = RISK_PARAMS["max_pos"] * confidence
-            pos_value = capital * pos_size
+            pos_value = capital * dynamic_position_size(confidence, RISK_PARAMS["max_pos"])
 
             # TP/SL
             if signal == "BUY":

@@ -60,6 +60,12 @@ RISK_PARAMS   = {"max_pos": 0.10, "sl": 0.08, "tp": 0.15}
 START_CAPITAL = 100_000.0
 BEST_WEIGHTS  = [1.2, 1.2, 1.0, 0.6]
 
+def dynamic_position_size(confidence, max_pos=0.10):
+    if confidence <= 0.34:   scale = 0.33
+    elif confidence <= 0.68: scale = 0.67
+    else:                    scale = 1.00
+    return max_pos * scale
+
 def safe_key(sym):
     return sym.replace("^","").replace("-","_").replace("=","")
 
@@ -223,8 +229,8 @@ def run_bull_period(label, start, end, description):
                     continue
 
                 confidence = max(buy_v, sell_v) / len(votes)
-                pos_val    = capital * RISK_PARAMS["max_pos"] \
-                             * confidence
+                pos_val = capital * dynamic_position_size(
+                    confidence, RISK_PARAMS["max_pos"])
 
                 if signal == "BUY":
                     tp = entry_price*(1+RISK_PARAMS["tp"])
