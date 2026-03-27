@@ -1,0 +1,811 @@
+nohup: ignoring input
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1774524539.798736  869074 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1774524539.979495  869074 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1774524541.719849  869074 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+============================================================
+  TRAINING ALL 39 ASSETS — FULL UNIVERSE
+  Device: cuda
+  Started: 2026-03-26 11:29:02
+============================================================
+
+============================================================
+  S&P 500 (^GSPC)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  📂 PatchTST already saved — skipping training
+  📂 PatchTST loaded ← data/models/patchtst_GSPC.pt
+  📂 SAC already saved — skipping training
+
+============================================================
+  NASDAQ (^IXIC)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  📂 PatchTST already saved — skipping training
+  📂 PatchTST loaded ← data/models/patchtst_IXIC.pt
+  📂 SAC already saved — skipping training
+
+============================================================
+  Dow Jones (^DJI)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_DJI.pt
+  ✅ PatchTST saved → data/models/patchtst_DJI.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_DJI.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.473
+    ep 100/150  best_sharpe=0.499
+    ep 150/150  best_sharpe=0.499
+  ✅ SAC saved → data/models/sac_DJI.pt  best_sharpe=0.499
+
+============================================================
+  Apple (AAPL)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_AAPL.pt
+  ✅ PatchTST saved → data/models/patchtst_AAPL.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_AAPL.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=1.173
+    ep 100/150  best_sharpe=1.175
+    ep 150/150  best_sharpe=1.183
+  ✅ SAC saved → data/models/sac_AAPL.pt  best_sharpe=1.183
+
+============================================================
+  Microsoft (MSFT)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_MSFT.pt
+  ✅ PatchTST saved → data/models/patchtst_MSFT.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_MSFT.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.650
+    ep 100/150  best_sharpe=0.673
+    ep 150/150  best_sharpe=0.673
+  ✅ SAC saved → data/models/sac_MSFT.pt  best_sharpe=0.673
+
+============================================================
+  NVIDIA (NVDA)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_NVDA.pt
+  ✅ PatchTST saved → data/models/patchtst_NVDA.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_NVDA.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.758
+    ep 100/150  best_sharpe=0.758
+    ep 150/150  best_sharpe=0.847
+  ✅ SAC saved → data/models/sac_NVDA.pt  best_sharpe=0.847
+
+============================================================
+  Tesla (TSLA)  [equity] [SAC]
+============================================================
+  Data: 3959 rows  (2010-06-29 → 2026-03-25)
+  Training PatchTST on 2771 rows...
+  💾 PatchTST saved → data/models/patchtst_TSLA.pt
+  ✅ PatchTST saved → data/models/patchtst_TSLA.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 2771 timesteps...
+  ✅ PatchTST predictions: 2692/2771 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_TSLA.csv
+  ✅ Sentiment (proxy): 2771 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2771, 4)  VIX_mean=0.237  Rate_mean=0.084
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=1.294
+    ep 100/150  best_sharpe=1.294
+    ep 150/150  best_sharpe=1.322
+  ✅ SAC saved → data/models/sac_TSLA.pt  best_sharpe=1.322
+
+============================================================
+  Amazon (AMZN)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_AMZN.pt
+  ✅ PatchTST saved → data/models/patchtst_AMZN.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_AMZN.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.850
+    ep 100/150  best_sharpe=0.850
+    ep 150/150  best_sharpe=0.960
+  ✅ SAC saved → data/models/sac_AMZN.pt  best_sharpe=0.960
+
+============================================================
+  Meta (META)  [equity] [SAC]
+============================================================
+  Data: 3482 rows  (2012-05-18 → 2026-03-25)
+  Training PatchTST on 2437 rows...
+  💾 PatchTST saved → data/models/patchtst_META.pt
+  ✅ PatchTST saved → data/models/patchtst_META.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 2437 timesteps...
+  ✅ PatchTST predictions: 2358/2437 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_META.csv
+  ✅ Sentiment (proxy): 2437 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2437, 4)  VIX_mean=0.241  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=1.107
+    ep 100/150  best_sharpe=1.107
+    ep 150/150  best_sharpe=1.107
+  ✅ SAC saved → data/models/sac_META.pt  best_sharpe=1.107
+
+============================================================
+  Alphabet (GOOGL)  [equity] [SAC]
+============================================================
+  Data: 5434 rows  (2004-08-19 → 2026-03-25)
+  Training PatchTST on 3803 rows...
+  💾 PatchTST saved → data/models/patchtst_GOOGL.pt
+  ✅ PatchTST saved → data/models/patchtst_GOOGL.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3803 timesteps...
+  ✅ PatchTST predictions: 3724/3803 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_GOOGL.csv
+  ✅ Sentiment (proxy): 3803 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3803, 4)  VIX_mean=0.230  Rate_mean=0.062
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.809
+    ep 100/150  best_sharpe=0.858
+    ep 150/150  best_sharpe=0.868
+  ✅ SAC saved → data/models/sac_GOOGL.pt  best_sharpe=0.868
+
+============================================================
+  JPMorgan (JPM)  [equity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_JPM.pt
+  ✅ PatchTST saved → data/models/patchtst_JPM.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_JPM.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.496
+    ep 100/150  best_sharpe=0.496
+    ep 150/150  best_sharpe=0.496
+  ✅ SAC saved → data/models/sac_JPM.pt  best_sharpe=0.496
+
+============================================================
+  Bitcoin (BTC-USD)  [crypto] [PPO]
+============================================================
+  Data: 4208 rows  (2014-09-17 → 2026-03-25)
+  📂 PatchTST already saved — skipping training
+  📂 PatchTST loaded ← data/models/patchtst_BTC_USD.pt
+  📂 PPO already saved — skipping training
+
+============================================================
+  Ethereum (ETH-USD)  [crypto] [PPO]
+============================================================
+  Data: 3059 rows  (2017-11-09 → 2026-03-25)
+  Training PatchTST on 2141 rows...
+  💾 PatchTST saved → data/models/patchtst_ETH_USD.pt
+  ✅ PatchTST saved → data/models/patchtst_ETH_USD.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 2141 timesteps...
+  ✅ PatchTST predictions: 2062/2141 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (BTC-USD): 4207 rows  bull: 60% of time
+  💾 Macro features cached → data/cache/macro_features_ETH_USD.csv
+  ✅ Sentiment (proxy): 2141 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2141, 4)  VIX_mean=0.240  Rate_mean=0.090
+  Training PPO agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.816
+    ep 100/150  best_sharpe=0.914
+    ep 150/150  best_sharpe=0.920
+  ✅ PPO saved → data/models/ppo_ETH_USD.pt  best_sharpe=0.920
+
+============================================================
+  Solana (SOL-USD)  [crypto] [PPO]
+============================================================
+  Data: 2176 rows  (2020-04-10 → 2026-03-25)
+  Training PatchTST on 1523 rows...
+  💾 PatchTST saved → data/models/patchtst_SOL_USD.pt
+  ✅ PatchTST saved → data/models/patchtst_SOL_USD.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 1523 timesteps...
+  ✅ PatchTST predictions: 1444/1523 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (BTC-USD): 4207 rows  bull: 60% of time
+  💾 Macro features cached → data/cache/macro_features_SOL_USD.csv
+  ✅ Sentiment (proxy): 1523 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1523, 4)  VIX_mean=0.241  Rate_mean=0.083
+  Training PPO agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.672
+    ep 100/150  best_sharpe=0.672
+    ep 150/150  best_sharpe=0.965
+  ✅ PPO saved → data/models/ppo_SOL_USD.pt  best_sharpe=0.965
+
+============================================================
+  BNB (BNB-USD)  [crypto] [PPO]
+============================================================
+  Data: 3059 rows  (2017-11-09 → 2026-03-25)
+  Training PatchTST on 2141 rows...
+  💾 PatchTST saved → data/models/patchtst_BNB_USD.pt
+  ✅ PatchTST saved → data/models/patchtst_BNB_USD.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 2141 timesteps...
+  ✅ PatchTST predictions: 2062/2141 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (BTC-USD): 4207 rows  bull: 60% of time
+  💾 Macro features cached → data/cache/macro_features_BNB_USD.csv
+  ✅ Sentiment (proxy): 2141 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2141, 4)  VIX_mean=0.240  Rate_mean=0.090
+  Training PPO agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.786
+    ep 100/150  best_sharpe=1.270
+    ep 150/150  best_sharpe=1.270
+  ✅ PPO saved → data/models/ppo_BNB_USD.pt  best_sharpe=1.270
+
+============================================================
+  XRP (XRP-USD)  [crypto] [PPO]
+============================================================
+  Data: 3059 rows  (2017-11-09 → 2026-03-25)
+  Training PatchTST on 2141 rows...
+  💾 PatchTST saved → data/models/patchtst_XRP_USD.pt
+  ✅ PatchTST saved → data/models/patchtst_XRP_USD.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 2141 timesteps...
+  ✅ PatchTST predictions: 2062/2141 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_XRP_USD.csv
+  ✅ Sentiment (proxy): 2141 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2141, 4)  VIX_mean=0.236  Rate_mean=0.061
+  Training PPO agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.526
+    ep 100/150  best_sharpe=0.800
+    ep 150/150  best_sharpe=0.800
+  ✅ PPO saved → data/models/ppo_XRP_USD.pt  best_sharpe=0.800
+
+============================================================
+  EUR/USD (EURUSD=X)  [forex] [SAC]
+============================================================
+  Data: 5766 rows  (2004-01-01 → 2026-03-25)
+  📂 PatchTST already saved — skipping training
+  📂 PatchTST loaded ← data/models/patchtst_EURUSDX.pt
+  📂 SAC already saved — skipping training
+
+============================================================
+  GBP/USD (GBPUSD=X)  [forex] [SAC]
+============================================================
+  Data: 5778 rows  (2004-01-01 → 2026-03-25)
+  📂 PatchTST already saved — skipping training
+  📂 PatchTST loaded ← data/models/patchtst_GBPUSDX.pt
+  📂 SAC already saved — skipping training
+
+============================================================
+  USD/JPY (USDJPY=X)  [forex] [SAC]
+============================================================
+  Data: 5766 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4036 rows...
+  💾 PatchTST saved → data/models/patchtst_USDJPYX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDJPYX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4036 timesteps...
+  ✅ PatchTST predictions: 3957/4036 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDJPYX.csv
+  ✅ Sentiment (proxy): 4036 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4036, 4)  VIX_mean=0.228  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.310
+    ep 100/150  best_sharpe=0.310
+    ep 150/150  best_sharpe=0.310
+  ✅ SAC saved → data/models/sac_USDJPYX.pt  best_sharpe=0.310
+
+============================================================
+  USD/CHF (USDCHF=X)  [forex] [SAC]
+============================================================
+  Data: 5779 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4045 rows...
+  💾 PatchTST saved → data/models/patchtst_USDCHFX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDCHFX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4045 timesteps...
+  ✅ PatchTST predictions: 3966/4045 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDCHFX.csv
+  ✅ Sentiment (proxy): 4045 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4045, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.133
+    ep 100/150  best_sharpe=0.297
+    ep 150/150  best_sharpe=0.359
+  ✅ SAC saved → data/models/sac_USDCHFX.pt  best_sharpe=0.359
+
+============================================================
+  AUD/USD (AUDUSD=X)  [forex] [SAC]
+============================================================
+  Data: 5165 rows  (2006-05-16 → 2026-03-25)
+  Training PatchTST on 3615 rows...
+  💾 PatchTST saved → data/models/patchtst_AUDUSDX.pt
+  ✅ PatchTST saved → data/models/patchtst_AUDUSDX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3615 timesteps...
+  ✅ PatchTST predictions: 3536/3615 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_AUDUSDX.csv
+  ✅ Sentiment (proxy): 3615 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3615, 4)  VIX_mean=0.231  Rate_mean=0.060
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.166
+    ep 100/150  best_sharpe=0.272
+    ep 150/150  best_sharpe=0.380
+  ✅ SAC saved → data/models/sac_AUDUSDX.pt  best_sharpe=0.380
+
+============================================================
+  NZD/USD (NZDUSD=X)  [forex] [SAC]
+============================================================
+  Data: 5771 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 4039 rows...
+  💾 PatchTST saved → data/models/patchtst_NZDUSDX.pt
+  ✅ PatchTST saved → data/models/patchtst_NZDUSDX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4039 timesteps...
+  ✅ PatchTST predictions: 3960/4039 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_NZDUSDX.csv
+  ✅ Sentiment (proxy): 4039 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4039, 4)  VIX_mean=0.228  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.122
+    ep 100/150  best_sharpe=0.166
+    ep 150/150  best_sharpe=0.262
+  ✅ SAC saved → data/models/sac_NZDUSDX.pt  best_sharpe=0.262
+
+============================================================
+  USD/CAD (USDCAD=X)  [forex] [SAC]
+============================================================
+  Data: 5781 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4046 rows...
+  💾 PatchTST saved → data/models/patchtst_USDCADX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDCADX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4046 timesteps...
+  ✅ PatchTST predictions: 3967/4046 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDCADX.csv
+  ✅ Sentiment (proxy): 4046 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4046, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.311
+    ep 100/150  best_sharpe=0.311
+    ep 150/150  best_sharpe=0.311
+  ✅ SAC saved → data/models/sac_USDCADX.pt  best_sharpe=0.311
+
+============================================================
+  EUR/GBP (EURGBP=X)  [forex] [SAC]
+============================================================
+  Data: 5786 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4050 rows...
+  💾 PatchTST saved → data/models/patchtst_EURGBPX.pt
+  ✅ PatchTST saved → data/models/patchtst_EURGBPX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4050 timesteps...
+  ✅ PatchTST predictions: 3971/4050 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_EURGBPX.csv
+  ✅ Sentiment (proxy): 4050 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4050, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.269
+    ep 100/150  best_sharpe=0.295
+    ep 150/150  best_sharpe=0.295
+  ✅ SAC saved → data/models/sac_EURGBPX.pt  best_sharpe=0.295
+
+============================================================
+  EUR/JPY (EURJPY=X)  [forex] [SAC]
+============================================================
+  Data: 5769 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4038 rows...
+  💾 PatchTST saved → data/models/patchtst_EURJPYX.pt
+  ✅ PatchTST saved → data/models/patchtst_EURJPYX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4038 timesteps...
+  ✅ PatchTST predictions: 3959/4038 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_EURJPYX.csv
+  ✅ Sentiment (proxy): 4038 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4038, 4)  VIX_mean=0.228  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.201
+    ep 100/150  best_sharpe=0.201
+    ep 150/150  best_sharpe=0.201
+  ✅ SAC saved → data/models/sac_EURJPYX.pt  best_sharpe=0.201
+
+============================================================
+  GBP/JPY (GBPJPY=X)  [forex] [SAC]
+============================================================
+  Data: 5782 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4047 rows...
+  💾 PatchTST saved → data/models/patchtst_GBPJPYX.pt
+  ✅ PatchTST saved → data/models/patchtst_GBPJPYX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4047 timesteps...
+  ✅ PatchTST predictions: 3968/4047 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_GBPJPYX.csv
+  ✅ Sentiment (proxy): 4047 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4047, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.205
+    ep 100/150  best_sharpe=0.433
+    ep 150/150  best_sharpe=0.433
+  ✅ SAC saved → data/models/sac_GBPJPYX.pt  best_sharpe=0.433
+
+============================================================
+  AUD/NZD (AUDNZD=X)  [forex] [SAC]
+============================================================
+  Data: 5785 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4049 rows...
+  💾 PatchTST saved → data/models/patchtst_AUDNZDX.pt
+  ✅ PatchTST saved → data/models/patchtst_AUDNZDX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4049 timesteps...
+  ✅ PatchTST predictions: 3970/4049 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_AUDNZDX.csv
+  ✅ Sentiment (proxy): 4049 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4049, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.226
+    ep 100/150  best_sharpe=0.226
+    ep 150/150  best_sharpe=0.250
+  ✅ SAC saved → data/models/sac_AUDNZDX.pt  best_sharpe=0.250
+
+============================================================
+  USD/NGN (USDNGN=X)  [forex] [SAC]
+============================================================
+  Data: 5779 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4045 rows...
+  💾 PatchTST saved → data/models/patchtst_USDNGNX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDNGNX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4045 timesteps...
+  ✅ PatchTST predictions: 3966/4045 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDNGNX.csv
+  ✅ Sentiment (proxy): 4045 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4045, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.661
+    ep 100/150  best_sharpe=0.661
+    ep 150/150  best_sharpe=0.661
+  ✅ SAC saved → data/models/sac_USDNGNX.pt  best_sharpe=0.661
+
+============================================================
+  EUR/NGN (EURNGN=X)  [forex] [SAC]
+============================================================
+  Data: 5142 rows  (2006-05-16 → 2026-03-25)
+  Training PatchTST on 3599 rows...
+  💾 PatchTST saved → data/models/patchtst_EURNGNX.pt
+  ✅ PatchTST saved → data/models/patchtst_EURNGNX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3599 timesteps...
+  ✅ PatchTST predictions: 3520/3599 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_EURNGNX.csv
+  ✅ Sentiment (proxy): 3599 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3599, 4)  VIX_mean=0.231  Rate_mean=0.060
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.469
+    ep 100/150  best_sharpe=0.469
+    ep 150/150  best_sharpe=0.469
+  ✅ SAC saved → data/models/sac_EURNGNX.pt  best_sharpe=0.469
+
+============================================================
+  USD/ZAR (USDZAR=X)  [forex] [SAC]
+============================================================
+  Data: 5780 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4045 rows...
+  💾 PatchTST saved → data/models/patchtst_USDZARX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDZARX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4045 timesteps...
+  ✅ PatchTST predictions: 3966/4045 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDZARX.csv
+  ✅ Sentiment (proxy): 4045 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4045, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.351
+    ep 100/150  best_sharpe=0.421
+    ep 150/150  best_sharpe=0.557
+  ✅ SAC saved → data/models/sac_USDZARX.pt  best_sharpe=0.557
+
+============================================================
+  USD/KES (USDKES=X)  [forex] [SAC]
+============================================================
+  Data: 5783 rows  (2004-01-01 → 2026-03-25)
+  Training PatchTST on 4048 rows...
+  💾 PatchTST saved → data/models/patchtst_USDKESX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDKESX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 4048 timesteps...
+  ✅ PatchTST predictions: 3969/4048 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDKESX.csv
+  ✅ Sentiment (proxy): 4048 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(4048, 4)  VIX_mean=0.227  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.232
+    ep 100/150  best_sharpe=0.243
+    ep 150/150  best_sharpe=0.302
+  ✅ SAC saved → data/models/sac_USDKESX.pt  best_sharpe=0.302
+
+============================================================
+  USD/GHS (USDGHS=X)  [forex] [SAC]
+============================================================
+  Data: 4856 rows  (2007-07-11 → 2026-03-25)
+  Training PatchTST on 3399 rows...
+  💾 PatchTST saved → data/models/patchtst_USDGHSX.pt
+  ✅ PatchTST saved → data/models/patchtst_USDGHSX.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3399 timesteps...
+  ✅ PatchTST predictions: 3320/3399 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_USDGHSX.csv
+  ✅ Sentiment (proxy): 3399 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3399, 4)  VIX_mean=0.235  Rate_mean=0.059
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.410
+    ep 100/150  best_sharpe=0.410
+    ep 150/150  best_sharpe=0.410
+  ✅ SAC saved → data/models/sac_USDGHSX.pt  best_sharpe=0.410
+
+============================================================
+  Gold (GC=F)  [commodity] [SAC]
+============================================================
+  Data: 5584 rows  (2004-01-05 → 2026-03-25)
+  📂 PatchTST already saved — skipping training
+  📂 PatchTST loaded ← data/models/patchtst_GCF.pt
+  📂 SAC already saved — skipping training
+
+============================================================
+  Silver (SI=F)  [commodity] [SAC]
+============================================================
+  Data: 5585 rows  (2004-01-05 → 2026-03-25)
+  Training PatchTST on 3909 rows...
+  💾 PatchTST saved → data/models/patchtst_SIF.pt
+  ✅ PatchTST saved → data/models/patchtst_SIF.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3909 timesteps...
+  ✅ PatchTST predictions: 3830/3909 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (GC=F): 5583 rows  bull: 68% of time
+  💾 Macro features cached → data/cache/macro_features_SIF.csv
+  ✅ Sentiment (proxy): 3909 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3909, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.509
+    ep 100/150  best_sharpe=0.509
+    ep 150/150  best_sharpe=0.509
+  ✅ SAC saved → data/models/sac_SIF.pt  best_sharpe=0.509
+
+============================================================
+  Crude Oil (CL=F)  [commodity] [SAC]
+============================================================
+  Data: 5588 rows  (2004-01-05 → 2026-03-25)
+  Training PatchTST on 3911 rows...
+  💾 PatchTST saved → data/models/patchtst_CLF.pt
+  ✅ PatchTST saved → data/models/patchtst_CLF.pt
+  📂 SAC already saved — skipping training
+
+============================================================
+  Natural Gas (NG=F)  [commodity] [SAC]
+============================================================
+  Data: 5589 rows  (2004-01-05 → 2026-03-25)
+  Training PatchTST on 3912 rows...
+  💾 PatchTST saved → data/models/patchtst_NGF.pt
+  ✅ PatchTST saved → data/models/patchtst_NGF.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3912 timesteps...
+  ✅ PatchTST predictions: 3833/3912 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (CL=F): 5587 rows  bull: 54% of time
+  💾 Macro features cached → data/cache/macro_features_NGF.csv
+  ✅ Sentiment (proxy): 3912 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3912, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.297
+    ep 100/150  best_sharpe=0.297
+    ep 150/150  best_sharpe=0.297
+  ✅ SAC saved → data/models/sac_NGF.pt  best_sharpe=0.297
+
+============================================================
+  Copper (HG=F)  [commodity] [SAC]
+============================================================
+  Data: 5588 rows  (2004-01-05 → 2026-03-25)
+  Training PatchTST on 3911 rows...
+  💾 PatchTST saved → data/models/patchtst_HGF.pt
+  ✅ PatchTST saved → data/models/patchtst_HGF.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3911 timesteps...
+  ✅ PatchTST predictions: 3832/3911 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_HGF.csv
+  ✅ Sentiment (proxy): 3911 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3911, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.380
+    ep 100/150  best_sharpe=0.380
+    ep 150/150  best_sharpe=0.380
+  ✅ SAC saved → data/models/sac_HGF.pt  best_sharpe=0.380
+
+============================================================
+  Wheat (ZW=F)  [commodity] [SAC]
+============================================================
+  Data: 5593 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3915 rows...
+  💾 PatchTST saved → data/models/patchtst_ZWF.pt
+  ✅ PatchTST saved → data/models/patchtst_ZWF.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3915 timesteps...
+  ✅ PatchTST predictions: 3836/3915 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_ZWF.csv
+  ✅ Sentiment (proxy): 3915 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3915, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.321
+    ep 100/150  best_sharpe=0.321
+    ep 150/150  best_sharpe=0.321
+  ✅ SAC saved → data/models/sac_ZWF.pt  best_sharpe=0.321
+
+============================================================
+  Corn (ZC=F)  [commodity] [SAC]
+============================================================
+  Data: 5592 rows  (2004-01-02 → 2026-03-25)
+  Training PatchTST on 3914 rows...
+  💾 PatchTST saved → data/models/patchtst_ZCF.pt
+  ✅ PatchTST saved → data/models/patchtst_ZCF.pt
+  Building signals for RL training...
+  🔮 Generating PatchTST predictions for 3914 timesteps...
+  ✅ PatchTST predictions: 3835/3914 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_ZCF.csv
+  ✅ Sentiment (proxy): 3914 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3914, 4)  VIX_mean=0.229  Rate_mean=0.064
+  Training SAC agent (state_dim=17, 150 episodes)...
+    ep 50/150  best_sharpe=0.381
+    ep 100/150  best_sharpe=0.400
+    ep 150/150  best_sharpe=0.400
+  ✅ SAC saved → data/models/sac_ZCF.pt  best_sharpe=0.400
+
+============================================================
+  TRAINING COMPLETE
+  Finished: 2026-03-26 20:24:36
+  Successful: 39/39
+============================================================

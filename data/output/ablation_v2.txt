@@ -1,0 +1,79 @@
+=================================================================
+  ABLATION STUDY
+  Removing one component at a time
+  Measures contribution of each component to Sharpe
+=================================================================
+
+── S&P 500 (^GSPC) ──────────────────────
+  🔮 Generating PatchTST predictions for 3913 timesteps...
+  ✅ PatchTST predictions: 3834/3913 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 3913 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3913, 4)  VIX_mean=0.229  Rate_mean=0.064
+  🔮 Generating PatchTST predictions for 1678 timesteps...
+  ✅ PatchTST predictions: 1599/1678 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 1678 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1678, 4)  VIX_mean=0.239  Rate_mean=0.070
+  Ablation               Sharpe     Impact
+  ──────────────────────────────────────────
+  Full system           +0.347  (baseline)
+  No PatchTST           -1.211  -1.558 ❌ hurts
+  No HMM regime         +0.635  +0.288 ✅ helps
+  No macro              +0.646  +0.300 ✅ helps
+  No sentiment          -0.377  -0.724 ❌ hurts
+
+── Bitcoin (BTC-USD) ──────────────────────
+  🔮 Generating PatchTST predictions for 2944 timesteps...
+  ✅ PatchTST predictions: 2865/2944 timesteps
+  📂 Loaded macro features from cache (6902 rows)
+  ✅ Sentiment (proxy): 2944 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(2944, 4)  VIX_mean=0.243  Rate_mean=0.079
+  🔮 Generating PatchTST predictions for 1263 timesteps...
+  ✅ PatchTST predictions: 1184/1263 timesteps
+  📂 Loaded macro features from cache (6902 rows)
+  ✅ Sentiment (proxy): 1263 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1263, 4)  VIX_mean=0.240  Rate_mean=0.089
+  Ablation               Sharpe     Impact
+  ──────────────────────────────────────────
+  Full system           +0.711  (baseline)
+  No PatchTST           +0.746  +0.035 ✅ helps
+  No HMM regime         +0.708  -0.003 ~ neutral
+  No macro              +0.582  -0.128 ❌ hurts
+  No sentiment          +0.758  +0.048 ✅ helps
+
+── Gold (GC=F) ──────────────────────
+  🔮 Generating PatchTST predictions for 3908 timesteps...
+  ✅ PatchTST predictions: 3829/3908 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (proxy): 3908 timesteps  mean=0.500  range=0.000-1.000
+  ✅ Macro signals: shape=(3908, 4)  VIX_mean=0.229  Rate_mean=0.064
+  🔮 Generating PatchTST predictions for 1675 timesteps...
+  ✅ PatchTST predictions: 1596/1675 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (proxy): 1675 timesteps  mean=0.500  range=0.001-1.000
+  ✅ Macro signals: shape=(1675, 4)  VIX_mean=0.240  Rate_mean=0.070
+  Ablation               Sharpe     Impact
+  ──────────────────────────────────────────
+  Full system           +0.000  (baseline)
+  No PatchTST           -0.828  -0.828 ❌ hurts
+  No HMM regime         -0.675  -0.675 ❌ hurts
+  No macro              -0.906  -0.906 ❌ hurts
+  No sentiment          -0.780  -0.780 ❌ hurts
+
+=================================================================
+  ABLATION SUMMARY — Avg Sharpe across assets
+=================================================================
+  Component                S&P500      BTC     Gold      Avg   Contribution
+  ─────────────────────────────────────────────────────────────────
+  Full system             +0.347   +0.711   +0.000   +0.352  (baseline)
+  No PatchTST             -1.211   +0.746   -0.828   -0.431  -0.783 ← important
+  No HMM regime           +0.635   +0.708   -0.675   +0.223  -0.130 ← important
+  No macro                +0.646   +0.582   -0.906   +0.108  -0.245 ← important
+  No sentiment            -0.377   +0.758   -0.780   -0.133  -0.485 ← important
+
+  💾 Saved → data/output/ablation_results.json
+
+  Components that matter most:
+  (largest drop when removed = most important)
+nt)

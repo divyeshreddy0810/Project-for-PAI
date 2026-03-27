@@ -1,0 +1,1503 @@
+
+============================================================
+  MRAT-RL BACKTEST: Mar 2025 → Mar 2026
+  Device: cuda
+============================================================
+
+[V1 BASELINE — HMM+LightGBM+Rules, Forex only]
+  EURUSD=X: return=-2.1%  sharpe=-0.827
+  GBPUSD=X: return=+0.8%  sharpe=+0.198
+  USDJPY=X: return=+0.0%  sharpe=+0.000
+
+  V1 Summary: $100,000 → $99,875  (-0.1%)  Sharpe=-0.210
+
+============================================================
+  BACKTEST V2 MRAT-RL: 2025-03-26 → 2026-03-26
+  Starting capital: $100,000
+  Assets: ['^GSPC', 'BTC-USD', 'GC=F', '^IXIC', 'EURUSD=X', 'GBPUSD=X']
+============================================================
+  📥 ^GSPC: 5592 rows
+  📥 BTC-USD: 4208 rows
+  📥 GC=F: 5584 rows
+  📥 ^IXIC: 5592 rows
+  📥 EURUSD=X: 5766 rows
+  📥 GBPUSD=X: 5778 rows
+  📂 PatchTST loaded ← data/models/patchtst_GSPC.pt
+  ✅ ^GSPC: models loaded
+  📂 PatchTST loaded ← data/models/patchtst_BTC_USD.pt
+  ❌ BTC-USD model load failed: Error(s) in loading state_dict for ActorCritic:
+	size mismatch for backbone.0.weight: copying a param with shape torch.Size([128, 13]) from checkpoint, the shape in current model is torch.Size([128, 17]).
+  📂 PatchTST loaded ← data/models/patchtst_GCF.pt
+  ✅ GC=F: models loaded
+  📂 PatchTST loaded ← data/models/patchtst_IXIC.pt
+  ✅ ^IXIC: models loaded
+  📂 PatchTST loaded ← data/models/patchtst_EURUSDX.pt
+  ✅ EURUSD=X: models loaded
+  📂 PatchTST loaded ← data/models/patchtst_GBPUSDX.pt
+  ✅ GBPUSD=X: models loaded
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week  4 (2025-04-16): $    99,777  (-0.2%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week  8 (2025-05-14): $   100,669  (+0.7%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 12 (2025-06-11): $   100,848  (+0.8%)  3 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 16 (2025-07-09): $   101,176  (+1.2%)  1 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 20 (2025-08-06): $   101,484  (+1.5%)  1 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 24 (2025-09-03): $   101,561  (+1.6%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 28 (2025-10-01): $   101,812  (+1.8%)  1 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 32 (2025-10-29): $   101,870  (+1.9%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 36 (2025-11-26): $   101,897  (+1.9%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 40 (2025-12-24): $   101,946  (+1.9%)  1 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 44 (2026-01-21): $   102,018  (+2.0%)  1 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 48 (2026-02-18): $   101,681  (+1.7%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  Week 52 (2026-03-18): $   101,191  (+1.2%)  2 trades
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^GSPC mean=0.455
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5595 rows)
+  ✅ Sentiment (finbert): GC=F mean=0.650
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.238  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (finbert): ^IXIC mean=0.425
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for EURUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): EURUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+  🔮 Generating PatchTST predictions for 90 timesteps...
+  ✅ PatchTST predictions: 11/90 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ⚠️  No sentiment for GBPUSD=X — using neutral 0.05
+  ✅ Sentiment (stub): GBPUSD=X mean=0.050
+  ✅ Macro signals: shape=(90, 4)  VIX_mean=0.239  Rate_mean=0.083
+
+────────────────────────────────────────────────────────────
+  BACKTEST V2 MRAT-RL RESULTS
+────────────────────────────────────────────────────────────
+  Start capital : $   100,000
+  End capital   : $   101,223
+  Total return  : +1.2%
+  Total P&L     : $    +1,223
+  Total trades  : 88
+  Win rate      : 56.8%
+  Sharpe ratio  : 0.896
+  Max drawdown  : 1.0%
+────────────────────────────────────────────────────────────
+
+  💾 Results saved → data/output/backtest_mar2025_mar2026.json
+
+============================================================
+  FINAL COMPARISON: V1 vs V2
+============================================================
+  V1 (Forex+Rules): $100,000 → $99,875  Sharpe=-0.210
+  V2 (MRAT-RL):     $100,000 → $101,223  (+1.2%)  Sharpe=0.896
+============================================================
