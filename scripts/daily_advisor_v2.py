@@ -33,7 +33,7 @@ from src.rl.sac_agent                    import SACAgent
 from src.rl.ppo_agent                    import PPOAgent
 from src.rl.macro_sentiment_features     import build_macro_signals
 from src.rl.integrated_pipeline          import build_patchtst_signals
-from src.utils.currency                  import CurrencyConverter
+from src.utils.currency                  import get_all_rates, parse_amount_input
 
 DEVICE     = "cuda" if torch.cuda.is_available() else "cpu"
 MODELS_DIR = "data/models"
@@ -384,16 +384,8 @@ def main():
     section("PORTFOLIO SETUP")
     raw = input("  Portfolio amount (e.g. ₦100000 or €500 or $300): ").strip()
     try:
-        fx = CurrencyConverter()
-        rates = fx.get_all_rates()
-        if raw.startswith("₦"):
-            portfolio_ngn = float(raw[1:].replace(",",""))
-            portfolio_eur = portfolio_ngn / rates.get("EUR_NGN", 1700)
-        elif raw.startswith("$"):
-            portfolio_usd = float(raw[1:].replace(",",""))
-            portfolio_eur = portfolio_usd / rates.get("EUR_USD", 1.08)
-        else:
-            portfolio_eur = float(raw.replace("€","").replace(",",""))
+        rates = get_all_rates()
+        portfolio_eur, currency_sym, _ = parse_amount_input(raw, rates)
         currency = "€"
     except Exception:
         portfolio_eur = 1000.0
