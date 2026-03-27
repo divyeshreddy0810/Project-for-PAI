@@ -405,8 +405,23 @@ def main():
     raw = input("  Portfolio amount (e.g. ₦100000 or €500 or $300): ").strip()
     try:
         rates = get_all_rates()
-        portfolio_eur, currency_sym, _ = parse_amount_input(raw, rates)
-        currency = "€"
+        # Manual parse to handle ₦ NGN symbol
+        raw_clean = raw.strip()
+        if raw_clean.startswith("₦"):
+            ngn = float(raw_clean[1:].replace(",",""))
+            portfolio_eur = ngn / rates.get("EUR_NGN", 1700)
+            currency = "€"
+        elif raw_clean.startswith("$"):
+            usd = float(raw_clean[1:].replace(",",""))
+            portfolio_eur = usd / rates.get("EUR_USD", 1.08)
+            currency = "€"
+        elif raw_clean.startswith("€"):
+            portfolio_eur = float(raw_clean[1:].replace(",",""))
+            currency = "€"
+        else:
+            portfolio_eur, currency_sym, _ = parse_amount_input(
+                raw_clean, rates)
+            currency = "€"
     except Exception:
         portfolio_eur = 1000.0
         rates = {"EUR_NGN": 1700, "EUR_USD": 1.08}
