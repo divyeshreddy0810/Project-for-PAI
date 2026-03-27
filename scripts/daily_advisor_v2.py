@@ -92,11 +92,11 @@ UNIVERSE = [
 # ── Risk profiles ──────────────────────────────────────────────
 RISK_PROFILES = {
     1: {"name":"Conservative", "max_pos":0.05, "sl":0.05, "tp":0.10,
-        "min_confidence":0.70},
+        "min_confidence":1.00},   # 4/4 unanimous only
     2: {"name":"Moderate",     "max_pos":0.10, "sl":0.08, "tp":0.15,
-        "min_confidence":0.65},
+        "min_confidence":0.75},   # 3/4 models agree
     3: {"name":"Aggressive",   "max_pos":0.20, "sl":0.10, "tp":0.25,
-        "min_confidence":0.60},
+        "min_confidence":0.50},   # 2/4 signals included
 }
 
 BEST_WEIGHTS = [1.2, 1.2, 1.0, 0.6]
@@ -242,7 +242,28 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
     except Exception:
         rl_signal = "HOLD"
 
-    # Consensus vote
+    # ADX trend strength as 4th voter
+    try:
+        high = df_recent["High"].values
+        low  = df_recent["Low"].values
+        close= df_recent["Close"].values
+        # True range
+        tr   = np.maximum(high[1:]-low[1:],
+               np.maximum(abs(high[1:]-close[:-1]),
+                          abs(low[1:]-close[:-1])))
+        atr14= float(np.mean(tr[-14:]))
+        # Directional movement
+        up_move  = high[1:] - high[:-1]
+        dn_move  = low[:-1] - low[1:]
+        pos_dm   = np.where((up_move > dn_move) & (up_move > 0), up_move, 0)
+        neg_dm   = np.where((dn_move > up_move) & (dn_move > 0), dn_move, 0)
+        di_plus  = 100 * np.mean(pos_dm[-14:]) / (atr14 + 1e-9)
+        di_minus = 100 * np.mean(neg_dm[-14:]) / (atr14 + 1e-9)
+        adx_signal = "BUY" if di_plus > di_minus * 1.1 else                      "SELL" if di_minus > di_plus * 1.1 else "HOLD"
+    except Exception:
+        adx_signal = "HOLD"
+
+    # Consensus vote — 4 voters now
     votes = []
     if pred_return >  0.003: votes.append("BUY")
     elif pred_return < -0.003: votes.append("SELL")
@@ -253,13 +274,16 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
     else:                    votes.append("HOLD")
 
     votes.append(rl_signal)
+    votes.append(adx_signal)  # 4th voter
 
     buy_v  = votes.count("BUY")
     sell_v = votes.count("SELL")
     hold_v = votes.count("HOLD")
 
-    if buy_v >= 2:      consensus = "BUY"
-    elif sell_v >= 2:   consensus = "SELL"
+    if buy_v >= 3:      consensus = "BUY"   # 3/4 agree
+    elif sell_v >= 3:   consensus = "SELL"  # 3/4 agree
+    elif buy_v >= 2 and sell_v == 0: consensus = "BUY"   # 2/4, no opposition
+    elif sell_v >= 2 and buy_v == 0: consensus = "SELL"  # 2/4, no opposition
     else:               consensus = "HOLD"
 
     # Confidence
@@ -341,6 +365,7 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
             "patchtst": votes[0],
             "hmm":      votes[1],
             "rl_agent": rl_signal,
+            "adx":      adx_signal,
         },
         "timestamp": datetime.now().isoformat(),
     }
@@ -361,10 +386,14 @@ def print_trade_card(result, rank, portfolio, risk, currency, fx):
 
     sig_arrow = "▲" if sig == "BUY" else "▼" if sig == "SELL" else "⏸"
     regime_icon = {"bull":"🟢","bear":"🔴","sideways":"🟡"}.get(regime,"⚪")
+    if conf >= 1.00:   conviction = "★ UNANIMOUS"
+    elif conf >= 0.75: conviction = "◆ HIGH"
+    elif conf >= 0.50: conviction = "◇ MODERATE"
+    else:              conviction = "○ WEAK"
 
     print(f"\n  ┌─ #{rank} {sym}  {name}")
     print(f"  │  {sig_arrow} {sig}  · {regime_icon} {regime.upper()} "
-          f"· conf {conf:.0%} · {result['agent']}")
+          f"· {conviction} · conf {conf:.0%} · {result['agent']}")
     print(f"  │  Entry      : {currency}{price:>12.4f}")
     if result["tp_daily"]:
         pct = (result['tp_daily']/price-1)*100
@@ -390,7 +419,8 @@ def print_trade_card(result, rank, portfolio, risk, currency, fx):
           f"HOLD={result['votes']['hold']}")
     print(f"  └─ PatchTST:{result['signals']['patchtst']}  "
           f"HMM:{result['signals']['hmm']}  "
-          f"RL:{result['signals']['rl_agent']}")
+          f"RL:{result['signals']['rl_agent']}  "
+          f"ADX:{result['signals'].get('adx','N/A')}")
 
 # ── Main ───────────────────────────────────────────────────────
 def main():
