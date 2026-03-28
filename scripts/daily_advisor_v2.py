@@ -124,6 +124,34 @@ def dynamic_position_size(confidence, risk_profile_max=0.10):
 # ── HMM cache ─────────────────────────────────────────────────
 _HMM_CACHE = {}
 
+def kelly_position_size(confidence, max_pos, sym="default",
+                        asset_vol=0.02):
+    """
+    Blend Quarter-Kelly sizing with conviction-based sizing.
+    Uses per-asset win rates from validation results.
+    Falls back to dynamic_position_size if Kelly is zero.
+    """
+    import numpy as np
+    WIN_RATES = {
+        "AMZN":0.92,"XRP-USD":0.80,"SOL-USD":0.89,"NVDA":0.84,
+        "META":0.84,"GOOGL":0.84,"GC=F":0.77,"MSFT":0.76,
+        "^GSPC":0.76,"^DJI":0.76,"GBPUSD=X":0.61,
+    }
+    win_rate = WIN_RATES.get(sym, 0.65)
+    avg_win  = 0.03
+    avg_loss = 0.02
+    r        = avg_win / max(avg_loss, 0.001)
+    kelly    = win_rate - (1 - win_rate) / r
+    if kelly <= 0:
+        return dynamic_position_size(confidence, max_pos)
+    frac_kelly  = kelly * 0.25  # Quarter-Kelly
+    TARGET_VOL  = 0.15
+    vol_adj     = min(1.0, TARGET_VOL / max(asset_vol * (252**0.5), 0.01))
+    kelly_sized = min(frac_kelly * vol_adj, max_pos)
+    conviction  = dynamic_position_size(confidence, max_pos)
+    return round((kelly_sized + conviction) / 2, 3)
+
+
 def get_hmm(asset_class):
     import joblib
     if asset_class not in _HMM_CACHE:
@@ -134,6 +162,42 @@ def get_hmm(asset_class):
             from src.regime.pretrained_hmm import get_pretrained_hmm
             _HMM_CACHE[asset_class] = get_pretrained_hmm()
     return _HMM_CACHE[asset_class]
+
+def predict_with_proba(hmm_model, df_hmm, bull_count=34):
+    """
+    Use posterior probabilities with correct state labeling.
+    Lower threshold in broad bull markets to reduce HOLD bias.
+    """
+    import numpy as np
+    try:
+        df_h = df_hmm.copy()
+        delta = df_h["Close"].diff()
+        df_h["_ret"] = delta / (df_h["Close"].shift(1) + 1e-9)
+        df_h["_vol"] = df_h["_ret"].rolling(5).std()
+        features = df_h[["_ret","_vol","RSI","sentiment_mean"]].dropna().values
+        if len(features) < 10:
+            return hmm_model.predict(df_hmm)
+        proba     = hmm_model.model.predict_proba(features)
+        last      = proba[-1]
+        means     = hmm_model.model.means_[:, 0]
+        sorted_st = np.argsort(means)
+        bear_idx  = sorted_st[0]
+        bull_idx  = sorted_st[-1]
+        bull_prob = last[bull_idx]
+        bear_prob = last[bear_idx]
+        thresh = 0.40 if bull_count > 30 else 0.50
+        if bull_prob > thresh:
+            return "bull"
+        elif bear_prob > thresh:
+            return "bear"
+        else:
+            return "sideways"
+    except Exception:
+        try:
+            return hmm_model.predict(df_hmm)
+        except Exception:
+            return "sideways"
+
 
 def safe_key(sym):
     return sym.replace("^","").replace("-","_").replace("=","")
@@ -200,7 +264,7 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
         df_hmm["RSI"]            = 100-(100/(1+gain/(loss+1e-9)))
         df_hmm["sentiment_mean"] = 0.05
         df_hmm = df_hmm.dropna()
-        regime = hmm_model.predict(df_hmm)
+        regime = predict_with_proba(hmm_model, df_hmm)
     except Exception:
         regime = "sideways"
 
