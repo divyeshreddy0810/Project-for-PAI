@@ -56,7 +56,7 @@ Project-for-PAI/
 │   │   └── lgbm_forecast.py      ← LightGBM forecaster
 │   ├── regime/
 │   │   ├── hmm_regime.py         ← HMM regime detector
-│   │   └── pretrained_hmm.py     ← Pre-trained HMM (22yr EUR/USD)
+│   │   └── pretrained_hmm.py     ← Fallback HMM only — per-class models (hmm_equity/crypto/commodity/forex.pkl) are used for all 39 assets
 │   ├── rl/
 │   │   ├── trading_env.py        ← Trading environment
 │   │   ├── sac_agent.py          ← SAC agent (equities/gold)
