@@ -1,0 +1,852 @@
+[08:30:05] =================================================================
+[08:30:05]   MRAT-RL ROBUST VALIDATION SUITE
+[08:30:05]   200 windows × 52 weeks × 39 assets = 7,800 tests
+[08:30:05]   Anti-cheat: models frozen, strict history-only signals
+[08:30:05]   Train cutoff: 2018-01-01
+[08:30:05]   Device: cuda
+[08:30:05]   Started: 2026-03-27 08:30:05
+[08:30:05] =================================================================
+[08:30:05] 
+  Fetching full price histories...
+[08:30:05]   ✅ ^GSPC: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:05]   ✅ ^IXIC: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:05]   ✅ ^DJI: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:06]   ✅ AAPL: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:06]   ✅ MSFT: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:06]   ✅ NVDA: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:06]   ✅ TSLA: 3960 rows (2010-06-29 → 2026-03-26)
+[08:30:07]   ✅ AMZN: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:07]   ✅ META: 3483 rows (2012-05-18 → 2026-03-26)
+[08:30:07]   ✅ GOOGL: 5435 rows (2004-08-19 → 2026-03-26)
+[08:30:07]   ✅ JPM: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:08]   ✅ BTC-USD: 4209 rows (2014-09-17 → 2026-03-26)
+[08:30:08]   ✅ ETH-USD: 3060 rows (2017-11-09 → 2026-03-26)
+[08:30:08]   ✅ SOL-USD: 2177 rows (2020-04-10 → 2026-03-26)
+[08:30:08]   ✅ BNB-USD: 3060 rows (2017-11-09 → 2026-03-26)
+[08:30:08]   ✅ XRP-USD: 3060 rows (2017-11-09 → 2026-03-26)
+[08:30:09]   ✅ EURUSD=X: 5767 rows (2004-01-01 → 2026-03-26)
+[08:30:09]   ✅ GBPUSD=X: 5779 rows (2004-01-01 → 2026-03-26)
+[08:30:09]   ✅ USDJPY=X: 5767 rows (2004-01-01 → 2026-03-26)
+[08:30:09]   ✅ USDCHF=X: 5780 rows (2004-01-01 → 2026-03-26)
+[08:30:10]   ✅ AUDUSD=X: 5166 rows (2006-05-16 → 2026-03-26)
+[08:30:10]   ✅ NZDUSD=X: 5772 rows (2004-01-02 → 2026-03-26)
+[08:30:10]   ✅ USDCAD=X: 5782 rows (2004-01-01 → 2026-03-26)
+[08:30:10]   ✅ EURGBP=X: 5787 rows (2004-01-01 → 2026-03-26)
+[08:30:10]   ✅ EURJPY=X: 5770 rows (2004-01-01 → 2026-03-26)
+[08:30:11]   ✅ GBPJPY=X: 5783 rows (2004-01-01 → 2026-03-26)
+[08:30:11]   ✅ AUDNZD=X: 5786 rows (2004-01-01 → 2026-03-26)
+[08:30:11]   ✅ USDNGN=X: 5780 rows (2004-01-01 → 2026-03-26)
+[08:30:11]   ✅ EURNGN=X: 5143 rows (2006-05-16 → 2026-03-26)
+[08:30:12]   ✅ USDZAR=X: 5781 rows (2004-01-01 → 2026-03-26)
+[08:30:12]   ✅ USDKES=X: 5784 rows (2004-01-01 → 2026-03-26)
+[08:30:12]   ✅ USDGHS=X: 4857 rows (2007-07-11 → 2026-03-26)
+[08:30:12]   ✅ GC=F: 5585 rows (2004-01-05 → 2026-03-26)
+[08:30:12]   ✅ SI=F: 5586 rows (2004-01-05 → 2026-03-26)
+[08:30:13]   ✅ CL=F: 5589 rows (2004-01-05 → 2026-03-26)
+[08:30:13]   ✅ NG=F: 5590 rows (2004-01-05 → 2026-03-26)
+[08:30:13]   ✅ HG=F: 5589 rows (2004-01-05 → 2026-03-26)
+[08:30:13]   ✅ ZW=F: 5594 rows (2004-01-02 → 2026-03-26)
+[08:30:13]   ✅ ZC=F: 5593 rows (2004-01-02 → 2026-03-26)
+[08:30:13] 
+  Starting validation of 39 assets...
+
+[08:30:13] 
+────────────────────────────────────────────────────────────
+[08:30:13]   S&P 500 (^GSPC)  [equity] [SAC]
+[08:30:13] ────────────────────────────────────────────────────────────
+[08:32:13]     ^GSPC — 50/200 windows  avg_ret=+0.53%  profitable=42/50
+[08:33:05]     ^GSPC — 50/200 windows  avg_ret=+0.53%  profitable=42/50
+[08:35:04]     ^GSPC — 100/200 windows  avg_ret=+0.45%  profitable=91/100
+[08:35:57]     ^GSPC — 100/200 windows  avg_ret=+0.45%  profitable=91/100
+[08:37:53]     ^GSPC — 150/200 windows  avg_ret=+0.31%  profitable=115/150
+[08:38:46]     ^GSPC — 150/200 windows  avg_ret=+0.31%  profitable=115/150
+[08:40:43]     ^GSPC — 200/200 windows  avg_ret=+0.26%  profitable=151/200
+[08:40:43]   ✅ ^GSPC: avg_ret=+0.26%  sharpe=+1.389  profitable=76%  edge_vs_bah=-10.06%
+[08:40:43] 
+────────────────────────────────────────────────────────────
+[08:40:43]   NASDAQ (^IXIC)  [equity] [SAC]
+[08:40:43] ────────────────────────────────────────────────────────────
+[08:41:34]     ^GSPC — 200/200 windows  avg_ret=+0.26%  profitable=151/200
+[08:41:34]   ✅ ^GSPC: avg_ret=+0.26%  sharpe=+1.389  profitable=76%  edge_vs_bah=-10.06%
+[08:41:34] 
+────────────────────────────────────────────────────────────
+[08:41:34]   NASDAQ (^IXIC)  [equity] [SAC]
+[08:41:34] ────────────────────────────────────────────────────────────
+[08:43:30]     ^IXIC — 50/200 windows  avg_ret=-0.51%  profitable=22/50
+[08:44:21]     ^IXIC — 50/200 windows  avg_ret=-0.51%  profitable=22/50
+[08:46:03]     ^IXIC — 100/200 windows  avg_ret=-0.05%  profitable=58/100
+[08:46:47]     ^IXIC — 100/200 windows  avg_ret=-0.05%  profitable=58/100
+[08:48:30]     ^IXIC — 150/200 windows  avg_ret=+0.11%  profitable=91/150
+[08:49:13]     ^IXIC — 150/200 windows  avg_ret=+0.11%  profitable=91/150
+[08:51:04]     ^IXIC — 200/200 windows  avg_ret=+0.22%  profitable=129/200
+[08:51:04]   ✅ ^IXIC: avg_ret=+0.22%  sharpe=+0.635  profitable=64%  edge_vs_bah=-13.97%
+[08:51:04] 
+────────────────────────────────────────────────────────────
+[08:51:04]   Dow Jones (^DJI)  [equity] [SAC]
+[08:51:04] ────────────────────────────────────────────────────────────
+[08:51:54]     ^IXIC — 200/200 windows  avg_ret=+0.22%  profitable=129/200
+[08:51:54]   ✅ ^IXIC: avg_ret=+0.22%  sharpe=+0.635  profitable=64%  edge_vs_bah=-13.97%
+[08:51:54] 
+────────────────────────────────────────────────────────────
+[08:51:54]   Dow Jones (^DJI)  [equity] [SAC]
+[08:51:54] ────────────────────────────────────────────────────────────
+[08:53:54]     ^DJI — 50/200 windows  avg_ret=+0.42%  profitable=44/50
+[08:54:45]     ^DJI — 50/200 windows  avg_ret=+0.42%  profitable=44/50
+[08:56:46]     ^DJI — 100/200 windows  avg_ret=+0.29%  profitable=83/100
+[08:57:37]     ^DJI — 100/200 windows  avg_ret=+0.29%  profitable=83/100
+[08:59:40]     ^DJI — 150/200 windows  avg_ret=+0.31%  profitable=126/150
+[09:00:31]     ^DJI — 150/200 windows  avg_ret=+0.31%  profitable=126/150
+[09:02:15]     ^DJI — 200/200 windows  avg_ret=+0.24%  profitable=151/200
+[09:02:15]   ✅ ^DJI: avg_ret=+0.24%  sharpe=+1.306  profitable=76%  edge_vs_bah=-9.47%
+[09:02:15] 
+────────────────────────────────────────────────────────────
+[09:02:15]   Apple (AAPL)  [equity] [SAC]
+[09:02:15] ────────────────────────────────────────────────────────────
+[09:02:57]     ^DJI — 200/200 windows  avg_ret=+0.24%  profitable=151/200
+[09:02:57]   ✅ ^DJI: avg_ret=+0.24%  sharpe=+1.306  profitable=76%  edge_vs_bah=-9.47%
+[09:02:57] 
+────────────────────────────────────────────────────────────
+[09:02:57]   Apple (AAPL)  [equity] [SAC]
+[09:02:57] ────────────────────────────────────────────────────────────
+[09:04:40]     AAPL — 50/200 windows  avg_ret=+1.99%  profitable=40/50
+[09:05:22]     AAPL — 50/200 windows  avg_ret=+1.99%  profitable=40/50
+[09:07:05]     AAPL — 100/200 windows  avg_ret=+1.22%  profitable=71/100
+[09:07:48]     AAPL — 100/200 windows  avg_ret=+1.22%  profitable=71/100
+[09:09:30]     AAPL — 150/200 windows  avg_ret=+1.30%  profitable=108/150
+[09:10:12]     AAPL — 150/200 windows  avg_ret=+1.30%  profitable=108/150
+[09:11:55]     AAPL — 200/200 windows  avg_ret=+1.10%  profitable=144/200
+[09:11:55]   ✅ AAPL: avg_ret=+1.10%  sharpe=+0.870  profitable=72%  edge_vs_bah=-31.50%
+[09:11:55] 
+────────────────────────────────────────────────────────────
+[09:11:55]   Microsoft (MSFT)  [equity] [SAC]
+[09:11:55] ────────────────────────────────────────────────────────────
+[09:12:37]     AAPL — 200/200 windows  avg_ret=+1.10%  profitable=144/200
+[09:12:37]   ✅ AAPL: avg_ret=+1.10%  sharpe=+0.870  profitable=72%  edge_vs_bah=-31.50%
+[09:12:37] 
+────────────────────────────────────────────────────────────
+[09:12:37]   Microsoft (MSFT)  [equity] [SAC]
+[09:12:37] ────────────────────────────────────────────────────────────
+[09:14:20]     MSFT — 50/200 windows  avg_ret=+0.52%  profitable=31/50
+[09:15:02]     MSFT — 50/200 windows  avg_ret=+0.52%  profitable=31/50
+[09:16:44]     MSFT — 100/200 windows  avg_ret=+0.66%  profitable=72/100
+[09:17:26]     MSFT — 100/200 windows  avg_ret=+0.66%  profitable=72/100
+[09:19:08]     MSFT — 150/200 windows  avg_ret=+0.86%  profitable=118/150
+[09:19:51]     MSFT — 150/200 windows  avg_ret=+0.86%  profitable=118/150
+[09:21:35]     MSFT — 200/200 windows  avg_ret=+0.72%  profitable=151/200
+[09:21:35]   ✅ MSFT: avg_ret=+0.72%  sharpe=+0.894  profitable=76%  edge_vs_bah=-21.70%
+[09:21:35] 
+────────────────────────────────────────────────────────────
+[09:21:35]   NVIDIA (NVDA)  [equity] [SAC]
+[09:21:35] ────────────────────────────────────────────────────────────
+[09:22:17]     MSFT — 200/200 windows  avg_ret=+0.72%  profitable=151/200
+[09:22:17]   ✅ MSFT: avg_ret=+0.72%  sharpe=+0.894  profitable=76%  edge_vs_bah=-21.70%
+[09:22:17] 
+────────────────────────────────────────────────────────────
+[09:22:17]   NVIDIA (NVDA)  [equity] [SAC]
+[09:22:17] ────────────────────────────────────────────────────────────
+[09:23:56]     NVDA — 50/200 windows  avg_ret=+2.56%  profitable=45/50
+[09:24:39]     NVDA — 50/200 windows  avg_ret=+2.56%  profitable=45/50
+[09:26:20]     NVDA — 100/200 windows  avg_ret=+1.99%  profitable=95/100
+[09:27:02]     NVDA — 100/200 windows  avg_ret=+1.99%  profitable=95/100
+[09:28:43]     NVDA — 150/200 windows  avg_ret=+1.80%  profitable=129/150
+[09:29:26]     NVDA — 150/200 windows  avg_ret=+1.80%  profitable=129/150
+[09:31:06]     NVDA — 200/200 windows  avg_ret=+1.57%  profitable=169/200
+[09:31:06]   ✅ NVDA: avg_ret=+1.57%  sharpe=+1.270  profitable=84%  edge_vs_bah=-49.03%
+[09:31:06] 
+────────────────────────────────────────────────────────────
+[09:31:06]   Tesla (TSLA)  [equity] [SAC]
+[09:31:06] ────────────────────────────────────────────────────────────
+[09:31:48]     NVDA — 200/200 windows  avg_ret=+1.57%  profitable=169/200
+[09:31:48]   ✅ NVDA: avg_ret=+1.57%  sharpe=+1.268  profitable=84%  edge_vs_bah=-49.03%
+[09:31:48] 
+────────────────────────────────────────────────────────────
+[09:31:48]   Tesla (TSLA)  [equity] [SAC]
+[09:31:48] ────────────────────────────────────────────────────────────
+[09:33:28]     TSLA — 50/200 windows  avg_ret=+3.87%  profitable=47/50
+[09:34:11]     TSLA — 50/200 windows  avg_ret=+3.87%  profitable=47/50
+[09:35:52]     TSLA — 100/200 windows  avg_ret=+2.53%  profitable=77/100
+[09:36:33]     TSLA — 100/200 windows  avg_ret=+2.53%  profitable=77/100
+[09:38:11]     TSLA — 150/200 windows  avg_ret=+2.64%  profitable=109/150
+[09:38:52]     TSLA — 150/200 windows  avg_ret=+2.64%  profitable=109/150
+[09:40:32]     TSLA — 200/200 windows  avg_ret=+2.00%  profitable=132/200
+[09:40:32]   ✅ TSLA: avg_ret=+2.00%  sharpe=+0.936  profitable=66%  edge_vs_bah=-93.99%
+[09:40:32] 
+────────────────────────────────────────────────────────────
+[09:40:32]   Amazon (AMZN)  [equity] [SAC]
+[09:40:32] ────────────────────────────────────────────────────────────
+[09:41:12]     TSLA — 200/200 windows  avg_ret=+2.00%  profitable=132/200
+[09:41:12]   ✅ TSLA: avg_ret=+2.00%  sharpe=+0.936  profitable=66%  edge_vs_bah=-93.99%
+[09:41:12] 
+────────────────────────────────────────────────────────────
+[09:41:12]   Amazon (AMZN)  [equity] [SAC]
+[09:41:12] ────────────────────────────────────────────────────────────
+[09:42:53]     AMZN — 50/200 windows  avg_ret=+2.70%  profitable=50/50
+[09:43:34]     AMZN — 50/200 windows  avg_ret=+2.70%  profitable=50/50
+[09:45:16]     AMZN — 100/200 windows  avg_ret=+2.02%  profitable=100/100
+[09:45:58]     AMZN — 100/200 windows  avg_ret=+2.02%  profitable=100/100
+[09:47:39]     AMZN — 150/200 windows  avg_ret=+1.58%  profitable=146/150
+[09:48:20]     AMZN — 150/200 windows  avg_ret=+1.58%  profitable=146/150
+[09:50:01]     AMZN — 200/200 windows  avg_ret=+1.28%  profitable=184/200
+[09:50:01]   ✅ AMZN: avg_ret=+1.28%  sharpe=+1.888  profitable=92%  edge_vs_bah=-32.85%
+[09:50:01] 
+────────────────────────────────────────────────────────────
+[09:50:01]   Meta (META)  [equity] [SAC]
+[09:50:01] ────────────────────────────────────────────────────────────
+[09:50:41]     AMZN — 200/200 windows  avg_ret=+1.28%  profitable=184/200
+[09:50:41]   ✅ AMZN: avg_ret=+1.28%  sharpe=+1.888  profitable=92%  edge_vs_bah=-32.85%
+[09:50:41] 
+────────────────────────────────────────────────────────────
+[09:50:41]   Meta (META)  [equity] [SAC]
+[09:50:41] ────────────────────────────────────────────────────────────
+[09:52:23]     META — 50/200 windows  avg_ret=+1.11%  profitable=50/50
+[09:53:05]     META — 50/200 windows  avg_ret=+1.11%  profitable=50/50
+[09:54:50]     META — 100/200 windows  avg_ret=+1.06%  profitable=99/100
+[09:55:31]     META — 100/200 windows  avg_ret=+1.06%  profitable=99/100
+[09:57:15]     META — 150/200 windows  avg_ret=+0.53%  profitable=121/150
+[09:57:56]     META — 150/200 windows  avg_ret=+0.53%  profitable=121/150
+[09:59:39]     META — 200/200 windows  avg_ret=+0.71%  profitable=169/200
+[09:59:39]   ✅ META: avg_ret=+0.71%  sharpe=+1.518  profitable=84%  edge_vs_bah=-29.42%
+[09:59:39] 
+────────────────────────────────────────────────────────────
+[09:59:39]   Alphabet (GOOGL)  [equity] [SAC]
+[09:59:39] ────────────────────────────────────────────────────────────
+[10:00:20]     META — 200/200 windows  avg_ret=+0.71%  profitable=169/200
+[10:00:20]   ✅ META: avg_ret=+0.71%  sharpe=+1.518  profitable=84%  edge_vs_bah=-29.42%
+[10:00:20] 
+────────────────────────────────────────────────────────────
+[10:00:20]   Alphabet (GOOGL)  [equity] [SAC]
+[10:00:20] ────────────────────────────────────────────────────────────
+[10:02:03]     GOOGL — 50/200 windows  avg_ret=+1.13%  profitable=47/50
+[10:02:44]     GOOGL — 50/200 windows  avg_ret=+1.13%  profitable=47/50
+[10:04:26]     GOOGL — 100/200 windows  avg_ret=+0.90%  profitable=90/100
+[10:05:07]     GOOGL — 100/200 windows  avg_ret=+0.90%  profitable=90/100
+[10:06:50]     GOOGL — 150/200 windows  avg_ret=+0.74%  profitable=129/150
+[10:07:30]     GOOGL — 150/200 windows  avg_ret=+0.74%  profitable=129/150
+[10:09:15]     GOOGL — 200/200 windows  avg_ret=+0.66%  profitable=167/200
+[10:09:15]   ✅ GOOGL: avg_ret=+0.66%  sharpe=+1.327  profitable=84%  edge_vs_bah=-20.14%
+[10:09:15] 
+────────────────────────────────────────────────────────────
+[10:09:15]   JPMorgan (JPM)  [equity] [SAC]
+[10:09:15] ────────────────────────────────────────────────────────────
+[10:09:55]     GOOGL — 200/200 windows  avg_ret=+0.66%  profitable=167/200
+[10:09:55]   ✅ GOOGL: avg_ret=+0.66%  sharpe=+1.327  profitable=84%  edge_vs_bah=-20.14%
+[10:09:55] 
+────────────────────────────────────────────────────────────
+[10:09:55]   JPMorgan (JPM)  [equity] [SAC]
+[10:09:55] ────────────────────────────────────────────────────────────
+[10:11:38]     JPM — 50/200 windows  avg_ret=-0.48%  profitable=20/50
+[10:12:17]     JPM — 50/200 windows  avg_ret=-0.48%  profitable=20/50
+[10:14:00]     JPM — 100/200 windows  avg_ret=+0.05%  profitable=54/100
+[10:14:39]     JPM — 100/200 windows  avg_ret=+0.05%  profitable=54/100
+[10:16:24]     JPM — 150/200 windows  avg_ret=+0.27%  profitable=93/150
+[10:17:04]     JPM — 150/200 windows  avg_ret=+0.27%  profitable=93/150
+[10:18:47]     JPM — 200/200 windows  avg_ret=+0.53%  profitable=134/200
+[10:18:47]   ✅ JPM: avg_ret=+0.53%  sharpe=+0.690  profitable=67%  edge_vs_bah=-16.27%
+[10:18:47] 
+────────────────────────────────────────────────────────────
+[10:18:47]   Bitcoin (BTC-USD)  [crypto] [PPO]
+[10:18:47] ────────────────────────────────────────────────────────────
+[10:18:47]   ❌ BTC-USD: model load failed: Error(s) in loading state_dict for ActorCritic:
+	size mismatch for backbone.0.weight: copying a param with shape torch.Size([128, 13]) from checkpoint, the shape in current model is torch.Size([128, 17]).
+[10:18:47]   ❌ BTC-USD: validation failed
+[10:18:47] 
+────────────────────────────────────────────────────────────
+[10:18:47]   Ethereum (ETH-USD)  [crypto] [PPO]
+[10:18:47] ────────────────────────────────────────────────────────────
+[10:19:27]     JPM — 200/200 windows  avg_ret=+0.53%  profitable=134/200
+[10:19:27]   ✅ JPM: avg_ret=+0.53%  sharpe=+0.690  profitable=67%  edge_vs_bah=-16.27%
+[10:19:27] 
+────────────────────────────────────────────────────────────
+[10:19:27]   Bitcoin (BTC-USD)  [crypto] [PPO]
+[10:19:27] ────────────────────────────────────────────────────────────
+[10:19:27]   ❌ BTC-USD: model load failed: Error(s) in loading state_dict for ActorCritic:
+	size mismatch for backbone.0.weight: copying a param with shape torch.Size([128, 13]) from checkpoint, the shape in current model is torch.Size([128, 17]).
+[10:19:27]   ❌ BTC-USD: validation failed
+[10:19:27] 
+────────────────────────────────────────────────────────────
+[10:19:27]   Ethereum (ETH-USD)  [crypto] [PPO]
+[10:19:27] ────────────────────────────────────────────────────────────
+[10:23:00]     ETH-USD — 50/200 windows  avg_ret=+0.00%  profitable=0/50
+[10:23:43]     ETH-USD — 50/200 windows  avg_ret=+0.00%  profitable=0/50
+[10:27:21]     ETH-USD — 100/200 windows  avg_ret=+0.00%  profitable=0/100
+[10:28:03]     ETH-USD — 100/200 windows  avg_ret=+0.00%  profitable=0/100
+[10:31:42]     ETH-USD — 150/200 windows  avg_ret=+0.00%  profitable=0/150
+[10:32:26]     ETH-USD — 150/200 windows  avg_ret=+0.00%  profitable=0/150
+[10:36:04]     ETH-USD — 200/200 windows  avg_ret=+0.00%  profitable=0/200
+[10:36:04]   ✅ ETH-USD: avg_ret=+0.00%  sharpe=+0.000  profitable=0%  edge_vs_bah=-94.67%
+[10:36:04] 
+────────────────────────────────────────────────────────────
+[10:36:04]   Solana (SOL-USD)  [crypto] [PPO]
+[10:36:04] ────────────────────────────────────────────────────────────
+[10:36:45]     ETH-USD — 200/200 windows  avg_ret=+0.00%  profitable=0/200
+[10:36:45]   ✅ ETH-USD: avg_ret=+0.00%  sharpe=+0.000  profitable=0%  edge_vs_bah=-94.67%
+[10:36:45] 
+────────────────────────────────────────────────────────────
+[10:36:45]   Solana (SOL-USD)  [crypto] [PPO]
+[10:36:45] ────────────────────────────────────────────────────────────
+[10:39:41]     SOL-USD — 50/200 windows  avg_ret=+5.71%  profitable=50/50
+[10:40:21]     SOL-USD — 50/200 windows  avg_ret=+5.71%  profitable=50/50
+[10:43:44]     SOL-USD — 100/200 windows  avg_ret=+5.76%  profitable=100/100
+[10:44:28]     SOL-USD — 100/200 windows  avg_ret=+5.76%  profitable=100/100
+[10:48:09]     SOL-USD — 150/200 windows  avg_ret=+4.92%  profitable=143/150
+[10:48:51]     SOL-USD — 150/200 windows  avg_ret=+4.92%  profitable=143/150
+[10:52:19]     SOL-USD — 200/200 windows  avg_ret=+3.87%  profitable=178/200
+[10:52:19]   ✅ SOL-USD: avg_ret=+3.87%  sharpe=+1.386  profitable=89%  edge_vs_bah=-73.09%
+[10:52:19] 
+────────────────────────────────────────────────────────────
+[10:52:19]   BNB (BNB-USD)  [crypto] [PPO]
+[10:52:19] ────────────────────────────────────────────────────────────
+[10:53:01]     SOL-USD — 200/200 windows  avg_ret=+3.87%  profitable=178/200
+[10:53:01]   ✅ SOL-USD: avg_ret=+3.87%  sharpe=+1.386  profitable=89%  edge_vs_bah=-73.09%
+[10:53:01] 
+────────────────────────────────────────────────────────────
+[10:53:01]   BNB (BNB-USD)  [crypto] [PPO]
+[10:53:01] ────────────────────────────────────────────────────────────
+[10:56:37]     BNB-USD — 50/200 windows  avg_ret=+0.00%  profitable=0/50
+[10:57:19]     BNB-USD — 50/200 windows  avg_ret=+0.00%  profitable=0/50
+[11:00:58]     BNB-USD — 100/200 windows  avg_ret=+0.00%  profitable=0/100
+[11:01:42]     BNB-USD — 100/200 windows  avg_ret=+0.00%  profitable=0/100
+[11:05:24]     BNB-USD — 150/200 windows  avg_ret=+0.00%  profitable=0/150
+[11:06:04]     BNB-USD — 150/200 windows  avg_ret=+0.00%  profitable=0/150
+[11:09:48]     BNB-USD — 200/200 windows  avg_ret=+0.00%  profitable=0/200
+[11:09:48]   ✅ BNB-USD: avg_ret=+0.00%  sharpe=+0.000  profitable=0%  edge_vs_bah=-140.99%
+[11:09:48] 
+────────────────────────────────────────────────────────────
+[11:09:48]   XRP (XRP-USD)  [crypto] [PPO]
+[11:09:48] ────────────────────────────────────────────────────────────
+[11:10:28]     BNB-USD — 200/200 windows  avg_ret=+0.00%  profitable=0/200
+[11:10:28]   ✅ BNB-USD: avg_ret=+0.00%  sharpe=+0.000  profitable=0%  edge_vs_bah=-140.99%
+[11:10:28] 
+────────────────────────────────────────────────────────────
+[11:10:28]   XRP (XRP-USD)  [crypto] [PPO]
+[11:10:28] ────────────────────────────────────────────────────────────
+[11:13:51]     XRP-USD — 50/200 windows  avg_ret=+8.11%  profitable=50/50
+[11:14:32]     XRP-USD — 50/200 windows  avg_ret=+8.11%  profitable=50/50
+[11:17:44]     XRP-USD — 100/200 windows  avg_ret=+6.56%  profitable=88/100
+[11:18:23]     XRP-USD — 100/200 windows  avg_ret=+6.56%  profitable=88/100
+[11:21:55]     XRP-USD — 150/200 windows  avg_ret=+5.12%  profitable=128/150
+[11:22:36]     XRP-USD — 150/200 windows  avg_ret=+5.12%  profitable=128/150
+[11:26:17]     XRP-USD — 200/200 windows  avg_ret=+4.09%  profitable=161/200
+[11:26:17]   ✅ XRP-USD: avg_ret=+4.09%  sharpe=+3.244  profitable=80%  edge_vs_bah=-70.20%
+[11:26:17] 
+────────────────────────────────────────────────────────────
+[11:26:17]   EUR/USD (EURUSD=X)  [forex] [SAC]
+[11:26:17] ────────────────────────────────────────────────────────────
+[11:26:53]     XRP-USD — 200/200 windows  avg_ret=+4.09%  profitable=161/200
+[11:26:53]   ✅ XRP-USD: avg_ret=+4.09%  sharpe=+3.244  profitable=80%  edge_vs_bah=-70.20%
+[11:26:53] 
+────────────────────────────────────────────────────────────
+[11:26:53]   EUR/USD (EURUSD=X)  [forex] [SAC]
+[11:26:53] ────────────────────────────────────────────────────────────
+[11:28:40]     EURUSD=X — 50/200 windows  avg_ret=+0.18%  profitable=32/50
+[11:29:15]     EURUSD=X — 50/200 windows  avg_ret=+0.18%  profitable=32/50
+[11:30:58]     EURUSD=X — 100/200 windows  avg_ret=-0.06%  profitable=47/100
+[11:31:33]     EURUSD=X — 100/200 windows  avg_ret=-0.06%  profitable=47/100
+[11:33:19]     EURUSD=X — 150/200 windows  avg_ret=-0.11%  profitable=60/150
+[11:33:54]     EURUSD=X — 150/200 windows  avg_ret=-0.11%  profitable=60/150
+[11:35:39]     EURUSD=X — 200/200 windows  avg_ret=-0.16%  profitable=73/200
+[11:35:39]   ✅ EURUSD=X: avg_ret=-0.16%  sharpe=+0.173  profitable=36%  edge_vs_bah=+0.37%
+[11:35:39] 
+────────────────────────────────────────────────────────────
+[11:35:39]   GBP/USD (GBPUSD=X)  [forex] [SAC]
+[11:35:39] ────────────────────────────────────────────────────────────
+[11:36:14]     EURUSD=X — 200/200 windows  avg_ret=-0.16%  profitable=73/200
+[11:36:14]   ✅ EURUSD=X: avg_ret=-0.16%  sharpe=+0.173  profitable=36%  edge_vs_bah=+0.37%
+[11:36:14] 
+────────────────────────────────────────────────────────────
+[11:36:14]   GBP/USD (GBPUSD=X)  [forex] [SAC]
+[11:36:14] ────────────────────────────────────────────────────────────
+[11:37:58]     GBPUSD=X — 50/200 windows  avg_ret=+0.27%  profitable=44/50
+[11:38:34]     GBPUSD=X — 50/200 windows  avg_ret=+0.27%  profitable=44/50
+[11:40:20]     GBPUSD=X — 100/200 windows  avg_ret=+0.20%  profitable=83/100
+[11:40:55]     GBPUSD=X — 100/200 windows  avg_ret=+0.20%  profitable=83/100
+[11:42:39]     GBPUSD=X — 150/200 windows  avg_ret=+0.11%  profitable=99/150
+[11:43:14]     GBPUSD=X — 150/200 windows  avg_ret=+0.11%  profitable=99/150
+[11:44:57]     GBPUSD=X — 200/200 windows  avg_ret=+0.08%  profitable=122/200
+[11:44:57]   ✅ GBPUSD=X: avg_ret=+0.08%  sharpe=+1.582  profitable=61%  edge_vs_bah=+1.17%
+[11:44:57] 
+────────────────────────────────────────────────────────────
+[11:44:57]   USD/JPY (USDJPY=X)  [forex] [SAC]
+[11:44:57] ────────────────────────────────────────────────────────────
+[11:45:32]     GBPUSD=X — 200/200 windows  avg_ret=+0.08%  profitable=122/200
+[11:45:32]   ✅ GBPUSD=X: avg_ret=+0.08%  sharpe=+1.582  profitable=61%  edge_vs_bah=+1.17%
+[11:45:32] 
+────────────────────────────────────────────────────────────
+[11:45:32]   USD/JPY (USDJPY=X)  [forex] [SAC]
+[11:45:32] ────────────────────────────────────────────────────────────
+[11:47:17]     USDJPY=X — 50/200 windows  avg_ret=+0.21%  profitable=38/50
+[11:47:53]     USDJPY=X — 50/200 windows  avg_ret=+0.21%  profitable=38/50
+[11:49:39]     USDJPY=X — 100/200 windows  avg_ret=+0.22%  profitable=82/100
+[11:50:16]     USDJPY=X — 100/200 windows  avg_ret=+0.22%  profitable=82/100
+[11:52:04]     USDJPY=X — 150/200 windows  avg_ret=+0.13%  profitable=97/150
+[11:52:38]     USDJPY=X — 150/200 windows  avg_ret=+0.13%  profitable=97/150
+[11:54:25]     USDJPY=X — 200/200 windows  avg_ret=+0.07%  profitable=109/200
+[11:54:25]   ✅ USDJPY=X: avg_ret=+0.07%  sharpe=+0.909  profitable=54%  edge_vs_bah=-1.00%
+[11:54:25] 
+────────────────────────────────────────────────────────────
+[11:54:25]   USD/CHF (USDCHF=X)  [forex] [SAC]
+[11:54:25] ────────────────────────────────────────────────────────────
+[11:54:59]     USDJPY=X — 200/200 windows  avg_ret=+0.07%  profitable=109/200
+[11:54:59]   ✅ USDJPY=X: avg_ret=+0.07%  sharpe=+0.909  profitable=54%  edge_vs_bah=-1.00%
+[11:54:59] 
+────────────────────────────────────────────────────────────
+[11:54:59]   USD/CHF (USDCHF=X)  [forex] [SAC]
+[11:54:59] ────────────────────────────────────────────────────────────
+[11:56:43]     USDCHF=X — 50/200 windows  avg_ret=+0.09%  profitable=30/50
+[11:57:19]     USDCHF=X — 50/200 windows  avg_ret=+0.09%  profitable=30/50
+[11:59:02]     USDCHF=X — 100/200 windows  avg_ret=+0.16%  profitable=76/100
+[11:59:36]     USDCHF=X — 100/200 windows  avg_ret=+0.16%  profitable=76/100
+[12:01:21]     USDCHF=X — 150/200 windows  avg_ret=+0.08%  profitable=89/150
+[12:01:56]     USDCHF=X — 150/200 windows  avg_ret=+0.08%  profitable=89/150
+[12:03:43]     USDCHF=X — 200/200 windows  avg_ret=+0.02%  profitable=100/200
+[12:03:43]   ✅ USDCHF=X: avg_ret=+0.02%  sharpe=+0.694  profitable=50%  edge_vs_bah=+2.59%
+[12:03:43] 
+────────────────────────────────────────────────────────────
+[12:03:43]   AUD/USD (AUDUSD=X)  [forex] [SAC]
+[12:03:43] ────────────────────────────────────────────────────────────
+[12:04:19]     USDCHF=X — 200/200 windows  avg_ret=+0.02%  profitable=100/200
+[12:04:19]   ✅ USDCHF=X: avg_ret=+0.02%  sharpe=+0.694  profitable=50%  edge_vs_bah=+2.59%
+[12:04:19] 
+────────────────────────────────────────────────────────────
+[12:04:19]   AUD/USD (AUDUSD=X)  [forex] [SAC]
+[12:04:19] ────────────────────────────────────────────────────────────
+[12:06:06]     AUDUSD=X — 50/200 windows  avg_ret=+0.48%  profitable=47/50
+[12:06:40]     AUDUSD=X — 50/200 windows  avg_ret=+0.48%  profitable=47/50
+[12:08:25]     AUDUSD=X — 100/200 windows  avg_ret=+0.26%  profitable=69/100
+[12:09:00]     AUDUSD=X — 100/200 windows  avg_ret=+0.26%  profitable=69/100
+[12:10:45]     AUDUSD=X — 150/200 windows  avg_ret=+0.13%  profitable=82/150
+[12:11:21]     AUDUSD=X — 150/200 windows  avg_ret=+0.13%  profitable=82/150
+[12:13:06]     AUDUSD=X — 200/200 windows  avg_ret=+0.05%  profitable=89/200
+[12:13:06]   ✅ AUDUSD=X: avg_ret=+0.05%  sharpe=+0.561  profitable=44%  edge_vs_bah=+1.08%
+[12:13:07] 
+────────────────────────────────────────────────────────────
+[12:13:07]   NZD/USD (NZDUSD=X)  [forex] [SAC]
+[12:13:07] ────────────────────────────────────────────────────────────
+[12:13:40]     AUDUSD=X — 200/200 windows  avg_ret=+0.05%  profitable=89/200
+[12:13:40]   ✅ AUDUSD=X: avg_ret=+0.05%  sharpe=+0.561  profitable=44%  edge_vs_bah=+1.08%
+[12:13:40] 
+────────────────────────────────────────────────────────────
+[12:13:40]   NZD/USD (NZDUSD=X)  [forex] [SAC]
+[12:13:40] ────────────────────────────────────────────────────────────
+[12:15:28]     NZDUSD=X — 50/200 windows  avg_ret=+0.55%  profitable=49/50
+[12:16:02]     NZDUSD=X — 50/200 windows  avg_ret=+0.55%  profitable=49/50
+[12:17:48]     NZDUSD=X — 100/200 windows  avg_ret=+0.34%  profitable=81/100
+[12:18:23]     NZDUSD=X — 100/200 windows  avg_ret=+0.34%  profitable=81/100
+[12:20:11]     NZDUSD=X — 150/200 windows  avg_ret=+0.22%  profitable=97/150
+[12:20:45]     NZDUSD=X — 150/200 windows  avg_ret=+0.22%  profitable=97/150
+[12:22:31]     NZDUSD=X — 200/200 windows  avg_ret=+0.12%  profitable=106/200
+[12:22:31]   ✅ NZDUSD=X: avg_ret=+0.12%  sharpe=+0.850  profitable=53%  edge_vs_bah=-1.70%
+[12:22:31] 
+────────────────────────────────────────────────────────────
+[12:22:31]   USD/CAD (USDCAD=X)  [forex] [SAC]
+[12:22:31] ────────────────────────────────────────────────────────────
+[12:23:05]     NZDUSD=X — 200/200 windows  avg_ret=+0.12%  profitable=106/200
+[12:23:05]   ✅ NZDUSD=X: avg_ret=+0.12%  sharpe=+0.850  profitable=53%  edge_vs_bah=-1.70%
+[12:23:05] 
+────────────────────────────────────────────────────────────
+[12:23:05]   USD/CAD (USDCAD=X)  [forex] [SAC]
+[12:23:05] ────────────────────────────────────────────────────────────
+[12:24:53]     USDCAD=X — 50/200 windows  avg_ret=+0.30%  profitable=39/50
+[12:25:26]     USDCAD=X — 50/200 windows  avg_ret=+0.30%  profitable=39/50
+[12:27:12]     USDCAD=X — 100/200 windows  avg_ret=+0.23%  profitable=87/100
+[12:27:45]     USDCAD=X — 100/200 windows  avg_ret=+0.23%  profitable=87/100
+[12:29:48]     USDCAD=X — 150/200 windows  avg_ret=+0.13%  profitable=97/150
+[12:30:27]     USDCAD=X — 150/200 windows  avg_ret=+0.13%  profitable=97/150
+[12:32:39]     USDCAD=X — 200/200 windows  avg_ret=+0.08%  profitable=109/200
+[12:32:39]   ✅ USDCAD=X: avg_ret=+0.08%  sharpe=+1.138  profitable=54%  edge_vs_bah=-2.28%
+[12:32:39] 
+────────────────────────────────────────────────────────────
+[12:32:39]   EUR/GBP (EURGBP=X)  [forex] [SAC]
+[12:32:39] ────────────────────────────────────────────────────────────
+[12:33:29]     USDCAD=X — 200/200 windows  avg_ret=+0.08%  profitable=109/200
+[12:33:29]   ✅ USDCAD=X: avg_ret=+0.08%  sharpe=+1.138  profitable=54%  edge_vs_bah=-2.28%
+[12:33:29] 
+────────────────────────────────────────────────────────────
+[12:33:29]   EUR/GBP (EURGBP=X)  [forex] [SAC]
+[12:33:29] ────────────────────────────────────────────────────────────
+[12:36:09]     EURGBP=X — 50/200 windows  avg_ret=+0.29%  profitable=46/50
+[12:37:01]     EURGBP=X — 50/200 windows  avg_ret=+0.29%  profitable=46/50
+[12:39:40]     EURGBP=X — 100/200 windows  avg_ret=+0.13%  profitable=68/100
+[12:40:30]     EURGBP=X — 100/200 windows  avg_ret=+0.13%  profitable=68/100
+[12:43:11]     EURGBP=X — 150/200 windows  avg_ret=+0.06%  profitable=82/150
+[12:43:58]     EURGBP=X — 150/200 windows  avg_ret=+0.06%  profitable=82/150
+[12:45:45]     EURGBP=X — 200/200 windows  avg_ret=+0.03%  profitable=92/200
+[12:45:45]   ✅ EURGBP=X: avg_ret=+0.03%  sharpe=+0.631  profitable=46%  edge_vs_bah=-1.54%
+[12:45:45] 
+────────────────────────────────────────────────────────────
+[12:45:45]   EUR/JPY (EURJPY=X)  [forex] [SAC]
+[12:45:45] ────────────────────────────────────────────────────────────
+[12:46:20]     EURGBP=X — 200/200 windows  avg_ret=+0.03%  profitable=92/200
+[12:46:20]   ✅ EURGBP=X: avg_ret=+0.03%  sharpe=+0.631  profitable=46%  edge_vs_bah=-1.54%
+[12:46:20] 
+────────────────────────────────────────────────────────────
+[12:46:20]   EUR/JPY (EURJPY=X)  [forex] [SAC]
+[12:46:20] ────────────────────────────────────────────────────────────
+[12:48:06]     EURJPY=X — 50/200 windows  avg_ret=-0.56%  profitable=13/50
+[12:48:39]     EURJPY=X — 50/200 windows  avg_ret=-0.56%  profitable=13/50
+[12:50:29]     EURJPY=X — 100/200 windows  avg_ret=-0.45%  profitable=31/100
+[12:51:08]     EURJPY=X — 100/200 windows  avg_ret=-0.45%  profitable=31/100
+[12:53:32]     EURJPY=X — 150/200 windows  avg_ret=-0.46%  profitable=38/150
+[12:54:23]     EURJPY=X — 150/200 windows  avg_ret=-0.46%  profitable=38/150
+[12:57:05]     EURJPY=X — 200/200 windows  avg_ret=-0.32%  profitable=73/200
+[12:57:05]   ✅ EURJPY=X: avg_ret=-0.32%  sharpe=+0.095  profitable=36%  edge_vs_bah=-1.82%
+[12:57:05] 
+────────────────────────────────────────────────────────────
+[12:57:05]   GBP/JPY (GBPJPY=X)  [forex] [SAC]
+[12:57:05] ────────────────────────────────────────────────────────────
+[12:57:55]     EURJPY=X — 200/200 windows  avg_ret=-0.32%  profitable=73/200
+[12:57:55]   ✅ EURJPY=X: avg_ret=-0.32%  sharpe=+0.095  profitable=36%  edge_vs_bah=-1.82%
+[12:57:55] 
+────────────────────────────────────────────────────────────
+[12:57:55]   GBP/JPY (GBPJPY=X)  [forex] [SAC]
+[12:57:55] ────────────────────────────────────────────────────────────
+[13:00:35]     GBPJPY=X — 50/200 windows  avg_ret=+0.35%  profitable=43/50
+[13:01:26]     GBPJPY=X — 50/200 windows  avg_ret=+0.35%  profitable=43/50
+[13:03:34]     GBPJPY=X — 100/200 windows  avg_ret=+0.24%  profitable=79/100
+[13:04:07]     GBPJPY=X — 100/200 windows  avg_ret=+0.24%  profitable=79/100
+[13:05:54]     GBPJPY=X — 150/200 windows  avg_ret=+0.17%  profitable=110/150
+[13:06:28]     GBPJPY=X — 150/200 windows  avg_ret=+0.17%  profitable=110/150
+[13:08:30]     GBPJPY=X — 200/200 windows  avg_ret=+0.14%  profitable=140/200
+[13:08:30]   ✅ GBPJPY=X: avg_ret=+0.14%  sharpe=+1.266  profitable=70%  edge_vs_bah=-3.37%
+[13:08:30] 
+────────────────────────────────────────────────────────────
+[13:08:30]   AUD/NZD (AUDNZD=X)  [forex] [SAC]
+[13:08:30] ────────────────────────────────────────────────────────────
+[13:09:08]     GBPJPY=X — 200/200 windows  avg_ret=+0.14%  profitable=140/200
+[13:09:08]   ✅ GBPJPY=X: avg_ret=+0.14%  sharpe=+1.266  profitable=70%  edge_vs_bah=-3.37%
+[13:09:08] 
+────────────────────────────────────────────────────────────
+[13:09:08]   AUD/NZD (AUDNZD=X)  [forex] [SAC]
+[13:09:08] ────────────────────────────────────────────────────────────
+[13:11:13]     AUDNZD=X — 50/200 windows  avg_ret=+0.16%  profitable=44/50
+[13:11:52]     AUDNZD=X — 50/200 windows  avg_ret=+0.16%  profitable=44/50
+[13:13:56]     AUDNZD=X — 100/200 windows  avg_ret=+0.09%  profitable=75/100
+[13:14:35]     AUDNZD=X — 100/200 windows  avg_ret=+0.09%  profitable=75/100
+[13:16:39]     AUDNZD=X — 150/200 windows  avg_ret=+0.04%  profitable=86/150
+[13:17:18]     AUDNZD=X — 150/200 windows  avg_ret=+0.04%  profitable=86/150
+[13:19:55]     AUDNZD=X — 200/200 windows  avg_ret=+0.00%  profitable=95/200
+[13:19:55]   ✅ AUDNZD=X: avg_ret=+0.00%  sharpe=+0.651  profitable=48%  edge_vs_bah=+0.47%
+[13:19:55] 
+────────────────────────────────────────────────────────────
+[13:19:55]   USD/NGN (USDNGN=X)  [forex] [SAC]
+[13:19:55] ────────────────────────────────────────────────────────────
+[13:20:42]     AUDNZD=X — 200/200 windows  avg_ret=+0.00%  profitable=95/200
+[13:20:42]   ✅ AUDNZD=X: avg_ret=+0.00%  sharpe=+0.651  profitable=48%  edge_vs_bah=+0.47%
+[13:20:42] 
+────────────────────────────────────────────────────────────
+[13:20:42]   USD/NGN (USDNGN=X)  [forex] [SAC]
+[13:20:42] ────────────────────────────────────────────────────────────
+[13:23:17]     USDNGN=X — 50/200 windows  avg_ret=+22.23%  profitable=18/50
+[13:24:02]     USDNGN=X — 50/200 windows  avg_ret=+22.23%  profitable=18/50
+[13:26:35]     USDNGN=X — 100/200 windows  avg_ret=+45.74%  profitable=39/100
+[13:27:22]     USDNGN=X — 100/200 windows  avg_ret=+45.74%  profitable=39/100
+[13:29:51]     USDNGN=X — 150/200 windows  avg_ret=+45.53%  profitable=50/150
+[13:30:30]     USDNGN=X — 150/200 windows  avg_ret=+45.53%  profitable=50/150
+[13:32:14]     USDNGN=X — 200/200 windows  avg_ret=+34.36%  profitable=90/200
+[13:32:14]   ✅ USDNGN=X: avg_ret=+34.36%  sharpe=-0.047  profitable=45%  edge_vs_bah=+10.44%
+[13:32:15] 
+────────────────────────────────────────────────────────────
+[13:32:15]   EUR/NGN (EURNGN=X)  [forex] [SAC]
+[13:32:15] ────────────────────────────────────────────────────────────
+[13:32:45]     USDNGN=X — 200/200 windows  avg_ret=+34.36%  profitable=90/200
+[13:32:45]   ✅ USDNGN=X: avg_ret=+34.36%  sharpe=-0.047  profitable=45%  edge_vs_bah=+10.44%
+[13:32:45] 
+────────────────────────────────────────────────────────────
+[13:32:45]   EUR/NGN (EURNGN=X)  [forex] [SAC]
+[13:32:45] ────────────────────────────────────────────────────────────
+[13:34:35]     EURNGN=X — 50/200 windows  avg_ret=-0.42%  profitable=13/50
+[13:35:07]     EURNGN=X — 50/200 windows  avg_ret=-0.42%  profitable=13/50
+[13:36:55]     EURNGN=X — 100/200 windows  avg_ret=-0.02%  profitable=39/100
+[13:37:26]     EURNGN=X — 100/200 windows  avg_ret=-0.02%  profitable=39/100
+[13:39:14]     EURNGN=X — 150/200 windows  avg_ret=-0.18%  profitable=51/150
+[13:39:45]     EURNGN=X — 150/200 windows  avg_ret=-0.18%  profitable=51/150
+[13:41:31]     EURNGN=X — 200/200 windows  avg_ret=-0.01%  profitable=71/200
+[13:41:31]   ✅ EURNGN=X: avg_ret=-0.01%  sharpe=+0.091  profitable=36%  edge_vs_bah=-16.24%
+[13:41:31] 
+────────────────────────────────────────────────────────────
+[13:41:31]   USD/ZAR (USDZAR=X)  [forex] [SAC]
+[13:41:31] ────────────────────────────────────────────────────────────
+[13:42:04]     EURNGN=X — 200/200 windows  avg_ret=-0.01%  profitable=71/200
+[13:42:04]   ✅ EURNGN=X: avg_ret=-0.01%  sharpe=+0.091  profitable=36%  edge_vs_bah=-16.24%
+[13:42:04] 
+────────────────────────────────────────────────────────────
+[13:42:04]   USD/ZAR (USDZAR=X)  [forex] [SAC]
+[13:42:04] ────────────────────────────────────────────────────────────
+[13:44:04]     USDZAR=X — 50/200 windows  avg_ret=-0.23%  profitable=18/50
+[13:44:42]     USDZAR=X — 50/200 windows  avg_ret=-0.23%  profitable=18/50
+[13:46:47]     USDZAR=X — 100/200 windows  avg_ret=+0.20%  profitable=60/100
+[13:47:21]     USDZAR=X — 100/200 windows  avg_ret=+0.20%  profitable=60/100
+[13:49:26]     USDZAR=X — 150/200 windows  avg_ret=-0.02%  profitable=81/150
+[13:50:01]     USDZAR=X — 150/200 windows  avg_ret=-0.02%  profitable=81/150
+[13:52:07]     USDZAR=X — 200/200 windows  avg_ret=-0.18%  profitable=102/200
+[13:52:07]   ✅ USDZAR=X: avg_ret=-0.18%  sharpe=+0.171  profitable=51%  edge_vs_bah=-4.34%
+[13:52:07] 
+────────────────────────────────────────────────────────────
+[13:52:07]   USD/KES (USDKES=X)  [forex] [SAC]
+[13:52:07] ────────────────────────────────────────────────────────────
+[13:52:43]     USDZAR=X — 200/200 windows  avg_ret=-0.18%  profitable=102/200
+[13:52:43]   ✅ USDZAR=X: avg_ret=-0.18%  sharpe=+0.171  profitable=51%  edge_vs_bah=-4.34%
+[13:52:43] 
+────────────────────────────────────────────────────────────
+[13:52:43]   USD/KES (USDKES=X)  [forex] [SAC]
+[13:52:43] ────────────────────────────────────────────────────────────
+[13:54:48]     USDKES=X — 50/200 windows  avg_ret=-0.39%  profitable=13/50
+[13:55:25]     USDKES=X — 50/200 windows  avg_ret=-0.39%  profitable=13/50
+[13:57:27]     USDKES=X — 100/200 windows  avg_ret=-0.21%  profitable=31/100
+[13:58:04]     USDKES=X — 100/200 windows  avg_ret=-0.21%  profitable=31/100
+[14:00:05]     USDKES=X — 150/200 windows  avg_ret=-0.16%  profitable=38/150
+[14:00:41]     USDKES=X — 150/200 windows  avg_ret=-0.16%  profitable=38/150
+[14:02:43]     USDKES=X — 200/200 windows  avg_ret=-0.16%  profitable=55/200
+[14:02:43]   ✅ USDKES=X: avg_ret=-0.16%  sharpe=+0.045  profitable=28%  edge_vs_bah=-2.48%
+[14:02:43] 
+────────────────────────────────────────────────────────────
+[14:02:43]   USD/GHS (USDGHS=X)  [forex] [SAC]
+[14:02:43] ────────────────────────────────────────────────────────────
+[14:03:18]     USDKES=X — 200/200 windows  avg_ret=-0.16%  profitable=55/200
+[14:03:18]   ✅ USDKES=X: avg_ret=-0.16%  sharpe=+0.045  profitable=28%  edge_vs_bah=-2.48%
+[14:03:18] 
+────────────────────────────────────────────────────────────
+[14:03:18]   USD/GHS (USDGHS=X)  [forex] [SAC]
+[14:03:18] ────────────────────────────────────────────────────────────
+[14:05:20]     USDGHS=X — 50/200 windows  avg_ret=-37.01%  profitable=24/50
+[14:05:53]     USDGHS=X — 50/200 windows  avg_ret=-37.01%  profitable=24/50
+[14:07:49]     USDGHS=X — 100/200 windows  avg_ret=-17.61%  profitable=56/100
+[14:08:24]     USDGHS=X — 100/200 windows  avg_ret=-17.61%  profitable=56/100
+[14:10:12]     USDGHS=X — 150/200 windows  avg_ret=-16.26%  profitable=76/150
+[14:10:43]     USDGHS=X — 150/200 windows  avg_ret=-16.26%  profitable=76/150
+[14:12:32]     USDGHS=X — 200/200 windows  avg_ret=-11.88%  profitable=110/200
+[14:12:32]   ✅ USDGHS=X: avg_ret=-11.88%  sharpe=+0.781  profitable=55%  edge_vs_bah=-29.42%
+[14:12:32] 
+────────────────────────────────────────────────────────────
+[14:12:32]   Gold (GC=F)  [commodity] [SAC]
+[14:12:32] ────────────────────────────────────────────────────────────
+[14:13:02]     USDGHS=X — 200/200 windows  avg_ret=-11.88%  profitable=110/200
+[14:13:02]   ✅ USDGHS=X: avg_ret=-11.88%  sharpe=+0.781  profitable=55%  edge_vs_bah=-29.42%
+[14:13:02] 
+────────────────────────────────────────────────────────────
+[14:13:02]   Gold (GC=F)  [commodity] [SAC]
+[14:13:02] ────────────────────────────────────────────────────────────
+[14:14:49]     GC=F — 50/200 windows  avg_ret=+0.79%  profitable=47/50
+[14:15:19]     GC=F — 50/200 windows  avg_ret=+0.79%  profitable=47/50
+[14:17:05]     GC=F — 100/200 windows  avg_ret=+0.51%  profitable=81/100
+[14:17:35]     GC=F — 100/200 windows  avg_ret=+0.51%  profitable=81/100
+[14:19:22]     GC=F — 150/200 windows  avg_ret=+0.41%  profitable=117/150
+[14:19:52]     GC=F — 150/200 windows  avg_ret=+0.41%  profitable=117/150
+[14:21:39]     GC=F — 200/200 windows  avg_ret=+0.37%  profitable=154/200
+[14:21:39]   ✅ GC=F: avg_ret=+0.37%  sharpe=+1.727  profitable=77%  edge_vs_bah=-10.21%
+[14:21:39] 
+────────────────────────────────────────────────────────────
+[14:21:39]   Silver (SI=F)  [commodity] [SAC]
+[14:21:39] ────────────────────────────────────────────────────────────
+[14:22:09]     GC=F — 200/200 windows  avg_ret=+0.37%  profitable=154/200
+[14:22:09]   ✅ GC=F: avg_ret=+0.37%  sharpe=+1.727  profitable=77%  edge_vs_bah=-10.21%
+[14:22:09] 
+────────────────────────────────────────────────────────────
+[14:22:09]   Silver (SI=F)  [commodity] [SAC]
+[14:22:09] ────────────────────────────────────────────────────────────
+[14:23:56]     SI=F — 50/200 windows  avg_ret=+1.42%  profitable=50/50
+[14:24:26]     SI=F — 50/200 windows  avg_ret=+1.42%  profitable=50/50
+[14:26:13]     SI=F — 100/200 windows  avg_ret=+1.03%  profitable=84/100
+[14:26:44]     SI=F — 100/200 windows  avg_ret=+1.03%  profitable=84/100
+[14:28:30]     SI=F — 150/200 windows  avg_ret=+0.67%  profitable=101/150
+[14:29:00]     SI=F — 150/200 windows  avg_ret=+0.67%  profitable=101/150
+[14:30:47]     SI=F — 200/200 windows  avg_ret=+0.54%  profitable=129/200
+[14:30:47]   ✅ SI=F: avg_ret=+0.54%  sharpe=+1.136  profitable=64%  edge_vs_bah=-12.97%
+[14:30:47] 
+────────────────────────────────────────────────────────────
+[14:30:47]   Crude Oil (CL=F)  [commodity] [SAC]
+[14:30:47] ────────────────────────────────────────────────────────────
+[14:31:18]     SI=F — 200/200 windows  avg_ret=+0.54%  profitable=129/200
+[14:31:18]   ✅ SI=F: avg_ret=+0.54%  sharpe=+1.136  profitable=64%  edge_vs_bah=-12.97%
+[14:31:19] 
+────────────────────────────────────────────────────────────
+[14:31:19]   Crude Oil (CL=F)  [commodity] [SAC]
+[14:31:19] ────────────────────────────────────────────────────────────
+[14:33:04]     CL=F — 50/200 windows  avg_ret=+1.25%  profitable=48/50
+[14:33:34]     CL=F — 50/200 windows  avg_ret=+1.25%  profitable=48/50
+[14:35:25]     CL=F — 100/200 windows  avg_ret=+0.68%  profitable=82/100
+[14:35:55]     CL=F — 100/200 windows  avg_ret=+0.68%  profitable=82/100
+[14:37:38]     CL=F — 150/200 windows  avg_ret=+0.07%  profitable=113/150
+[14:38:09]     CL=F — 150/200 windows  avg_ret=+0.07%  profitable=113/150
+[14:39:54]     CL=F — 200/200 windows  avg_ret=+0.11%  profitable=143/200
+[14:39:54]   ✅ CL=F: avg_ret=+0.11%  sharpe=+1.260  profitable=72%  edge_vs_bah=-6.76%
+[14:39:54] 
+────────────────────────────────────────────────────────────
+[14:39:54]   Natural Gas (NG=F)  [commodity] [SAC]
+[14:39:54] ────────────────────────────────────────────────────────────
+[14:40:24]     CL=F — 200/200 windows  avg_ret=+0.11%  profitable=143/200
+[14:40:24]   ✅ CL=F: avg_ret=+0.11%  sharpe=+1.260  profitable=72%  edge_vs_bah=-6.76%
+[14:40:24] 
+────────────────────────────────────────────────────────────
+[14:40:24]   Natural Gas (NG=F)  [commodity] [SAC]
+[14:40:24] ────────────────────────────────────────────────────────────
+[14:42:08]     NG=F — 50/200 windows  avg_ret=+2.59%  profitable=48/50
+[14:42:39]     NG=F — 50/200 windows  avg_ret=+2.59%  profitable=48/50
+[14:44:26]     NG=F — 100/200 windows  avg_ret=+1.90%  profitable=90/100
+[14:44:55]     NG=F — 100/200 windows  avg_ret=+1.90%  profitable=90/100
+[14:46:40]     NG=F — 150/200 windows  avg_ret=+1.51%  profitable=125/150
+[14:47:09]     NG=F — 150/200 windows  avg_ret=+1.51%  profitable=125/150
+[14:48:54]     NG=F — 200/200 windows  avg_ret=+1.14%  profitable=149/200
+[14:48:54]   ✅ NG=F: avg_ret=+1.14%  sharpe=+1.452  profitable=74%  edge_vs_bah=-6.82%
+[14:48:54] 
+────────────────────────────────────────────────────────────
+[14:48:54]   Copper (HG=F)  [commodity] [SAC]
+[14:48:54] ────────────────────────────────────────────────────────────
+[14:49:26]     NG=F — 200/200 windows  avg_ret=+1.14%  profitable=149/200
+[14:49:26]   ✅ NG=F: avg_ret=+1.14%  sharpe=+1.452  profitable=74%  edge_vs_bah=-6.82%
+[14:49:26] 
+────────────────────────────────────────────────────────────
+[14:49:26]   Copper (HG=F)  [commodity] [SAC]
+[14:49:26] ────────────────────────────────────────────────────────────
+[14:51:21]     HG=F — 50/200 windows  avg_ret=+0.59%  profitable=30/50
+[14:51:55]     HG=F — 50/200 windows  avg_ret=+0.59%  profitable=30/50
+[14:53:53]     HG=F — 100/200 windows  avg_ret=+0.35%  profitable=58/100
+[14:54:26]     HG=F — 100/200 windows  avg_ret=+0.35%  profitable=58/100
+[14:56:24]     HG=F — 150/200 windows  avg_ret=+0.13%  profitable=75/150
+[14:56:57]     HG=F — 150/200 windows  avg_ret=+0.13%  profitable=75/150
+[14:58:55]     HG=F — 200/200 windows  avg_ret=+0.21%  profitable=108/200
+[14:58:55]   ✅ HG=F: avg_ret=+0.21%  sharpe=+0.459  profitable=54%  edge_vs_bah=-7.12%
+[14:58:55] 
+────────────────────────────────────────────────────────────
+[14:58:55]   Wheat (ZW=F)  [commodity] [SAC]
+[14:58:55] ────────────────────────────────────────────────────────────
+[14:59:29]     HG=F — 200/200 windows  avg_ret=+0.21%  profitable=108/200
+[14:59:29]   ✅ HG=F: avg_ret=+0.21%  sharpe=+0.459  profitable=54%  edge_vs_bah=-7.12%
+[14:59:29] 
+────────────────────────────────────────────────────────────
+[14:59:29]   Wheat (ZW=F)  [commodity] [SAC]
+[14:59:29] ────────────────────────────────────────────────────────────
+[15:01:27]     ZW=F — 50/200 windows  avg_ret=+1.77%  profitable=49/50
+[15:02:00]     ZW=F — 50/200 windows  avg_ret=+1.77%  profitable=49/50
+[15:03:58]     ZW=F — 100/200 windows  avg_ret=+1.00%  profitable=83/100
+[15:04:31]     ZW=F — 100/200 windows  avg_ret=+1.00%  profitable=83/100
+[15:06:29]     ZW=F — 150/200 windows  avg_ret=+0.71%  profitable=119/150
+[15:07:02]     ZW=F — 150/200 windows  avg_ret=+0.71%  profitable=119/150
+[15:08:59]     ZW=F — 200/200 windows  avg_ret=+0.47%  profitable=133/200
+[15:08:59]   ✅ ZW=F: avg_ret=+0.47%  sharpe=+1.156  profitable=66%  edge_vs_bah=-3.29%
+[15:08:59] 
+────────────────────────────────────────────────────────────
+[15:08:59]   Corn (ZC=F)  [commodity] [SAC]
+[15:08:59] ────────────────────────────────────────────────────────────
+[15:09:32]     ZW=F — 200/200 windows  avg_ret=+0.47%  profitable=133/200
+[15:09:32]   ✅ ZW=F: avg_ret=+0.47%  sharpe=+1.156  profitable=66%  edge_vs_bah=-3.29%
+[15:09:32] 
+────────────────────────────────────────────────────────────
+[15:09:32]   Corn (ZC=F)  [commodity] [SAC]
+[15:09:32] ────────────────────────────────────────────────────────────
+[15:11:31]     ZC=F — 50/200 windows  avg_ret=+1.49%  profitable=43/50
+[15:12:04]     ZC=F — 50/200 windows  avg_ret=+1.49%  profitable=43/50
+[15:14:03]     ZC=F — 100/200 windows  avg_ret=+0.69%  profitable=62/100
+[15:14:37]     ZC=F — 100/200 windows  avg_ret=+0.69%  profitable=62/100
+[15:16:35]     ZC=F — 150/200 windows  avg_ret=+0.18%  profitable=68/150
+[15:17:09]     ZC=F — 150/200 windows  avg_ret=+0.18%  profitable=68/150
+[15:19:08]     ZC=F — 200/200 windows  avg_ret=+0.22%  profitable=98/200
+[15:19:08]   ✅ ZC=F: avg_ret=+0.22%  sharpe=+0.406  profitable=49%  edge_vs_bah=-8.21%
+[15:19:08] 
+=================================================================
+[15:19:08]   VALIDATION COMPLETE
+[15:19:08]   Finished: 2026-03-27 15:19:08
+[15:19:08]   Assets validated: 38
+[15:19:08] =================================================================
+[15:19:08] 
+  EQUITY (11 assets):
+[15:19:08]     Avg return:     +0.84%
+[15:19:08]     Avg Sharpe:     +1.157
+[15:19:08]     Profitable:     76% of windows
+[15:19:08]     Edge vs B&H:    -29.85%
+[15:19:08] 
+  CRYPTO (4 assets):
+[15:19:08]     Avg return:     +1.99%
+[15:19:08]     Avg Sharpe:     +1.157
+[15:19:08]     Profitable:     42% of windows
+[15:19:08]     Edge vs B&H:    -94.74%
+[15:19:08] 
+  COMMODITY (7 assets):
+[15:19:08]     Avg return:     +0.44%
+[15:19:08]     Avg Sharpe:     +1.085
+[15:19:08]     Profitable:     65% of windows
+[15:19:08]     Edge vs B&H:    -7.91%
+[15:19:08] 
+  FOREX (16 assets):
+[15:19:08]     Avg return:     +1.39%
+[15:19:08]     Avg Sharpe:     +0.599
+[15:19:08]     Profitable:     48% of windows
+[15:19:08]     Edge vs B&H:    -3.00%
+[15:19:08] 
+  OVERALL (38 assets, 200 windows each):
+[15:19:08]     Avg return:     +1.12%
+[15:19:08]     Avg Sharpe:     +0.909
+[15:19:08]     Profitable:     59% of windows
+[15:19:08]     Edge vs B&H:    -21.34%
+[15:19:08] 
+  Top 5 by Sharpe:
+[15:19:08]     XRP-USD      sharpe=+3.244  ret=+4.09%  profitable=80%
+[15:19:08]     AMZN         sharpe=+1.888  ret=+1.28%  profitable=92%
+[15:19:08]     GC=F         sharpe=+1.727  ret=+0.37%  profitable=77%
+[15:19:08]     GBPUSD=X     sharpe=+1.582  ret=+0.08%  profitable=61%
+[15:19:08]     META         sharpe=+1.518  ret=+0.71%  profitable=84%
+[15:19:08] 
+  Bottom 5 by Sharpe:
+[15:19:08]     EURNGN=X     sharpe=+0.091  ret=-0.01%  profitable=36%
+[15:19:08]     USDKES=X     sharpe=+0.045  ret=-0.16%  profitable=28%
+[15:19:08]     ETH-USD      sharpe=+0.000  ret=+0.00%  profitable=0%
+[15:19:08]     BNB-USD      sharpe=+0.000  ret=+0.00%  profitable=0%
+[15:19:08]     USDNGN=X     sharpe=-0.047  ret=+34.36%  profitable=45%
+[15:19:08] 
+  Full results → data/output/robust_validation_results.json
+[15:19:08]   Log         → data/output/robust_validation_log.txt
+[15:19:34]     ZC=F — 200/200 windows  avg_ret=+0.22%  profitable=98/200
+[15:19:34]   ✅ ZC=F: avg_ret=+0.22%  sharpe=+0.406  profitable=49%  edge_vs_bah=-8.21%
+[15:19:34] 
+=================================================================
+[15:19:34]   VALIDATION COMPLETE
+[15:19:34]   Finished: 2026-03-27 15:19:34
+[15:19:34]   Assets validated: 38
+[15:19:34] =================================================================
+[15:19:34] 
+  EQUITY (11 assets):
+[15:19:34]     Avg return:     +0.84%
+[15:19:34]     Avg Sharpe:     +1.156
+[15:19:34]     Profitable:     76% of windows
+[15:19:34]     Edge vs B&H:    -29.85%
+[15:19:34] 
+  CRYPTO (4 assets):
+[15:19:34]     Avg return:     +1.99%
+[15:19:34]     Avg Sharpe:     +1.157
+[15:19:34]     Profitable:     42% of windows
+[15:19:34]     Edge vs B&H:    -94.74%
+[15:19:34] 
+  COMMODITY (7 assets):
+[15:19:34]     Avg return:     +0.44%
+[15:19:34]     Avg Sharpe:     +1.085
+[15:19:34]     Profitable:     65% of windows
+[15:19:34]     Edge vs B&H:    -7.91%
+[15:19:34] 
+  FOREX (16 assets):
+[15:19:34]     Avg return:     +1.39%
+[15:19:34]     Avg Sharpe:     +0.599
+[15:19:34]     Profitable:     48% of windows
+[15:19:34]     Edge vs B&H:    -3.00%
+[15:19:34] 
+  OVERALL (38 assets, 200 windows each):
+[15:19:34]     Avg return:     +1.12%
+[15:19:34]     Avg Sharpe:     +0.909
+[15:19:34]     Profitable:     59% of windows
+[15:19:34]     Edge vs B&H:    -21.34%
+[15:19:34] 
+  Top 5 by Sharpe:
+[15:19:34]     XRP-USD      sharpe=+3.244  ret=+4.09%  profitable=80%
+[15:19:34]     AMZN         sharpe=+1.888  ret=+1.28%  profitable=92%
+[15:19:34]     GC=F         sharpe=+1.727  ret=+0.37%  profitable=77%
+[15:19:34]     GBPUSD=X     sharpe=+1.582  ret=+0.08%  profitable=61%
+[15:19:34]     META         sharpe=+1.518  ret=+0.71%  profitable=84%
+[15:19:34] 
+  Bottom 5 by Sharpe:
+[15:19:34]     EURNGN=X     sharpe=+0.091  ret=-0.01%  profitable=36%
+[15:19:34]     USDKES=X     sharpe=+0.045  ret=-0.16%  profitable=28%
+[15:19:34]     ETH-USD      sharpe=+0.000  ret=+0.00%  profitable=0%
+[15:19:34]     BNB-USD      sharpe=+0.000  ret=+0.00%  profitable=0%
+[15:19:34]     USDNGN=X     sharpe=-0.047  ret=+34.36%  profitable=45%
+[15:19:34] 
+  Full results → data/output/robust_validation_results.json
+[15:19:34]   Log         → data/output/robust_validation_log.txt

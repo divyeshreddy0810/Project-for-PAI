@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-03-11T16:42:11.523424",
+  "assets": [
+    {
+      "index": 1,
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "type": "index"
+    }
+  ],
+  "symbols": [
+    "^GSPC"
+  ],
+  "window": "3mo",
+  "from_date": "2025-12-11",
+  "to_date": "2026-03-11",
+  "from_date_iso": "2025-12-11T16:42:11.523361",
+  "to_date_iso": "2026-03-11T16:42:11.523361"
+}

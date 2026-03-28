@@ -1,0 +1,592 @@
+======================================================================
+  REGIME STRESS TEST — 52-WEEK WINDOWS
+  $100,000 starting capital per window
+  UNSEEN data — random periods from full history
+======================================================================
+
+=================================================================
+  S&P 500 (^GSPC)
+=================================================================
+  Full data: 5591 rows
+  ⚠️  Too few sequences (16) — skipping
+  🔮 Generating PatchTST predictions for 100 timesteps...
+  ✅ PatchTST predictions: 0/100 timesteps
+  📊 Fetching macro features...
+  ✅ VIX: 5591 rows  range: 9.1-82.7
+  ✅ Interest rate: 5586 rows  range: -0.10%-5.35%
+  ✅ Macro regime (^GSPC): 5591 rows  bull: 75% of time
+  💾 Macro features cached → data/cache/macro_features_default.csv
+  ✅ Sentiment (live): mean=0.536  trend=-0.0154  assets=5
+  ✅ Sentiment (finbert): None mean=0.536
+  ✅ Macro signals: shape=(100, 4)  VIX_mean=0.236  Rate_mean=0.084
+
+  ── BULL regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2013-12-06 → 2014-12-17 (BULL +11.5%) | Agent: -11.4% Sharpe:-1.00 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2016-05-25 → 2017-06-06 (BULL +16.2%) | Agent: -12.3% Sharpe:-2.16 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2006-04-24 → 2007-05-04 (BULL +15.1%) | Agent: -16.9% Sharpe:-1.83 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2010-03-16 → 2011-03-24 (BULL +13.0%) | Agent: -13.9% Sharpe:-0.74 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2020-12-03 → 2021-12-14 (BULL +26.4%) | Agent: -18.5% Sharpe:-1.91 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -1.528  Avg Return: -14.6%  Avg DD: -19.5%  Positive: 0/5
+
+  ── BEAR regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2008-08-12 → 2009-08-21 (BEAR -20.4%) | Agent:  +3.2% Sharpe:+0.29 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2021-10-19 → 2022-10-28 (BEAR -13.7%) | Agent: +12.6% Sharpe:+0.63 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2007-08-01 → 2008-08-11 (BEAR -10.9%) | Agent: +11.5% Sharpe:+0.66 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-03-08 → 2020-03-18 (BEAR -12.6%) | Agent: -14.2% Sharpe:-0.44 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-01-20 → 2016-01-29 (BEAR  -4.1%) | Agent:  +4.0% Sharpe:+0.33 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +0.294  Avg Return: +3.4%  Avg DD: -21.5%  Positive: 4/5
+
+  ── RANDOM regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-07-31 → 2020-08-10 (BULL +12.8%) | Agent: -22.1% Sharpe:-0.59 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2004-04-28 → 2005-05-09 (MIXED  +5.0%) | Agent:  -6.5% Sharpe:-0.61 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2013-12-06 → 2014-12-17 (BULL +11.5%) | Agent: -13.0% Sharpe:-1.17 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2017-02-10 → 2018-02-22 (BULL +16.7%) | Agent:  -5.2% Sharpe:-0.64 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-05-14 → 2016-05-24 (MIXED  -2.1%) | Agent:  -8.5% Sharpe:-0.55 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -0.712  Avg Return: -11.1%  Avg DD: -18.1%  Positive: 0/5
+
+=================================================================
+  Bitcoin (BTC-USD)
+=================================================================
+  Full data: 4207 rows
+  ⚠️  Too few sequences (16) — skipping
+  🔮 Generating PatchTST predictions for 100 timesteps...
+  ✅ PatchTST predictions: 0/100 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (live): mean=0.536  trend=-0.0154  assets=5
+  ✅ Sentiment (finbert): None mean=0.536
+  ✅ Macro signals: shape=(100, 4)  VIX_mean=0.236  Rate_mean=0.084
+
+  ── BULL regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2023-08-01 → 2024-04-16 (BULL +115.0%) | Agent: +115.3% Sharpe:+2.02 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-08-03 → 2016-04-18 (BULL +52.4%) | Agent: +52.4% Sharpe:+1.08 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2021-01-23 → 2021-10-09 (BULL +71.4%) | Agent: +41.1% Sharpe:+0.83 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2016-01-30 → 2016-10-15 (BULL +68.8%) | Agent: +48.3% Sharpe:+1.20 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-11-30 → 2020-08-15 (BULL +56.8%) | Agent: +58.1% Sharpe:+1.05 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +1.236  Avg Return: +63.1%  Avg DD: -35.7%  Positive: 5/5
+
+  ── BEAR regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2018-04-09 → 2018-12-24 (BEAR -39.8%) | Agent: -50.2% Sharpe:-1.43 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2022-02-27 → 2022-11-13 (BEAR -56.6%) | Agent: -52.3% Sharpe:-2.63 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2021-08-11 → 2022-04-27 (BEAR -13.9%) | Agent: -14.0% Sharpe:-0.01 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2017-05-24 → 2018-02-07 (BEAR +211.9%) | Agent: +211.6% Sharpe:+1.65 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-03-15 → 2019-11-29 (BEAR +95.9%) | Agent: +133.6% Sharpe:+1.64 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -0.155  Avg Return: +45.7%  Avg DD: -51.9%  Positive: 2/5
+
+  ── RANDOM regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2018-10-26 → 2019-07-12 (BULL +82.5%) | Agent: -50.0% Sharpe:-4.96 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2018-03-20 → 2018-12-04 (BEAR -55.6%) | Agent: -50.0% Sharpe:-1.12 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2024-01-28 → 2024-10-13 (MIXED +49.5%) | Agent: +140.5% Sharpe:+2.15 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2017-03-25 → 2017-12-09 (BULL +1460.3%) | Agent: +1401.6% Sharpe:+3.76 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-08-02 → 2020-04-17 (BEAR -32.5%) | Agent: -54.6% Sharpe:-1.13 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -0.261  Avg Return: +277.5%  Avg DD: -43.2%  Positive: 2/5
+
+=================================================================
+  Gold (GC=F)
+=================================================================
+  Full data: 5583 rows
+  ⚠️  Too few sequences (16) — skipping
+  🔮 Generating PatchTST predictions for 100 timesteps...
+  ✅ PatchTST predictions: 0/100 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (live): mean=0.536  trend=-0.0154  assets=5
+  ✅ Sentiment (finbert): None mean=0.536
+  ✅ Macro signals: shape=(100, 4)  VIX_mean=0.236  Rate_mean=0.084
+
+  ── BULL regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-11-07 → 2020-11-17 (BULL +28.7%) | Agent: +28.6% Sharpe:+1.29 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2009-06-09 → 2010-06-18 (BULL +31.8%) | Agent: +33.6% Sharpe:+1.78 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2004-03-03 → 2005-03-16 (BULL +13.1%) | Agent: +13.0% Sharpe:+0.88 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-08-19 → 2016-08-29 (BULL +17.3%) | Agent: +14.6% Sharpe:+0.90 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-04-22 → 2020-04-30 (BULL +32.2%) | Agent: +32.5% Sharpe:+1.58 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +1.284  Avg Return: +24.4%  Avg DD: -12.2%  Positive: 5/5
+
+  ── BEAR regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2013-09-23 → 2014-10-02 (BEAR  -8.5%) | Agent:  -7.8% Sharpe:-0.46 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-11-12 → 2016-11-25 (BEAR  +9.0%) | Agent:  +8.9% Sharpe:+0.59 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2014-12-01 → 2015-12-10 (BEAR -11.9%) | Agent:  -9.9% Sharpe:-0.62 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2021-07-12 → 2022-07-21 (BEAR  -5.1%) | Agent:  -5.4% Sharpe:-0.30 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2007-11-05 → 2008-11-13 (BEAR -12.8%) | Agent: -14.5% Sharpe:-0.42 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -0.243  Avg Return: -5.8%  Avg DD: -18.3%  Positive: 1/5
+
+  ── RANDOM regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2020-10-21 → 2021-11-01 (MIXED  -6.7%) | Agent:  -7.8% Sharpe:-0.43 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2021-12-30 → 2023-01-11 (MIXED  +3.4%) | Agent:  +2.5% Sharpe:+0.23 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2023-09-01 → 2024-09-13 (BULL +33.1%) | Agent: +33.9% Sharpe:+2.08 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2013-09-23 → 2014-10-02 (BEAR  -8.5%) | Agent:  -7.8% Sharpe:-0.46 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2009-09-02 → 2010-09-14 (BULL +30.0%) | Agent: +27.4% Sharpe:+1.53 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +0.589  Avg Return: +9.6%  Avg DD: -13.4%  Positive: 3/5
+
+=================================================================
+  NASDAQ (^IXIC)
+=================================================================
+  Full data: 5591 rows
+  ⚠️  Too few sequences (16) — skipping
+  🔮 Generating PatchTST predictions for 100 timesteps...
+  ✅ PatchTST predictions: 0/100 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (live): mean=0.536  trend=-0.0154  assets=5
+  ✅ Sentiment (finbert): None mean=0.536
+  ✅ Macro signals: shape=(100, 4)  VIX_mean=0.236  Rate_mean=0.084
+
+  ── BULL regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2011-08-17 → 2012-08-27 (BULL +22.4%) | Agent: +22.2% Sharpe:+1.00 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2013-11-07 → 2014-11-18 (BULL +21.9%) | Agent: +21.8% Sharpe:+1.48 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2017-10-27 → 2018-11-07 (BULL +13.0%) | Agent: +12.9% Sharpe:+0.77 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-02-07 → 2020-02-19 (BULL +34.7%) | Agent: +34.6% Sharpe:+2.07 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2014-11-19 → 2015-12-01 (BULL +10.3%) | Agent: +10.2% Sharpe:+0.66 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +1.194  Avg Return: +20.3%  Avg DD: -11.5%  Positive: 5/5
+
+  ── BEAR regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2008-04-18 → 2009-04-29 (BEAR -28.8%) | Agent: -28.8% Sharpe:-0.52 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2021-10-19 → 2022-10-28 (BEAR -26.6%) | Agent: -26.7% Sharpe:-0.85 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2007-02-08 → 2008-02-20 (BEAR  -6.5%) | Agent:  -6.6% Sharpe:-0.25 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2007-08-29 → 2008-09-09 (BEAR -13.8%) | Agent: -13.9% Sharpe:-0.52 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-03-08 → 2020-03-18 (BEAR  -5.6%) | Agent:  -5.7% Sharpe:-0.06 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -0.442  Avg Return: -16.3%  Avg DD: -32.0%  Positive: 0/5
+
+  ── RANDOM regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2006-12-08 → 2007-12-20 (MIXED  +8.3%) | Agent:  +8.2% Sharpe:+0.54 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2022-11-29 → 2023-12-11 (BULL +31.4%) | Agent: +31.3% Sharpe:+1.52 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2019-08-28 → 2020-09-08 (BULL +38.1%) | Agent: +37.9% Sharpe:+1.10 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-09-08 → 2016-09-16 (MIXED  +9.0%) | Agent:  +8.9% Sharpe:+0.57 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2004-11-16 → 2005-11-25 (MIXED  +8.9%) | Agent:  +8.8% Sharpe:+0.71 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +0.887  Avg Return: +19.0%  Avg DD: -16.7%  Positive: 5/5
+
+=================================================================
+  EUR/USD (EURUSD=X)
+=================================================================
+  Full data: 5765 rows
+  ⚠️  Too few sequences (16) — skipping
+  🔮 Generating PatchTST predictions for 100 timesteps...
+  ✅ PatchTST predictions: 0/100 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (live): mean=0.536  trend=-0.0154  assets=5
+  ✅ Sentiment (finbert): None mean=0.536
+  ✅ Macro signals: shape=(100, 4)  VIX_mean=0.236  Rate_mean=0.084
+
+  ── BULL regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2007-07-16 → 2008-07-21 (BULL +15.5%) | Agent: +16.0% Sharpe:+0.97 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2006-01-02 → 2006-12-29 (BULL +11.7%) | Agent: +12.1% Sharpe:+1.52 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2010-06-16 → 2011-06-14 (BULL +17.1%) | Agent: +25.1% Sharpe:+1.97 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2017-01-20 → 2018-01-22 (BULL +15.0%) | Agent: +12.3% Sharpe:+1.59 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2006-07-17 → 2007-07-13 (BULL +10.1%) | Agent: +10.0% Sharpe:+1.63 | Agent ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: +1.538  Avg Return: +15.1%  Avg DD: -5.1%  Positive: 5/5
+
+  ── BEAR regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2009-03-25 → 2010-03-23 (BEAR  -0.8%) | Agent:  +0.8% Sharpe:+0.13 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-12-25 → 2016-12-22 (BEAR  -4.9%) | Agent:  -6.1% Sharpe:-0.70 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2013-12-27 → 2014-12-25 (BEAR -10.9%) | Agent: -12.8% Sharpe:-2.11 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2007-10-09 → 2008-11-04 (BEAR  -8.0%) | Agent:  -8.8% Sharpe:-0.25 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2004-11-05 → 2005-11-04 (BEAR  -8.9%) | Agent: -10.2% Sharpe:-1.12 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -0.810  Avg Return: -7.4%  Avg DD: -13.2%  Positive: 1/5
+
+  ── RANDOM regime periods ──────────────
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2022-06-08 → 2023-06-06 (MIXED  +0.1%) | Agent: -18.0% Sharpe:-1.96 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2018-12-25 → 2019-12-24 (MIXED  -2.7%) | Agent:  -2.3% Sharpe:-0.41 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2023-11-22 → 2024-11-19 (MIXED  -3.0%) | Agent:  -1.8% Sharpe:-0.27 | Rule  ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2015-12-25 → 2016-12-22 (BEAR  -4.9%) | Agent:  -3.9% Sharpe:-0.43 | Agent ✅
+  🔮 Generating PatchTST predictions for 260 timesteps...
+  ✅ PatchTST predictions: 181/260 timesteps
+  📂 Loaded macro features from cache (5591 rows)
+  ✅ Sentiment (proxy): 260 timesteps  mean=0.502  range=0.004-1.000
+  ✅ Macro signals: shape=(260, 4)  VIX_mean=0.236  Rate_mean=0.082
+  2014-04-18 → 2015-04-16 (BEAR -22.7%) | Agent: -22.1% Sharpe:-2.58 | Rule  ✅
+  ───────────────────────────────────────────────────────
+  Avg Sharpe: -1.131  Avg Return: -9.6%  Avg DD: -13.1%  Positive: 0/5
+
+======================================================================
+  STRESS TEST SUMMARY
+======================================================================
+  Asset          BULL Sh   BEAR Sh   RANDOM Sh    Best regime
+  ────────────────────────────────────────────────────────────
+  S&P 500        -1.528    +0.294      -0.712            BEAR
+  Bitcoin        +1.236    -0.155      -0.261            BULL
+  Gold           +1.284    -0.243      +0.589            BULL
+  NASDAQ         +1.194    -0.442      +0.887            BULL
+  EUR/USD        +1.538    -0.810      -1.131            BULL
+
+  💾 Saved → data/output/stress_test_results.json

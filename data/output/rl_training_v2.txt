@@ -1,0 +1,63 @@
+=================================================================
+  PPO RL AGENT vs RULE-BASED TRADER
+  Train: 70% data  Test: last 30%
+=================================================================
+
+── S&P 500 (^GSPC) ──────────────────────────
+  Data: 2570 rows
+  🤖 Training PPO on cuda...
+  State dim: 13  Actions: 3
+  Episodes: 200  Steps/ep: 256
+    Ep  50/200  return=+47.92%  sharpe=+0.38  trades=49
+    Ep 100/200  return=+71.24%  sharpe=+0.49  trades=59
+    Ep 150/200  return=+72.71%  sharpe=+0.49  trades=79
+    Ep 200/200  return=+76.93%  sharpe=+0.51  trades=73
+  ✅ PPO trained  best_sharpe=0.958
+  💾 PPO agent saved → data/models/ppo_GSPC.pt
+
+  TEST RESULTS (S&P 500):
+  PPO             return=+0.00%  sharpe=+0.00  dd=0.00%
+  Rule-Based      return=-3.74%  sharpe=-0.21  dd=-9.23%
+
+── Bitcoin (BTC-USD) ──────────────────────────
+  Data: 3736 rows
+  🤖 Training PPO on cuda...
+  State dim: 13  Actions: 3
+  Episodes: 200  Steps/ep: 256
+    Ep  50/200  return=+10474.60%  sharpe=+1.04  trades=39
+    Ep 100/200  return=+4659.26%  sharpe=+0.92  trades=9
+    Ep 150/200  return=+290.25%  sharpe=+0.52  trades=327
+    Ep 200/200  return=+6408.92%  sharpe=+0.97  trades=33
+  ✅ PPO trained  best_sharpe=1.116
+  💾 PPO agent saved → data/models/ppo_BTC_USD.pt
+
+  TEST RESULTS (Bitcoin):
+  PPO             return=+217.56%  sharpe=+0.85  dd=-49.74%
+  Rule-Based      return=-71.49%  sharpe=-0.58  dd=-75.13%
+
+── Gold (GC=F) ──────────────────────────
+  Data: 2569 rows
+  🤖 Training PPO on cuda...
+  State dim: 13  Actions: 3
+  Episodes: 200  Steps/ep: 256
+    Ep  50/200  return=+34.92%  sharpe=+0.36  trades=13
+    Ep 100/200  return=-10.30%  sharpe=-0.03  trades=165
+    Ep 150/200  return=+7.78%  sharpe=+0.14  trades=181
+    Ep 200/200  return=+50.07%  sharpe=+0.46  trades=39
+  ✅ PPO trained  best_sharpe=0.769
+  💾 PPO agent saved → data/models/ppo_GC=F.pt
+
+  TEST RESULTS (Gold):
+  PPO             return=+139.15%  sharpe=+1.56  dd=-17.28%
+  Rule-Based      return=+65.29%  sharpe=+1.12  dd=-17.28%
+
+=================================================================
+  FINAL SUMMARY
+=================================================================
+  Asset          PPO Return  Rule Return   PPO Sharpe     Winner
+  ────────────────────────────────────────────────────────────
+  S&P 500           +0.00%       -3.74%        +0.00  PPO ✅
+  Bitcoin         +217.56%      -71.49%        +0.85  PPO ✅
+  Gold            +139.15%      +65.29%        +1.56  PPO ✅
+
+  PPO wins: 3/3

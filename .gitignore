@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+venv/
+.env
+
+# LibreOffice locks
+.~lock.*
+
+# Generated outputs — too large / not needed
+data/output/*.json
+data/output/*.csv
+data/cache/*.json
+data/cache/*.csv
+data/logs/*.json
+scripts/data/
+
+# Scratch files
+project_complete_contents.txt
+project_contents.txt
+dataset_info.txt
+read_project.py
+run_full_comparison.py
+scripts/run_full_comparison.py
+
+# NCI submission docs (not for repo)
+PAI_report.docx
+PAI_report.pdf
+PAI_Results_Sections_III_B_C_D.docx
+DOCS/
+
+# Keep .gitkeep files
+!data/output/.gitkeep
+!data/cache/.gitkeep
+!data/logs/.gitkeep
+!data/models/
