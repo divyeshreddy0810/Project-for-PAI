@@ -233,6 +233,193 @@ Project-for-PAI/
 
 ---
 
+
+---
+
+## Training Guide — Full Context for Anyone Picking Up This Project
+
+### Hardware Used (Original Training)
+- **Machine**: Taiwo's laptop — NVIDIA GeForce RTX 3050 (6GB VRAM), 20-core CPU, 16GB RAM
+- **OS**: Ubuntu 24, Python 3.11, CUDA 12.8
+- **Training time**: ~8 hours total for all 39 assets (first full run)
+- **Per asset**: ~8-12 minutes (PatchTST ~5 min + RL agent ~3-7 min)
+
+---
+
+### What Was Trained and Why
+
+The system has **three types of models** — all must be trained before the daily advisor works:
+
+| Model Type | Files saved | Trained on | Time |
+|-----------|-------------|-----------|------|
+| PatchTST (39 files) | `data/models/patchtst_*.pt` | Each asset individually, 2004–2024 | ~5 min/asset |
+| SAC/PPO RL agents (39 files) | `data/models/sac_*.pt` / `ppo_*.pt` | Each asset individually, 150-300 episodes | ~3-7 min/asset |
+| HMM regime (4 files) | `data/models/hmm_*.pkl` | Per asset class (equity/crypto/commodity/forex) | ~1 min total |
+
+**Total: 82 model files** in `data/models/`
+
+---
+
+### Issues We Encountered During Training
+
+| Issue | What happened | How we fixed it |
+|-------|--------------|-----------------|
+| ETH/BNB PPO stuck in HOLD | PPO converged to always doing nothing — 0% win rate | Retrained ETH with SAC instead, BNB with 300 episodes + higher entropy |
+| Cross-asset HMM contamination | Original single EUR/USD HMM applied to Bitcoin — wrong regime signals | Trained 4 separate HMMs per asset class |
+| S&P 500 macro for all assets | Bitcoin was using S&P 500 SMA as its benchmark — contamination | Added per-asset macro benchmarks |
+| PatchTST retraining every run | Models retrained from scratch each time — results varied | Added save/load — models train once, load instantly |
+| GPU temperature | RTX 3050 hit 64°C during full training run | Normal range — throttles at 87°C, was safe |
+| Training interrupted | Power cut mid-training | `train_all_models.py` skips already-saved models — safe to resume |
+
+---
+
+### When to Retrain
+
+| Situation | What to retrain | Time needed |
+|-----------|----------------|-------------|
+| Every 6 months | All models | 8 hours overnight |
+| Major market event (crash, new bull run) | All models | 8 hours overnight |
+| Adding a new asset | That asset only | 15 minutes |
+| HMM giving wrong regimes | HMM models only | 5 minutes |
+| One asset performing badly | That asset's RL agent only | 10 minutes |
+
+---
+
+### How to Retrain — Simple Commands
+
+**Retrain everything from scratch (run overnight):**
+```bash
+cd ~/Desktop/NCI/programming_for_ai/Project-for-PAI
+nohup python3 scripts/train_all_models.py > data/output/training.log 2>&1 &
+echo "Training started — monitor with: tail -f data/output/training.log"
+```
+
+**Resume interrupted training (skips already-saved models):**
+```bash
+python3 scripts/train_all_models.py
+# Automatically skips assets that already have saved .pt files
+```
+
+**Retrain one specific asset (e.g. Bitcoin):**
+```bash
+python3 -c "
+import sys; sys.path.insert(0,'.')
+import warnings; warnings.filterwarnings('ignore')
+import yfinance as yf, torch, numpy as np
+from src.forecast.patchtst_forecast import PatchTSTForecaster
+from src.rl.ppo_agent import PPOAgent
+from src.rl.trading_env import TradingEnvironment
+from src.rl.integrated_pipeline import build_patchtst_signals
+from src.rl.macro_sentiment_features import build_macro_signals
+
+sym = 'BTC-USD'
+key = 'BTC_USD'
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+# Fetch data
+df = yf.download(sym, start='2004-01-01', progress=False)
+if hasattr(df.columns,'droplevel'): df.columns=df.columns.droplevel(1)
+df = df.dropna()
+df_train = df.iloc[:int(len(df)*0.70)].reset_index(drop=True)
+
+# Train PatchTST
+ptst = PatchTSTForecaster()
+ptst.fit_from_df(df_train, verbose=True)
+ptst.save(f'data/models/patchtst_{key}.pt')
+
+# Train PPO
+sig = build_patchtst_signals(df_train, ptst)
+mac = build_macro_signals(df_train, asset_sym=sym)
+import numpy; sig = numpy.concatenate([sig, mac], axis=1)
+env = TradingEnvironment(df_train, sig)
+agent = PPOAgent(state_dim=env.state_dim, device=DEVICE, n_steps=256)
+for ep in range(200):
+    state = env.reset()
+    while True:
+        a,lp,v = agent.select_action(state)
+        ns,r,done,_ = env.step(a)
+        agent.store(state,a,lp,r,v,done)
+        state=ns
+        if done: break
+torch.save(agent.policy.state_dict(), f'data/models/ppo_{key}.pt')
+print('Done — Bitcoin retrained')
+"
+```
+
+**Retrain HMM models only (5 minutes):**
+```bash
+python3 -c "
+import sys; sys.path.insert(0,'.')
+import warnings; warnings.filterwarnings('ignore')
+import yfinance as yf, joblib
+from src.regime.hmm_regime import HMMRegimeDetector
+
+pairs = [
+    ('hmm_equity',    ['^GSPC', '^IXIC']),
+    ('hmm_crypto',    ['BTC-USD', 'ETH-USD']),
+    ('hmm_commodity', ['GC=F', 'CL=F']),
+    ('hmm_forex',     ['EURUSD=X', 'GBPUSD=X']),
+]
+for name, syms in pairs:
+    frames = []
+    for sym in syms:
+        df = yf.download(sym, start='2004-01-01', progress=False)
+        if hasattr(df.columns,'droplevel'): df.columns=df.columns.droplevel(1)
+        frames.append(df.dropna())
+    import pandas as pd
+    combined = pd.concat(frames).sort_index()
+    hmm = HMMRegimeDetector()
+    hmm.fit(combined)
+    joblib.dump(hmm, f'data/models/{name}.pkl')
+    print(f'Saved {name}.pkl')
+print('All HMMs retrained')
+"
+```
+
+---
+
+### Checking Training Progress
+```bash
+# How many models are saved?
+ls data/models/patchtst_*.pt | wc -l   # Should be 39
+ls data/models/sac_*.pt | wc -l        # Should be ~30
+ls data/models/ppo_*.pt | wc -l        # Should be ~7
+ls data/models/hmm_*.pkl | wc -l       # Should be 5 (4 + 1 fallback)
+
+# Watch training live
+tail -f data/output/training.log
+
+# Monitor GPU during training
+watch -n 5 "nvidia-smi --query-gpu=temperature.gpu,utilization.gpu,memory.used --format=csv,noheader"
+```
+
+---
+
+### Recommended Retraining Schedule
+
+| When | Action |
+|------|--------|
+| **Every 6 months** | Full retrain — `python3 scripts/train_all_models.py` |
+| **After a major crash** (>15% drop) | Full retrain to learn new bear patterns |
+| **After a major rally** (>20% gain) | Full retrain to learn new bull patterns |
+| **If an asset suddenly performs badly** | Retrain that asset only |
+| **Never** | Delete all models and retrain from nothing — always use the resume feature |
+
+---
+
+### After Retraining — Verify It Worked
+```bash
+# Run validation (takes 8-12 hours — run overnight after retraining)
+python3 scripts/robust_validation.py
+
+# Quick sanity check (30 minutes)
+python3 scripts/backtest_v2.py
+
+# Run daily advisor to confirm signals generate correctly
+python3 scripts/daily_advisor_v2.py
+```
+
+---
 ## Dependencies
 ```bash
 pip install yfinance scikit-learn lightgbm hmmlearn transformers torch --break-system-packages
