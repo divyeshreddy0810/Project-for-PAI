@@ -325,16 +325,23 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
         atr = current_price * 0.015
 
     # TP/SL levels
+    # TP/SL: daily=ATR-based, swing=forecast-based
+    atr_pct = atr / current_price
+    pr      = abs(pred_return / 100)
+    _mult   = {"forex":2.0,"crypto":3.0,
+               "commodity":2.5,"equity":2.5}
+    _m      = _mult.get(asset_class, 2.5)
+    swing_move = pr * _m if pr > 0.001 else atr_pct * 1.2
     if consensus == "BUY":
         tp_daily  = current_price + 1.5 * atr
         sl_daily  = current_price - 1.0 * atr
-        tp_swing  = current_price * (1 + risk["tp"])
-        sl_swing  = current_price * (1 - risk["sl"])
+        tp_swing  = current_price * (1 + swing_move)
+        sl_swing  = current_price - 1.5 * atr
     elif consensus == "SELL":
         tp_daily  = current_price - 1.5 * atr
         sl_daily  = current_price + 1.0 * atr
-        tp_swing  = current_price * (1 - risk["tp"])
-        sl_swing  = current_price * (1 + risk["sl"])
+        tp_swing  = current_price * (1 - swing_move)
+        sl_swing  = current_price + 1.5 * atr
     else:
         tp_daily = tp_swing = sl_daily = sl_swing = None
 
@@ -501,12 +508,28 @@ def main():
         return
 
     # ── Rank signals ───────────────────────────────────────────
-    active = [r for r in results if r["signal"] != "HOLD"
-              and r["confidence"] >= risk["min_confidence"]]
+    active = [r for r in results
+              if r["signal"] != "HOLD"
+              and r["confidence"] >= risk["min_confidence"]
+              and not (r["signal"] == "BUY"
+                       and r.get("pred_return", 0) < 0.05)]
     active.sort(key=lambda x: x["strength"], reverse=True)
+    holds     = [r for r in results if r["signal"] == "HOLD"]
+    all_sorted= active + holds
 
-    holds  = [r for r in results if r["signal"] == "HOLD"]
-    all_sorted = active + holds
+    # Daily top 3
+    daily_top  = active[:3] if active else all_sorted[:3]
+    daily_syms = {r["symbol"] for r in daily_top}
+
+    # Swing top 3 — no overlap with daily
+    swing_seen = set()
+    swing_top  = []
+    for _r in (active + holds):
+        if _r["symbol"] not in daily_syms and \
+           _r["symbol"] not in swing_seen:
+            swing_seen.add(_r["symbol"])
+            swing_top.append(_r)
+        if len(swing_top) >= 3: break
 
     # ── Print top 3 daily trades ───────────────────────────────
     section("TOP 3 DAILY TRADES  (ATR-based TP/SL)")
@@ -516,8 +539,7 @@ def main():
 
     # ── Print top 3 swing trades ───────────────────────────────
     section("TOP 3 SWING TRADES  (5-day horizon)")
-    swing_top = active[3:6] if len(active) >= 6 else \
-                (active[:3] if active else all_sorted[:3])
+    # swing_top already built above
     for i, r in enumerate(swing_top, 1):
         print_trade_card(r, i, portfolio_eur, risk, currency, rates)
 
