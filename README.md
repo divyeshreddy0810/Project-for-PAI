@@ -45,7 +45,7 @@ python3 scripts/daily_advisor.py
 Project-for-PAI/
 ├── scripts/
 │   ├── enhanced_pipeline.py      ← MAIN: Run this daily (enhanced system)
-│   ├── daily_advisor.py          ← Original advisor (forex pairs)
+│   ├── daily_advisor.py          ← Original advisor (scans across all assets, and generates signals to trade )
 │   ├── live_paper_trade.py       ← Real-time price monitor
 │   ├── paper_trade.py            ← Quick signal report
 │   ├── backtest.py               ← Walk-forward backtester
