@@ -3,7 +3,7 @@
 Daily Advisor V2 — Full MRAT-RL System
 =======================================
 Upgrades from V1:
-  - 40 assets (stocks, crypto, forex, commodities)
+  - 48 assets (stocks, crypto, forex, commodities)
   - PatchTST Transformer forecasting (saved models)
   - SAC/PPO RL agents per asset (saved models)
   - Per-asset-class HMM regime detection
@@ -28,10 +28,13 @@ import torch
 from datetime import datetime
 
 from src.forecast.patchtst_forecast      import PatchTSTForecaster
+from src.lab.forecaster                  import LabForecaster
 from src.rl.trading_env                  import TradingEnvironment
 from src.rl.sac_agent                    import SACAgent
 from src.rl.ppo_agent                    import PPOAgent
-from src.rl.macro_sentiment_features     import build_macro_signals
+from src.rl.td3_agent                    import TD3Agent
+from src.forecast.lgbm_forecast          import LightGBMForecaster
+from src.rl.macro_sentiment_features     import build_macro_signals, load_sentiment_features
 from src.rl.integrated_pipeline          import build_patchtst_signals
 from src.utils.currency                  import get_all_rates, parse_amount_input
 
@@ -39,7 +42,7 @@ DEVICE     = "cuda" if torch.cuda.is_available() else "cpu"
 MODELS_DIR = "data/models"
 OUTPUT_DIR = "data/output"
 
-# ── Full 40-asset universe ─────────────────────────────────────
+# ── Full 48-asset universe ─────────────────────────────────────
 UNIVERSE = [
     # Indices
     ("^GSPC",    "S&P 500",        "equity",    "SAC"),
@@ -54,6 +57,16 @@ UNIVERSE = [
     ("META",     "Meta",           "equity",    "SAC"),
     ("GOOGL",    "Alphabet",       "equity",    "SAC"),
     ("JPM",      "JPMorgan",       "equity",    "SAC"),
+    # GPU / Neocloud supply chain — TD3 (better for volatile news-driven equities)
+    ("CRWV",     "CoreWeave",      "equity",    "TD3"),
+    ("NBIS",     "Nebius",         "equity",    "TD3"),
+    ("IREN",     "IREN",           "equity",    "TD3"),
+    ("MU",       "Micron",         "equity",    "TD3"),
+    ("SMCI",     "Super Micro",    "equity",    "TD3"),
+    ("ARM",      "Arm Holdings",   "equity",    "TD3"),
+    ("TSM",      "TSMC",           "equity",    "TD3"),
+    ("VRT",      "Vertiv",         "equity",    "TD3"),
+    ("MRVL",     "Marvell",        "equity",    "TD3"),
     # Crypto
     ("BTC-USD",  "Bitcoin",        "crypto",    "PPO"),
     ("ETH-USD",  "Ethereum",       "crypto",    "PPO"),
@@ -92,11 +105,11 @@ UNIVERSE = [
 # ── Risk profiles ──────────────────────────────────────────────
 RISK_PROFILES = {
     1: {"name":"Conservative", "max_pos":0.05, "sl":0.05, "tp":0.10,
-        "min_confidence":1.00},   # 4/4 unanimous only
+        "min_confidence":1.00, "tp_mult":0.5},   # 4/4 unanimous only
     2: {"name":"Moderate",     "max_pos":0.10, "sl":0.08, "tp":0.15,
-        "min_confidence":0.75},   # 3/4 models agree
+        "min_confidence":0.75, "tp_mult":0.5},   # 3/4 models agree
     3: {"name":"Aggressive",   "max_pos":0.20, "sl":0.10, "tp":0.25,
-        "min_confidence":0.50},   # 2/4 signals included
+        "min_confidence":0.50, "tp_mult":0.5},   # 2/4 signals included
 }
 
 BEST_WEIGHTS = [1.2, 1.2, 1.0, 0.6]
@@ -125,11 +138,12 @@ def dynamic_position_size(confidence, risk_profile_max=0.10):
 _HMM_CACHE = {}
 
 def kelly_position_size(confidence, max_pos, sym="default",
-                        asset_vol=0.02):
+                        asset_vol=0.02, kelly_frac=0.25):
     """
-    Blend Quarter-Kelly sizing with conviction-based sizing.
+    Blend fractional-Kelly sizing with conviction-based sizing.
     Uses per-asset win rates from validation results.
     Falls back to dynamic_position_size if Kelly is zero.
+    kelly_frac: 0.25 = Quarter-Kelly, 0.5 = Half-Kelly, 1.0 = Full-Kelly
     """
     import numpy as np
     WIN_RATES = {
@@ -144,7 +158,7 @@ def kelly_position_size(confidence, max_pos, sym="default",
     kelly    = win_rate - (1 - win_rate) / r
     if kelly <= 0:
         return dynamic_position_size(confidence, max_pos)
-    frac_kelly  = kelly * 0.25  # Quarter-Kelly
+    frac_kelly  = kelly * kelly_frac
     TARGET_VOL  = 0.15
     vol_adj     = min(1.0, TARGET_VOL / max(asset_vol * (252**0.5), 0.01))
     kelly_sized = min(frac_kelly * vol_adj, max_pos)
@@ -152,8 +166,40 @@ def kelly_position_size(confidence, max_pos, sym="default",
     return round((kelly_sized + conviction) / 2, 3)
 
 
-def get_hmm(asset_class):
+# Semiconductor symbols that use the dedicated SOX-trained HMM instead of
+# the generic equity HMM — their regime is driven by capex cycles not S&P.
+_SEMICONDUCTOR_SYMS = {
+    "CRWV","NBIS","IREN","MU","SMCI","ARM","TSM","VRT","MRVL","NVDA",
+    "AVGO","INTC","AMD","QCOM","TXN","AMAT","LRCX","KLAC","ASML",
+}
+
+# Sector-level concentration cap: prevent the AI infrastructure cluster
+# from dominating the portfolio when all 9 GPU stocks signal BUY at once.
+_GPU_STOCKS      = {"CRWV","NBIS","IREN","MU","SMCI","ARM","TSM","VRT","MRVL"}
+SECTOR_CAP_SEMI  = 0.25   # max 25% portfolio in semiconductor/AI infra
+
+
+def get_hmm(asset_class, sym=None):
+    """
+    Return asset-class-specific HMM.
+    Semiconductors use hmm_semiconductor.pkl (trained on SOX) if it exists,
+    otherwise fall back to hmm_equity.pkl, then the EUR/USD pretrained HMM.
+    """
     import joblib
+    # Semiconductor override — regime driven by capex cycle, not S&P SMA
+    if sym and sym in _SEMICONDUCTOR_SYMS:
+        cache_key = "semiconductor"
+        if cache_key not in _HMM_CACHE:
+            path = f"{MODELS_DIR}/hmm_semiconductor.pkl"
+            if os.path.exists(path):
+                _HMM_CACHE[cache_key] = joblib.load(path)
+            elif os.path.exists(f"{MODELS_DIR}/hmm_equity.pkl"):
+                _HMM_CACHE[cache_key] = joblib.load(f"{MODELS_DIR}/hmm_equity.pkl")
+            else:
+                from src.regime.pretrained_hmm import get_pretrained_hmm
+                _HMM_CACHE[cache_key] = get_pretrained_hmm()
+        return _HMM_CACHE[cache_key]
+
     if asset_class not in _HMM_CACHE:
         path = f"{MODELS_DIR}/hmm_{asset_class}.pkl"
         if os.path.exists(path):
@@ -206,7 +252,7 @@ def apply_weights(signals, weights):
     weighted = signals.copy()
     groups = [([0,1],weights[0]),([2],weights[1]),
               (list(range(3,10)),weights[2]),
-              (list(range(10,14)),weights[3])]
+              (list(range(10,16)),weights[3])]   # 10-15: all 6 macro cols
     for cols,w in groups:
         for c in cols:
             if c < weighted.shape[1]:
@@ -244,25 +290,44 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
     current_price = float(df["Close"].iloc[-1])
     df_recent     = df.tail(90).reset_index(drop=True)
 
-    # Load PatchTST
-    ptst = PatchTSTForecaster()
+    # Load forecaster — PatchTST or promoted LabForecaster (LSTM/CNN/MLP)
     try:
+        ckpt_meta = torch.load(ptst_path, map_location="cpu", weights_only=False)
+        if "algo" in ckpt_meta and ckpt_meta["algo"] in ("LSTM", "CNN", "MLP"):
+            ptst = LabForecaster(algo=ckpt_meta["algo"])
+        else:
+            ptst = PatchTSTForecaster()
         ptst.load(ptst_path)
     except Exception:
         return None
 
     pred_return = ptst.predict_return(df_recent)
+
+    # LGBM ensemble blend — average PatchTST and LightGBM predictions 50/50
+    lgbm_path = f"{MODELS_DIR}/lgbm_{key}.pkl"
+    try:
+        if os.path.exists(lgbm_path):
+            lgbm     = joblib.load(lgbm_path)
+            feat_df  = LightGBMForecaster.engineer_features(df_recent)
+            feat_arr = feat_df.fillna(0).values
+            lgbm_prices  = lgbm.predict(feat_arr)   # returns predicted prices per horizon
+            lgbm_price_5 = float(lgbm_prices[0])    # first horizon (5-day)
+            lgbm_return  = (lgbm_price_5 - current_price) / current_price
+            pred_return  = 0.5 * pred_return + 0.5 * lgbm_return
+    except Exception:
+        pass  # fallback to PatchTST-only if LGBM fails
+
     pred_price  = current_price * (1 + pred_return)
 
     # HMM regime
     try:
-        hmm_model = get_hmm(asset_class)
+        hmm_model = get_hmm(asset_class, sym=sym)
         df_hmm    = df_recent.tail(60).copy()
         delta     = df_hmm["Close"].diff()
         gain      = delta.clip(lower=0).rolling(14).mean()
         loss      = (-delta.clip(upper=0)).rolling(14).mean()
         df_hmm["RSI"]            = 100-(100/(1+gain/(loss+1e-9)))
-        df_hmm["sentiment_mean"] = 0.05
+        df_hmm["sentiment_mean"] = load_sentiment_features(asset_sym=sym)["mean"]
         df_hmm = df_hmm.dropna()
         regime = predict_with_proba(hmm_model, df_hmm)
     except Exception:
@@ -280,6 +345,16 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
 
         if agent_type == "SAC":
             agent = SACAgent(state_dim=state_dim, device=DEVICE)
+            agent.net.load_state_dict(
+                torch.load(rl_path, map_location=DEVICE))
+            state = env.reset()
+            for _ in range(len(df_recent)-2):
+                a = agent.select_action(state, deterministic=True)
+                state,_,done,_ = env.step(a)
+                if done: break
+            rl_action = agent.select_action(state, deterministic=True)
+        elif agent_type == "TD3":
+            agent = TD3Agent(state_dim=state_dim, device=DEVICE)
             agent.net.load_state_dict(
                 torch.load(rl_path, map_location=DEVICE))
             state = env.reset()
@@ -369,12 +444,20 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
         if regime in ("bull","bear"):
             strength += 0.1
 
-    # Position sizing
+    # Position sizing — compute realized vol from recent data so Kelly
+    # vol-scaling actually works (previously always used 0.02 default,
+    # treating SMCI and EURUSD identically)
     base_size = risk["max_pos"]
     if consensus == "HOLD":
         position_size = 0.0
     else:
-        position_size = dynamic_position_size(confidence, base_size)
+        realized_vol = float(df_recent["Close"].pct_change().std())
+        realized_vol = max(realized_vol, 0.001)  # floor to avoid div-by-zero
+        position_size = kelly_position_size(
+            confidence, base_size, sym=sym,
+            asset_vol=realized_vol,
+            kelly_frac=risk.get("kelly_frac", 0.25)
+        )
 
     # ATR for daily TP/SL
     try:
@@ -389,6 +472,10 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
         atr = current_price * 0.015
 
     # TP/SL levels
+    # Quick exit mode — user preference: take profit in 1-2 hours
+    # tp_mult=0.5 means half ATR (tight, intraday target)
+    # tp_mult=1.5 means full ATR (original, full-day target)
+    tp_mult = risk.get("tp_mult", 1.5)
     # TP/SL: daily=ATR-based, swing=forecast-based
     atr_pct = atr / current_price
     pr      = abs(pred_return / 100)
@@ -397,12 +484,12 @@ def analyse_asset(sym, name, asset_class, agent_type, risk):
     _m      = _mult.get(asset_class, 2.5)
     swing_move = pr * _m if pr > 0.001 else atr_pct * 1.2
     if consensus == "BUY":
-        tp_daily  = current_price + 1.5 * atr
+        tp_daily  = current_price + tp_mult * atr
         sl_daily  = current_price - 1.0 * atr
         tp_swing  = current_price * (1 + swing_move)
         sl_swing  = current_price - 1.5 * atr
     elif consensus == "SELL":
-        tp_daily  = current_price - 1.5 * atr
+        tp_daily  = current_price - tp_mult * atr
         sl_daily  = current_price + 1.0 * atr
         tp_swing  = current_price * (1 - swing_move)
         sl_swing  = current_price + 1.5 * atr
@@ -488,6 +575,17 @@ def print_trade_card(result, rank, portfolio, risk, currency, fx):
           f"BUY={result['votes']['buy']} "
           f"SELL={result['votes']['sell']} "
           f"HOLD={result['votes']['hold']}")
+    exit_mode = risk.get("exit_mode", "normal")
+    if exit_mode == "trail" and sig != "HOLD":
+        trail_pct  = 2.0  # trail SL 2% below peak
+        trigger    = round(price * 1.005, 4)  # +0.5% breakeven trigger
+        print(f"  │  ── TRAILING STOP INSTRUCTIONS ──")
+        print(f"  │  Step 1: Enter at {currency}{price:.4f} (Market order)")
+        print(f"  │  Step 2: Set initial SL at {currency}{result['sl_daily']:.4f} (Stop order)")
+        print(f"  │  Step 3: When price hits {currency}{trigger:.4f} (+0.5%) →")
+        print(f"  │           Move SL to {currency}{price:.4f} (breakeven)")
+        print(f"  │  Step 4: Trail SL {trail_pct:.0f}% below highest price reached")
+        print(f"  │  Step 5: If price returns to entry → close manually")
     print(f"  └─ PatchTST:{result['signals']['patchtst']}  "
           f"HMM:{result['signals']['hmm']}  "
           f"RL:{result['signals']['rl_agent']}  "
@@ -497,7 +595,7 @@ def print_trade_card(result, rank, portfolio, risk, currency, fx):
 def main():
     print("\n" + "="*60)
     print("  MRAT-RL DAILY ADVISOR V2")
-    print("  Full 40-asset universe · PatchTST + HMM + RL")
+    print("  Full 48-asset universe · PatchTST + HMM + RL")
     print(f"  {datetime.now().strftime('%A %d %B %Y  %H:%M')}")
     print("="*60)
 
@@ -546,6 +644,40 @@ def main():
     risk = RISK_PROFILES[risk_choice]
     print(f"  ✅ {risk['name']} — max {risk['max_pos']:.0%} per trade")
 
+    print("\n  Kelly fraction:")
+    print("    1 = Quarter-Kelly (0.25) — conservative, lower drawdown")
+    print("    2 = Half-Kelly    (0.50) — balanced")
+    print("    3 = Full-Kelly    (1.00) — aggressive, higher variance")
+    try:
+        kf_choice = int(input("  Choose [1/2/3]: ").strip())
+    except Exception:
+        kf_choice = 1
+    kelly_fracs = {1: 0.25, 2: 0.50, 3: 1.00}
+    kelly_labels = {1: "Quarter-Kelly (0.25)", 2: "Half-Kelly (0.50)", 3: "Full-Kelly (1.00)"}
+    risk["kelly_frac"] = kelly_fracs.get(kf_choice, 0.25)
+    print(f"  ✅ {kelly_labels.get(kf_choice, 'Quarter-Kelly (0.25)')}")
+
+    print("\n  Exit mode:")
+    print("    1 = Quick Fixed    — TP at 0.5x ATR, in and out in 1-2 hours")
+    print("    2 = Trailing Stop  — breakeven at +0.5%, trail SL behind price")
+    print("    3 = Normal Fixed   — TP at 1.5x ATR, hold full day")
+    try:
+        exit_choice = int(input("  Choose [1/2/3]: ").strip())
+        if exit_choice not in [1,2,3]: exit_choice = 2
+    except Exception:
+        exit_choice = 2
+    if exit_choice == 1:
+        risk["tp_mult"]    = 0.5
+        risk["exit_mode"]  = "quick"
+        print("  ✅ Quick Fixed — tight TP, fast exit")
+    elif exit_choice == 2:
+        risk["tp_mult"]    = 0.5   # initial SL still tight
+        risk["exit_mode"]  = "trail"
+        print("  ✅ Trailing Stop — breakeven at +0.5%, trail from there")
+    else:
+        risk["tp_mult"]    = 1.5
+        risk["exit_mode"]  = "normal"
+        print("  ✅ Normal Fixed — full day TP")
     input("\n  Press Enter to scan all 40 assets...\n")
 
     # ── Scan all assets ────────────────────────────────────────
@@ -554,7 +686,7 @@ def main():
     skipped = []
 
     for i, (sym, name, asset_class, agent_type) in enumerate(UNIVERSE):
-        print(f"  [{i+1:2d}/39] {sym:<12} {name:<20}", end="\r")
+        print(f"  [{i+1:2d}/48] {sym:<12} {name:<20}", end="\r")
         result = analyse_asset(sym, name, asset_class,
                                agent_type, risk)
         if result:
@@ -570,6 +702,21 @@ def main():
     if not results:
         print("  ❌ No results — run train_all_models.py first")
         return
+
+    # ── Sector concentration cap ───────────────────────────────
+    # Prevent all 9 GPU stocks from signalling BUY simultaneously and
+    # consuming >25% of portfolio in one sector cluster.
+    gpu_active = [r for r in results
+                  if r["symbol"] in _GPU_STOCKS and r["signal"] != "HOLD"]
+    if gpu_active:
+        total_gpu = sum(r["position_size"] for r in gpu_active)
+        if total_gpu > SECTOR_CAP_SEMI:
+            scale = SECTOR_CAP_SEMI / total_gpu
+            for r in gpu_active:
+                r["position_size"] = round(r["position_size"] * scale, 3)
+            print(f"\n  ⚠️  GPU/Semi sector cap: {total_gpu:.1%} → "
+                  f"{SECTOR_CAP_SEMI:.0%}  "
+                  f"(scaled {len(gpu_active)} positions ×{scale:.2f})")
 
     # ── Rank signals ───────────────────────────────────────────
     active = [r for r in results

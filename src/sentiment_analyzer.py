@@ -111,12 +111,219 @@ ALL_ASSETS = [
     {"index": 54, "symbol": "CL=F", "name": "Crude Oil (WTI)", "type": "commodity", "source": "gnews_keywords", "keywords": ["crude oil", "WTI", "oil price"]},
     {"index": 55, "symbol": "SI=F", "name": "Silver", "type": "commodity", "source": "gnews_keywords", "keywords": ["silver", "silver price"]},
     {"index": 56, "symbol": "NG=F", "name": "Natural Gas", "type": "commodity", "source": "gnews_keywords", "keywords": ["natural gas", "NG"]},
+
+    # GPU / Neocloud supply chain
+    {"index": 57, "symbol": "CRWV",  "name": "CoreWeave",        "type": "stock", "source": "finnhub_company", "keywords": ["CoreWeave", "CRWV"]},
+    {"index": 58, "symbol": "NBIS",  "name": "Nebius",            "type": "stock", "source": "finnhub_company", "keywords": ["Nebius", "NBIS"]},
+    {"index": 59, "symbol": "IREN",  "name": "IREN",              "type": "stock", "source": "finnhub_company", "keywords": ["IREN", "Iris Energy"]},
+    {"index": 60, "symbol": "MU",    "name": "Micron Technology", "type": "stock", "source": "finnhub_company", "keywords": ["Micron", "MU"]},
+    {"index": 61, "symbol": "SMCI",  "name": "Super Micro",       "type": "stock", "source": "finnhub_company", "keywords": ["SuperMicro", "SMCI"]},
+    {"index": 62, "symbol": "ARM",   "name": "Arm Holdings",      "type": "stock", "source": "finnhub_company", "keywords": ["Arm Holdings", "ARM"]},
+    {"index": 63, "symbol": "TSM",   "name": "TSMC",              "type": "stock", "source": "finnhub_company", "keywords": ["TSMC", "TSM"]},
+    {"index": 64, "symbol": "VRT",   "name": "Vertiv",            "type": "stock", "source": "finnhub_company", "keywords": ["Vertiv", "VRT"]},
+    {"index": 65, "symbol": "MRVL",  "name": "Marvell",           "type": "stock", "source": "finnhub_company", "keywords": ["Marvell", "MRVL"]},
 ]
 
 # Time windows supported
 WINDOW_OPTIONS = [
     "1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y"
 ]
+
+# ── Sector-specific sentiment amplifiers ─────────────────────────────────────
+# FinBERT is trained on generic finance text and is blind to domain-specific
+# terminology. These keyword lists nudge the FinBERT score when a headline
+# contains sector-specific terms that FinBERT cannot correctly interpret.
+#
+# Design principle:
+#   - Boost is additive to the FinBERT positive probability score
+#   - Clamped to [0, 1] after application
+#   - BOOST_STRENGTH = 0.12 (nudge, not override — FinBERT still dominates)
+#   - Each symbol can inherit from a sector group (see _get_amplifiers below)
+#
+# Semiconductor / AI supply chain — these terms dominate stock moves but are
+# invisible to standard financial NLP models.
+_SEMI_BULLISH = [
+    "data center demand", "hyperscaler capex", "ai server", "cloud capex",
+    "h100", "h200", "gb200", "blackwell", "hopper", "rack scale",
+    "cowos", "advanced packaging", "3nm", "2nm", "n3", "n2",
+    "hbm", "hbm3", "memory pricing", "dram upturn", "dram pricing",
+    "capacity tightening", "wafer allocation", "fab utilization",
+    "ai memory", "ai training", "ai inference", "gpu demand",
+    "chips act", "fab subsidy", "onshoring", "reshoring",
+    "colocation", "power capacity", "megawatt", "gigawatt",
+    "beat estimates", "raised guidance", "strong bookings",
+]
+_SEMI_BEARISH = [
+    "export control", "chip ban", "entity list", "trade restriction",
+    "memory glut", "inventory correction", "channel inventory", "oversupply",
+    "dram downturn", "nand downturn", "price decline", "margin pressure",
+    "accounting irregularity", "restatement", "sec investigation",
+    "delayed shipment", "supply constraint", "customer concentration",
+    "competition intensifies", "market share loss",
+    "lowered guidance", "missed estimates", "below consensus",
+]
+
+SECTOR_AMPLIFIERS: dict = {
+    # ── Semiconductors / AI supply chain ─────────────────────────────────────
+    "SMCI": {
+        "bullish": _SEMI_BULLISH + ["superserver", "liquid cooling", "ai rack"],
+        "bearish": _SEMI_BEARISH + ["auditor", "short seller", "delisted risk"],
+    },
+    "MU": {
+        "bullish": _SEMI_BULLISH + ["hbm allocation", "dram cycle", "memory cycle upturn"],
+        "bearish": _SEMI_BEARISH + ["memory cycle downturn", "oversupply"],
+    },
+    "TSM": {
+        "bullish": _SEMI_BULLISH + ["wafer revenue", "leading-edge node", "advanced node yield"],
+        "bearish": _SEMI_BEARISH + ["geopolit", "taiwan strait", "china invasion", "blockade"],
+    },
+    "ARM": {
+        "bullish": _SEMI_BULLISH + ["licensing revenue", "royalty growth", "arm architecture",
+                                    "mobile chip", "ai edge"],
+        "bearish": _SEMI_BEARISH + ["risc-v", "open source alternative", "license dispute"],
+    },
+    "MRVL": {
+        "bullish": _SEMI_BULLISH + ["custom asic", "hyperscaler asic", "data center networking",
+                                    "5g infrastructure"],
+        "bearish": _SEMI_BEARISH,
+    },
+    "VRT": {
+        "bullish": _SEMI_BULLISH + ["power management", "liquid cooling contract",
+                                    "data center infrastructure", "thermal management"],
+        "bearish": _SEMI_BEARISH + ["supply chain delay", "component shortage"],
+    },
+    "CRWV": {
+        "bullish": _SEMI_BULLISH + ["gpu cloud", "h100 cluster", "ai cloud", "neocloud",
+                                    "training cluster", "inference cluster"],
+        "bearish": _SEMI_BEARISH + ["hyperscaler competition", "aws", "azure", "gcp undercutting"],
+    },
+    "NBIS": {
+        "bullish": _SEMI_BULLISH + ["gpu cloud", "inference platform", "ai infrastructure",
+                                    "yandex spin-off", "european ai"],
+        "bearish": _SEMI_BEARISH + ["russia sanction", "geopolitical risk"],
+    },
+    "IREN": {
+        "bullish": _SEMI_BULLISH + ["bitcoin mining", "ai computing", "renewable energy",
+                                    "hash rate", "power purchase agreement"],
+        "bearish": _SEMI_BEARISH + ["energy cost", "mining difficulty", "btc price drop"],
+    },
+    "NVDA": {
+        "bullish": _SEMI_BULLISH + ["blackwell ramp", "hopper demand", "data center revenue",
+                                    "gaming recovery", "automotive ai"],
+        "bearish": _SEMI_BEARISH + ["export restriction", "china revenue", "amd competition",
+                                    "custom asic threat"],
+    },
+    # ── Crypto ───────────────────────────────────────────────────────────────
+    "BTC-USD": {
+        "bullish": ["etf approval", "institutional adoption", "bitcoin reserve", "halving",
+                    "spot etf", "coinbase", "fidelity", "blackrock bitcoin",
+                    "on-chain growth", "lightning network", "microstrategy"],
+        "bearish": ["sec lawsuit", "exchange hack", "exchange collapse", "ftx",
+                    "binance fine", "china ban", "government crackdown",
+                    "money laundering", "terrorist financing", "cbdc competition"],
+    },
+    "ETH-USD": {
+        "bullish": ["ethereum upgrade", "layer 2", "restaking", "eigenlayer",
+                    "defi growth", "staking yield", "blob fee", "dencun"],
+        "bearish": ["sec ethereum", "hack", "exploit", "bridge attack",
+                    "gas fee spike", "layer 1 competition"],
+    },
+    "SOL-USD": {
+        "bullish": ["solana etf", "validator growth", "defi volume", "nft volume",
+                    "firedancer", "high throughput"],
+        "bearish": ["network outage", "validator halt", "ftx overhang"],
+    },
+    "XRP-USD": {
+        "bullish": ["sec settlement", "ripple wins", "xrp etf", "cbdc partnership",
+                    "remittance adoption", "bank partnership"],
+        "bearish": ["sec lawsuit", "securities ruling", "regulatory action"],
+    },
+    # ── Commodities ──────────────────────────────────────────────────────────
+    "GC=F": {
+        "bullish": ["inflation", "stagflation", "fed pivot", "rate cut", "geopolitical",
+                    "war", "central bank buying", "gold reserve", "dollar weakens",
+                    "safe haven", "recession fear"],
+        "bearish": ["rate hike", "dollar strength", "risk on", "equity rally",
+                    "real yield rises", "fed hawkish"],
+    },
+    "CL=F": {
+        "bullish": ["opec cut", "supply disruption", "iran sanction", "russia sanction",
+                    "geopolitical", "strong demand", "inventory draw",
+                    "hurricane", "pipeline outage"],
+        "bearish": ["opec increase", "demand slump", "recession", "iran deal",
+                    "inventory build", "demand destruction", "shale surge"],
+    },
+    "NG=F": {
+        "bullish": ["cold snap", "winter demand", "lng export", "storage deficit",
+                    "europe demand", "supply outage"],
+        "bearish": ["warm weather", "storage surplus", "demand drop", "mild winter"],
+    },
+    "SI=F": {
+        "bullish": ["industrial demand", "solar panel", "ev demand", "green energy",
+                    "inflation hedge", "gold rally"],
+        "bearish": ["industrial slowdown", "china weakness", "rate hike"],
+    },
+    # ── Forex (DXY-relative) ─────────────────────────────────────────────────
+    "EURUSD=X": {
+        "bullish": ["ecb hike", "europe recovery", "dollar weakness", "risk off usd",
+                    "eu gdp beat"],
+        "bearish": ["ecb cut", "europe recession", "energy crisis europe",
+                    "dollar strength", "fed hike"],
+    },
+    "GBPUSD=X": {
+        "bullish": ["boe hike", "uk growth", "uk gdp beat", "trade deal"],
+        "bearish": ["boe cut", "uk recession", "brexit impact", "uk inflation miss"],
+    },
+    "USDJPY=X": {
+        "bullish": ["boj dovish", "yield curve control", "japan intervention sell yen",
+                    "fed hike", "dollar strength"],
+        "bearish": ["boj hike", "boj normalization", "japan rate rise", "yen intervention"],
+    },
+}
+
+# Assets that share a sector group but aren't individually listed above
+_SECTOR_GROUP_MAP: dict = {
+    "BNB-USD": "BTC-USD",   # crypto — use BTC amplifiers as proxy
+    "HG=F":    "SI=F",       # copper follows silver (industrial metals)
+    "ZW=F":    "NG=F",       # wheat/corn follow commodity cycle
+    "ZC=F":    "NG=F",
+}
+
+BOOST_STRENGTH = 0.12   # additive boost per keyword match (clamped to [0,1])
+
+
+def apply_sector_boost(sym: str, positive_score: float, headline: str) -> float:
+    """
+    Adjust a FinBERT positive-probability score using domain-specific keywords.
+
+    Args:
+        sym:            Asset symbol (e.g., "SMCI", "BTC-USD")
+        positive_score: Raw FinBERT positive probability in [0, 1]
+        headline:       Raw headline text
+
+    Returns:
+        Adjusted score in [0, 1]. If no amplifier found, returns input unchanged.
+
+    How it works:
+        FinBERT is trained on generic finance text. Terms like "CoWoS",
+        "HBM3", "Firedancer", or "OPEC cut" are unknown or mis-scored.
+        This function applies a +/- nudge when such terms appear, while
+        keeping FinBERT's signal dominant (BOOST_STRENGTH = 0.12 max shift).
+    """
+    # Resolve group aliases
+    resolved = _SECTOR_GROUP_MAP.get(sym, sym)
+    config   = SECTOR_AMPLIFIERS.get(resolved)
+    if config is None:
+        return positive_score
+
+    text = headline.lower()
+    for term in config.get("bullish", []):
+        if term in text:
+            return min(1.0, positive_score + BOOST_STRENGTH)
+    for term in config.get("bearish", []):
+        if term in text:
+            return max(0.0, positive_score - BOOST_STRENGTH)
+    return positive_score
 
 # ========================== HELPER FUNCTIONS ==========================
 def window_to_dates(window_str: str) -> Tuple[datetime, datetime]:
@@ -543,6 +750,25 @@ def main():
     # Attach sentiment to headline objects
     for item, sent in zip(headline_refs, sentiment_results):
         item['sentiment'] = sent
+
+    # Apply sector-specific keyword boost — adjusts FinBERT scores using
+    # domain terminology FinBERT was never trained on (e.g., CoWoS, HBM3,
+    # OPEC cut, ECB hawkish). Boost is capped at ±0.12 so FinBERT still
+    # dominates — this is a nudge, not an override.
+    boost_count = 0
+    for item in headline_refs:
+        if 'sentiment' not in item:
+            continue
+        sym = item['asset']['symbol']
+        h   = item['headline_obj']
+        text = h.get('headline', '') or h.get('title', '')
+        original = item['sentiment']['positive']
+        adjusted = apply_sector_boost(sym, original, text)
+        if adjusted != original:
+            item['sentiment']['positive'] = adjusted
+            boost_count += 1
+    if boost_count:
+        print(f"   ✅ Sector boost applied to {boost_count} headlines")
     
     # ========== DISPLAY PER-HEADLINE SENTIMENT ==========
     print("\n" + "="*80)

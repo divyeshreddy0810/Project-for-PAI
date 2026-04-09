@@ -13,11 +13,15 @@ New features added to state vector:
 import numpy as np
 import pandas as pd
 import yfinance as yf
-import os, json, warnings
+import os, json, time, warnings
+from datetime import datetime
 warnings.filterwarnings("ignore")
 
+_TODAY = datetime.now().strftime("%Y-%m-%d")
 
-def fetch_vix(start="2004-01-01", end="2026-03-25") -> pd.Series:
+
+def fetch_vix(start="2004-01-01", end=None) -> pd.Series:
+    if end is None: end = _TODAY
     """Fetch VIX — CBOE Volatility Index (market fear gauge)."""
     try:
         df = yf.download("^VIX", start=start, end=end, progress=False)
@@ -32,7 +36,8 @@ def fetch_vix(start="2004-01-01", end="2026-03-25") -> pd.Series:
         return None
 
 
-def fetch_interest_rate(start="2004-01-01", end="2026-03-25") -> pd.Series:
+def fetch_interest_rate(start="2004-01-01", end=None) -> pd.Series:
+    if end is None: end = _TODAY
     """
     Fetch US 13-week T-bill rate as proxy for Fed Funds rate.
     Uses yfinance ^IRX (no FRED API key needed).
@@ -51,7 +56,7 @@ def fetch_interest_rate(start="2004-01-01", end="2026-03-25") -> pd.Series:
         return None
 
 
-# Map assets to appropriate macro benchmark
+# Map assets to appropriate macro benchmark (200-day SMA regime)
 _MACRO_BENCHMARK = {
     "BTC-USD": "BTC-USD",  "ETH-USD": "BTC-USD",
     "SOL-USD": "BTC-USD",  "BNB-USD": "BTC-USD",
@@ -60,8 +65,131 @@ _MACRO_BENCHMARK = {
 }
 # Everything else (equity, forex, indices) uses S&P 500
 
-def fetch_macro_regime(start="2004-01-01", end="2026-03-25",
+# Map assets to their sector peer leader (for cross-asset momentum feature).
+# When NVDA rips 8% in a day, SMCI/ARM/TSM follow — this captures contagion
+# that per-asset models are completely blind to.
+_PEER_BENCHMARK = {
+    # Semiconductor / AI supply chain → NVDA leads
+    "CRWV": "NVDA", "NBIS": "NVDA", "IREN": "NVDA",
+    "MU":   "NVDA", "SMCI": "NVDA", "ARM":  "NVDA",
+    "TSM":  "NVDA", "VRT":  "NVDA", "MRVL": "NVDA",
+    "NVDA": "SOXX",      # NVDA's own peer is the semiconductor ETF
+    # Crypto → BTC leads
+    "ETH-USD": "BTC-USD", "SOL-USD": "BTC-USD",
+    "BNB-USD": "BTC-USD", "XRP-USD": "BTC-USD",
+    # Commodities
+    "SI=F": "GC=F",  "HG=F": "GC=F",   # silver & copper follow gold
+    "NG=F": "CL=F",  "ZW=F": "CL=F",   # nat gas / grains follow oil cycle
+    "ZC=F": "CL=F",
+    # Forex → EUR/USD is the risk-sentiment proxy
+    "GBPUSD=X": "EURUSD=X", "AUDUSD=X": "EURUSD=X",
+    "NZDUSD=X": "EURUSD=X", "USDCAD=X": "EURUSD=X",
+    "USDCHF=X": "EURUSD=X", "EURJPY=X": "EURUSD=X",
+    "GBPJPY=X": "EURUSD=X", "EURGBP=X": "EURUSD=X",
+    "AUDNZD=X": "EURUSD=X",
+    # African / EM forex → USD/ZAR is the EM risk proxy
+    "USDNGN=X": "USDZAR=X", "EURNGN=X": "USDZAR=X",
+    "USDKES=X": "USDZAR=X", "USDGHS=X": "USDZAR=X",
+}
+
+
+def _is_equity_sym(sym: str) -> bool:
+    """True if symbol looks like an individual equity (no yfinance suffix)."""
+    if not sym:
+        return False
+    return not any(sym.endswith(s) for s in ["=X", "-USD", "=F"])
+
+
+def fetch_peer_momentum(asset_sym: str, start: str, end: str):
+    """
+    Fetch the 5-day return of the sector peer leader.
+    Normalised to [-1, 1] by clipping at ±15%.
+    Returns pd.Series indexed by date, or None on failure.
+    """
+    peer = _PEER_BENCHMARK.get(asset_sym)
+    if peer is None or peer == asset_sym:
+        return None
+    try:
+        df = yf.download(peer, start=start, end=end, progress=False)
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.droplevel(1)
+        df = df.dropna()
+        if len(df) < 10:
+            return None
+        ret_5d     = df["Close"].pct_change(5).fillna(0)
+        normalized = (ret_5d / 0.15).clip(-1.0, 1.0)
+        print(f"  ✅ Peer momentum ({peer}→{asset_sym}): "
+              f"{len(normalized)} rows  "
+              f"mean={normalized.mean():.3f}")
+        return normalized
+    except Exception as e:
+        print(f"  ⚠️  Peer momentum ({peer}) failed: {e} — using 0")
+        return None
+
+
+def fetch_earnings_proximity(asset_sym: str, n: int,
+                              is_live: bool = False) -> np.ndarray:
+    """
+    Earnings proximity feature: how close is the next earnings date?
+    Returns array of shape (n,):
+      Training (is_live=False): all zeros (no historical earnings data)
+      Live inference (is_live=True):
+        1.0 = earnings tomorrow, 0.0 = 14+ days away (linear decay)
+
+    Why zero during training: yfinance only has ~2 years of earnings history
+    vs 20+ years of training data. Rather than partial data, we set the
+    baseline at 0 — the agent learns the normal state. At inference, a
+    non-zero value is a meaningful safety warning to the user.
+
+    Only applies to equity symbols. Always 0 for forex/crypto/commodities.
+    """
+    result = np.zeros(n, dtype=np.float32)
+
+    if not is_live or not _is_equity_sym(asset_sym):
+        return result
+
+    try:
+        ticker = yf.Ticker(asset_sym)
+        cal    = ticker.calendar
+
+        earnings_date = None
+        if cal is None:
+            return result
+
+        if isinstance(cal, dict):
+            for key in ("Earnings Date", "earnings_date", "earningsDate"):
+                val = cal.get(key)
+                if val is not None:
+                    if hasattr(val, "__iter__") and not isinstance(val, str):
+                        earnings_date = pd.Timestamp(list(val)[0])
+                    else:
+                        earnings_date = pd.Timestamp(val)
+                    break
+        elif hasattr(cal, "columns"):
+            for col in cal.columns:
+                if "earnings" in str(col).lower():
+                    earnings_date = pd.Timestamp(cal[col].iloc[0])
+                    break
+
+        if earnings_date is None:
+            return result
+
+        days_away = max(0, (earnings_date.tz_localize(None) -
+                            pd.Timestamp.now()).days)
+        proximity  = float(max(0.0, 1.0 - days_away / 14.0))
+        result[:]  = proximity
+
+        if proximity > 0.0:
+            print(f"  ⚠️  {asset_sym} earnings in {days_away}d → "
+                  f"proximity={proximity:.2f} (reduce confidence)")
+    except Exception as e:
+        print(f"  ⚠️  Earnings calendar {asset_sym}: {e}")
+
+    return result
+
+def fetch_macro_regime(start="2004-01-01", end=None,
                        asset_sym=None) -> pd.Series:
+    if end is None: end = _TODAY
     """
     Per-asset macro regime: price above/below 200-day SMA.
     +1 = bull macro regime, -1 = bear macro regime.
@@ -88,7 +216,8 @@ def fetch_macro_regime(start="2004-01-01", end="2026-03-25",
         print(f"  ⚠️  Macro regime unavailable: {e} — using neutral 0")
         return None
 
-def fetch_sp500_regime(start="2004-01-01", end="2026-03-25") -> pd.Series:
+def fetch_sp500_regime(start="2004-01-01", end=None) -> pd.Series:
+    if end is None: end = _TODAY
     """Legacy wrapper — kept for backward compatibility."""
     return fetch_macro_regime(start=start, end=end, asset_sym=None)
 
@@ -157,14 +286,19 @@ def build_sentiment_proxy(df: pd.DataFrame) -> np.ndarray:
     """
     Build TIME-VARYING sentiment proxy for historical RL training.
 
-    Uses 20-day price momentum percentile rank as sentiment proxy.
-    Validated against known market events:
-      - 2008 crisis:  0.03-0.16  ✅ correctly negative
-      - 2020 COVID:   0.001-0.10 ✅ correctly very negative  
-      - 2022 bull:    0.86-0.93  ✅ correctly positive
+    Uses Bollinger Band positioning + volume confirmation divergence.
+    This captures MARKET POSITIONING (how stretched/extreme the move is)
+    rather than raw momentum, which is already present in LightGBM features
+    (ret_roll_mean20, price_vs_ma20, ret_lag10) and would be redundant.
 
-    This replaces the constant 0.562 FinBERT value which has no
-    time variation across 22 years of historical training data.
+    BB position: where price sits within its ±2σ band → market greed/fear
+    Volume divergence: price moving without volume = weak conviction
+    Both are orthogonal signals to the momentum features already in the model.
+
+    Validated against known market events:
+      - 2008 crisis:  low BB position + vol spike = extreme fear  ✅
+      - 2020 COVID:   crash below lower band = extreme fear        ✅
+      - 2021 bull:    sustained upper-band hugging = extreme greed ✅
 
     For LIVE signals, use load_sentiment_features() instead which
     returns real FinBERT scores from the latest news headlines.
@@ -173,10 +307,31 @@ def build_sentiment_proxy(df: pd.DataFrame) -> np.ndarray:
         df = df.copy()
         df.columns = df.columns.droplevel(1)
 
-    close = df["Close"] if "Close" in df.columns else df.iloc[:,3]
-    momentum = close.pct_change(20).fillna(0)
-    # Percentile rank → 0 to 1 (0=very bearish, 1=very bullish)
-    proxy = momentum.rank(pct=True).fillna(0.5).values.astype(np.float32)
+    close = df["Close"] if "Close" in df.columns else df.iloc[:, 3]
+
+    # ── Bollinger Band position ─────────────────────────────────
+    # Captures how "stretched" the market is: fear (below band) ↔ greed (above band)
+    roll_mean = close.rolling(20, min_periods=5).mean()
+    roll_std  = close.rolling(20, min_periods=5).std().replace(0, np.nan)
+    bb_pos    = ((close - roll_mean) / (2 * roll_std)).clip(-1.5, 1.5).fillna(0)
+    # Rescale to [0, 1]: -1.5 → 0.0 (extreme fear), +1.5 → 1.0 (extreme greed)
+    bb_norm   = ((bb_pos + 1.5) / 3.0).fillna(0.5)
+
+    # ── Volume confirmation divergence ─────────────────────────
+    # Price up + volume up   = genuine conviction → confirm signal
+    # Price up + volume down = weak hands moving price → fade signal
+    if "Volume" in df.columns and df["Volume"].sum() > 0:
+        price_dir = np.sign(close.pct_change(5).fillna(0))
+        vol_chg   = df["Volume"].pct_change(5).fillna(0)
+        vol_rank  = pd.Series(vol_chg).rank(pct=True).fillna(0.5)
+        # When price direction and volume agree: vol_rank pulls toward extreme
+        # When they disagree: vol_rank pulls toward neutral (0.5)
+        confirmation = price_dir.values * (vol_rank.values - 0.5) + 0.5
+        confirmation = pd.Series(confirmation).clip(0, 1).fillna(0.5)
+        proxy = (bb_norm.values * 0.65 + confirmation.values * 0.35).astype(np.float32)
+    else:
+        proxy = bb_norm.values.astype(np.float32)
+
     return proxy
 
 
@@ -185,43 +340,55 @@ def build_macro_signals(df: pd.DataFrame,
                         asset_sym: str = None) -> np.ndarray:
     """
     Build macro + sentiment feature matrix aligned to df's index.
-    Returns array of shape (len(df), 4):
+    Returns array of shape (len(df), 6):
       col 0: VIX normalised
       col 1: interest rate normalised
-      col 2: SP500 macro regime
-      col 3: sentiment mean
+      col 2: macro regime (200-day SMA of benchmark)
+      col 3: sentiment mean (BB proxy for training, FinBERT for live)
+      col 4: peer group momentum (5-day return of sector leader, [-1,1])
+      col 5: earnings proximity (0=no earnings, 1=earnings tomorrow; equity only)
     """
     os.makedirs(cache_dir, exist_ok=True)
-    # Per-asset cache to avoid cross-asset contamination
-    safe_sym = asset_sym.replace("^","").replace("-","_").replace("=","")                if asset_sym else "default"
+    safe_sym   = (asset_sym.replace("^","").replace("-","_").replace("=","")
+                  if asset_sym else "default")
     cache_file = os.path.join(cache_dir, f"macro_features_{safe_sym}.csv")
 
-    start = df.index[0].strftime("%Y-%m-%d") \
-            if hasattr(df.index[0], 'strftime') else "2004-01-01"
-    end   = "2026-03-25"
+    start = (df.index[0].strftime("%Y-%m-%d")
+             if hasattr(df.index[0], 'strftime') else "2004-01-01")
+    end   = _TODAY
 
-    # Try loading from cache first
+    # ── Load or build cached macro data (VIX, rate, regime, peer_momentum) ─
+    CACHE_MAX_AGE_DAYS = 7
+    macro_df = None
     if os.path.exists(cache_file):
-        try:
-            cached = pd.read_csv(cache_file, index_col=0, parse_dates=True)
-            print(f"  📂 Loaded macro features from cache ({len(cached)} rows)")
-            macro_df = cached
-        except Exception:
-            macro_df = None
-    else:
-        macro_df = None
+        cache_age_days = (time.time() - os.path.getmtime(cache_file)) / 86400
+        if cache_age_days > CACHE_MAX_AGE_DAYS:
+            print(f"  ♻️  Macro cache stale ({cache_age_days:.1f}d) — refreshing")
+        else:
+            try:
+                cached = pd.read_csv(cache_file, index_col=0, parse_dates=True)
+                # Force refresh if cache predates peer_momentum column
+                if "peer_momentum" not in cached.columns:
+                    print(f"  ♻️  Macro cache missing peer_momentum — refreshing")
+                else:
+                    print(f"  📂 Loaded macro features from cache "
+                          f"({len(cached)} rows, {cache_age_days:.1f}d old)")
+                    macro_df = cached
+            except Exception:
+                pass
 
     if macro_df is None:
         print("  📊 Fetching macro features...")
         vix    = fetch_vix(start, end)
         rate   = fetch_interest_rate(start, end)
         regime = fetch_macro_regime(start=start, end=end, asset_sym=asset_sym)
+        peer   = fetch_peer_momentum(asset_sym, start, end)
 
-        # Build combined dataframe
         parts = {}
-        if vix    is not None: parts["vix"]    = vix
-        if rate   is not None: parts["rate"]   = rate
-        if regime is not None: parts["regime"] = regime
+        if vix    is not None: parts["vix"]           = vix
+        if rate   is not None: parts["rate"]          = rate
+        if regime is not None: parts["regime"]        = regime
+        if peer   is not None: parts["peer_momentum"] = peer
 
         if parts:
             macro_df = pd.DataFrame(parts)
@@ -230,65 +397,66 @@ def build_macro_signals(df: pd.DataFrame,
         else:
             macro_df = pd.DataFrame()
 
-    # Load sentiment
-    # For historical data (>30 days): use time-varying proxy
-    # For recent data (<30 days): use real FinBERT scores
-    n = len(df)
-    result = np.zeros((n, 4), dtype=np.float32)
+    # ── Build result matrix (n, 6) ────────────────────────────────────────
+    n      = len(df)
+    is_live = (n <= 200)
+    result = np.zeros((n, 6), dtype=np.float32)
 
-    # Use proxy for long historical training runs (>200 rows)
-    # Use real FinBERT for recent/live windows (<= 200 rows)
-    if n > 200:
-        # Historical training — use time-varying momentum proxy
+    # col 3: sentiment
+    if not is_live:
         sentiment_proxy = build_sentiment_proxy(df)
-        result[:, 3] = sentiment_proxy
-        proxy_mean = float(np.mean(sentiment_proxy))
-        print(f"  ✅ Sentiment (proxy): {n} timesteps  "
-              f"mean={proxy_mean:.3f}  range={sentiment_proxy.min():.3f}"
-              f"-{sentiment_proxy.max():.3f}")
+        result[:, 3]    = sentiment_proxy
+        print(f"  ✅ Sentiment (BB proxy): {n} rows  "
+              f"mean={sentiment_proxy.mean():.3f}  "
+              f"range=[{sentiment_proxy.min():.3f},{sentiment_proxy.max():.3f}]")
     else:
-        # Live/recent signals — use real FinBERT per asset
-        sentiment = load_sentiment_features(asset_sym=asset_sym)
-        result[:, 3] = float(sentiment["mean"])
-        src_tag = sentiment.get("source", "finbert")
+        sentiment      = load_sentiment_features(asset_sym=asset_sym)
+        result[:, 3]   = float(sentiment["mean"])
+        src_tag        = sentiment.get("source", "finbert")
         print(f"  ✅ Sentiment ({src_tag}): {asset_sym} mean={sentiment['mean']:.3f}")
 
+    # col 5: earnings proximity (live equity only; 0 for training/non-equity)
+    result[:, 5] = fetch_earnings_proximity(asset_sym, n, is_live=is_live)
+
+    # cols 0-2 + col 4 from cached macro dataframe
     if not macro_df.empty:
-        for col_idx, col_name in enumerate(["vix","rate","regime"]):
-            defaults = {"vix": 0.25, "rate": 0.15, "regime": 0.0}
+        col_map = {
+            0: ("vix",           0.25),
+            1: ("rate",          0.15),
+            2: ("regime",        0.0),
+            4: ("peer_momentum", 0.0),
+        }
+        for col_idx, (col_name, default) in col_map.items():
             if col_name not in macro_df.columns:
-                result[:, col_idx] = defaults[col_name]
+                result[:, col_idx] = default
                 continue
             series = macro_df[col_name]
-            # df may have DatetimeIndex or integer index
+
             if hasattr(df.index, "date"):
-                # DatetimeIndex — align directly
                 aligned = series.reindex(df.index, method="ffill")
             else:
-                # Integer index — use positional iloc matching
-                # Try to match by position using date column if available
                 try:
-                    df_dates = pd.DatetimeIndex(df.iloc[:, 0])                                if "Date" in df.columns else None
+                    df_dates = (pd.DatetimeIndex(df.iloc[:, 0])
+                                if "Date" in df.columns else None)
                 except Exception:
                     df_dates = None
 
                 if df_dates is not None:
                     aligned = series.reindex(df_dates, method="ffill")
                 else:
-                    # Last resort: sample macro series to match df length
-                    step = max(1, len(series) // len(df))
-                    vals = series.values[::step][:len(df)]
-                    if len(vals) < len(df):
-                        vals = np.pad(vals,(0,len(df)-len(vals)),
-                                      mode="edge")
-                    aligned = pd.Series(vals[:len(df)])
+                    step = max(1, len(series) // n)
+                    vals = series.values[::step][:n]
+                    if len(vals) < n:
+                        vals = np.pad(vals, (0, n - len(vals)), mode="edge")
+                    aligned = pd.Series(vals[:n])
 
-            filled = aligned.fillna(defaults[col_name])
-            arr = filled.values.astype(np.float32)
-            result[:, col_idx] = arr[:len(df)] if len(arr)>=len(df)                                   else np.pad(arr,(0,len(df)-len(arr)),
-                                              mode="edge")
+            filled = aligned.fillna(default)
+            arr    = filled.values.astype(np.float32)
+            result[:, col_idx] = (arr[:n] if len(arr) >= n
+                                  else np.pad(arr, (0, n - len(arr)), mode="edge"))
 
     print(f"  ✅ Macro signals: shape={result.shape}  "
-          f"VIX_mean={result[:,0].mean():.3f}  "
-          f"Rate_mean={result[:,1].mean():.3f}")
+          f"VIX={result[:,0].mean():.3f}  "
+          f"Rate={result[:,1].mean():.3f}  "
+          f"Peer={result[:,4].mean():.3f}")
     return result
