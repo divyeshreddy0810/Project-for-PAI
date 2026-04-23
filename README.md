@@ -1,6 +1,6 @@
-# MRAT-RL: Multimodal Regime-Adaptive Transformer and Reinforcement Learning
+# MRAT-RL — AI Trading Signal System
 
-**MSc Artificial Intelligence — NCI Dublin — Programming for AI (MSCAIJAN26I)**
+**MSc Artificial Intelligence · NCI Dublin · Programming for AI 2026**
 
 Group: Taiwo Alabi · Divyesh Reddy Ellasiri · Sai Vivek Yerninti · Mukesh Saren Ramu
 
@@ -8,118 +8,287 @@ Group: Taiwo Alabi · Divyesh Reddy Ellasiri · Sai Vivek Yerninti · Mukesh Sar
 
 ## What This System Does
 
-An AI trading signal generator that scans 48 global financial assets every morning and recommends the top trades for the day. It combines multiple AI models into a consensus voting system; a trade only goes through when at least 2 of the 3 RL agents agree on a direction.
+Every morning, this system scans 48 global financial assets — stocks,
+crypto, forex, commodities — and says: **BUY, SELL, or HOLD**.
 
-**The signal pipeline:**
+It does not guess. It runs six AI models per asset, makes them vote,
+and only fires a signal when at least two of three agents agree. If
+they disagree, the system says HOLD and waits for a cleaner setup.
 
-| Model | What it does |
-|-------|-------------|
-| PatchTST Transformer | Predicts price direction over the next 5 days using price history |
-| LightGBM | A second forecaster using technical indicators; blended 50/50 with PatchTST |
-| Hidden Markov Model (HMM) | Detects whether the market is bull, bear, or sideways; trained per asset class |
-| SAC Agent | Soft Actor-Critic RL agent; learned trading from simulated trades |
-| TD3 Agent | Twin Delayed DDPG RL agent; cautious and stable, uses two internal scorers |
-| PPO Agent | Proximal Policy Optimisation agent; updates in small steps to avoid overreacting |
-| ADX | Trend strength indicator; confirms whether a trend is strong enough to trade |
-
-The three RL agents vote; if 2 or more agree, the system acts. Otherwise it holds.
-
----
-
-## Key Results (Latest Run — 9 April 2026)
-
-| Metric | Result |
-|--------|--------|
-| Assets scanned | 47 of 48 (CRWV skipped; too new) |
-| BUY signals | 17 |
-| SELL signals | 2 |
-| HOLD signals | 28 |
-| Average confidence | 59% |
-| Forecast range (5-day) | +1.5% to -0.4% |
-| Regimes detected | BULL=33, SIDEWAYS=14, BEAR=0 |
-
-**Previous backtest results (7,800 walk-forward tests):**
-
-| Metric | Result |
-|--------|--------|
-| Average annual return | +1.85% per window |
-| Sharpe ratio | 0.909 |
-| Profitable windows | 59% |
-| 2022 bear market loss | -1.2% vs S&P 500 -20%, BTC -65% |
-
----
-
-## Deep Learning Laboratory
-
-To find the best forecasting model for each asset, the system ran a competition across 1,200 training experiments.
-
-**What was tested:**
-
-| Architecture | Description |
-|-------------|-------------|
-| MLP | Simple stacked layers; no sense of time order |
-| CNN | Scans the price chart with a sliding window; good at short patterns |
-| LSTM | Reads day by day and carries a memory forward |
-| PatchTST | Reads chunks of history all at once using attention |
-
-Each architecture was tested with different optimisers (Adam, SGD), activation functions (ReLU, Tanh), and dropout rates (0.0, 0.3) across all 48 assets.
-
-**Results:**
-
-| Asset Class | Total | Promoted (CNN/LSTM won) | Kept PatchTST |
-|-------------|-------|------------------------|---------------|
-| Equity | 20 | 17 | 3 |
-| Crypto | 5 | 5 | 0 |
-| Commodity | 7 | 5 | 2 |
-| Forex | 16 | 12 | 4 |
-| **Total** | **48** | **39** | **9** |
-
-A model was promoted only if it beat PatchTST by more than 5% on held-out test data. CNN and LSTM won most assets; PatchTST held its ground on a few equities and commodities.
+On 9 April 2026 it scanned 47 assets and produced:
+- **17 BUY** signals, **2 SELL** signals, **28 HOLD** signals
+- Average confidence: **59%**
+- Highest confidence: USD/GHS at **100%** (unanimous across all four signal sources)
 
 ---
 
 ## Quick Start
+
 ```bash
 # Install dependencies
 pip install yfinance scikit-learn lightgbm hmmlearn torch joblib --break-system-packages
 
-# Train all 48 models — first time only (takes several hours on GPU)
+# Train all 48 models — first time only (~40 hours on a GPU)
 python3 scripts/train_all_models.py
 
-# Run the Deep Learning Laboratory — finds best model per asset
+# Run the Deep Learning Laboratory — finds the best model per asset
 python3 scripts/run_dl_lab.py
 
 # Promote lab winners to production
 python3 scripts/promote_best.py
 
-# Run daily advisor — scan all 48 assets, get today's top trades
+# Run the daily advisor — scan all 48 assets, get today's top trades
 python3 scripts/daily_advisor_v2.py
 ```
 
-The daily advisor will ask:
-1. Portfolio amount — type `€500` or `$300` or `₦100000`
-2. Risk profile — 1 = Conservative, 2 = Moderate, 3 = Aggressive
-3. Press Enter to scan
+The daily advisor asks for your portfolio amount, your risk level (1–3),
+then prints ranked signals with entry price, take-profit, stop-loss,
+and position size in your currency.
 
 ---
 
-## Sample Output
-```
-┌─ #1 USDGHS=X  USD/GHS
-│  ▲ BUY  · BULL · ★ UNANIMOUS · conf 100%
-│  Entry      : €11.0000
-│  TP (daily) : €11.0211  (+0.19%)
-│  SL (daily) : €10.9578  (-0.38%)
-│  Position   : 10.0% → €100  (₦170,000)
-│  5d forecast : +1.00%  → €11.1101
-│  Votes      : BUY=4 SELL=0 HOLD=0
-└─ PatchTST:BUY  HMM:BUY  RL:BUY  ADX:BUY
+## Concept Guide — Everything Explained From Scratch
 
-Market Summary:
-  Signals: BUY=17  SELL=2  HOLD=28
-  Regimes: BULL=33  BEAR=0  SIDEWAYS=14
-  47 assets scanned — 1 skipped (CRWV)
+> Before you read about the models, you need to understand what they
+> are actually doing. Every idea below starts from the simplest possible
+> version before adding any complexity.
+
+---
+
+### What Is a Time Series?
+
+Imagine you weigh yourself every morning and write it down.
+
 ```
+Monday:    82 kg
+Tuesday:   81.8 kg
+Wednesday: 82.1 kg
+Thursday:  81.5 kg
+```
+
+That list is a **time series** — numbers recorded in order over time.
+
+Stock prices are exactly this. Every trading day the market closes at
+a price, and that number gets added to the list. The critical thing
+about a time series is that **order matters**. Monday's weight came
+before Tuesday's. Tuesday grew from Monday or fell from it. If you
+shuffle the list and put Wednesday before Monday, you have destroyed
+the information that makes it meaningful.
+
+Everything in this system — the Transformer, the RL agents, the HMM —
+is built around reading these ordered lists and finding patterns inside
+them.
+
+---
+
+### What Is Training a Model?
+
+A model starts as a blank page. It knows nothing.
+
+You show it years of historical price data and say: "given everything
+that happened up to this day, what happened next?" It makes a guess.
+It was wrong. You tell it how wrong. It adjusts its internal settings
+slightly. You show it the next example. It guesses again. Still wrong,
+but a tiny bit less wrong. After thousands of examples and thousands of
+adjustments, it starts to recognise patterns it was never explicitly
+told to find.
+
+That process — showing examples, measuring the error, adjusting,
+repeating — is **training**.
+
+---
+
+### The Train/Test Split — The Cheat Sheet Problem
+
+Picture an exam. The teacher writes 100 practice questions. You study
+them all. You learn the answers. You ace the practice test. Then the
+real exam comes — it has completely different questions. And you fail.
+
+If we train a model on all available data and then test it on that same
+data, we have the same problem. The model has already seen the answers.
+It is not learning patterns — it is memorising. The test result looks
+great. The live result is garbage.
+
+The fix is simple: **split the data in time**.
+
+```
+─── 2004 ─────────────────── 2022 ──── 2024 ──── 2026 ───▶
+
+  ████████████████████████ TRAIN  │  VAL  │  TEST
+         (70%)                (15%)   (15%)
+```
+
+The model trains on the oldest 70%. It is tuned and evaluated on the
+middle 15% (validation). It is tested on the final 15% — data it has
+never touched. If it performs well on that final slice, the result is
+honest.
+
+---
+
+### Walk-Forward Backtesting — The Real Exam
+
+A single train/test split tells you how the model did on one stretch
+of history. That is useful but limited. What if that particular stretch
+was unusually calm? What if you happened to split at a lucky point?
+
+**Walk-forward testing** runs the same exam hundreds of times, sliding
+forward through history each time. Here is exactly how it works:
+
+```
+All available data for one asset: 5,611 days (Jan 2004 → Apr 2026)
+
+Window 1:
+  ████████████████████████████████  TRAIN (756 days = 3 years)
+                                    ██████  TEST (63 days = 1 quarter)
+
+Slide forward 21 days (1 month), then Window 2:
+  ░░░░████████████████████████████████  TRAIN (756 days)
+                                        ██████  TEST (63 days)
+
+Slide forward again... Window 3, Window 4... all the way to 2026.
+```
+
+Each window is one complete exam. The model trains on three years of
+data it has never seen in that window, then gets tested on the next
+quarter of data it has never seen at all.
+
+For this system: **7,800 windows** across 48 assets and 22 years of
+history. 7,800 honest exams, each on a different slice of market
+conditions — the 2008 crash, the 2020 pandemic, the 2021 bull run,
+the 2022 rate hike sell-off.
+
+The final Sharpe ratio of 0.91 is the average across all 7,800 of
+those exam results. Not cherry-picked. Not lucky. Averaged.
+
+---
+
+### What Is Backtesting?
+
+Backtesting is **replaying history** with your strategy and watching
+what would have happened.
+
+Think of it like watching a football match replay, except instead of
+watching goals, you are watching whether your trades would have made
+money. You already know how the game ended. You just want to see how
+your strategy would have performed if it had been running at the time.
+
+The danger is peeking at the future. If your model saw tomorrow's price
+while deciding today's trade — even accidentally, through something as
+subtle as fitting a scaler on the full dataset — the backtest will look
+much better than reality. This is called **data leakage** and it is the
+most common way AI trading backtests lie. Every result in this project
+was produced under a strict no-leakage protocol.
+
+---
+
+### What Is a Market Regime?
+
+A 15-degree day feels completely different in February versus August.
+The temperature is the same number. The **context** — what season you
+are in — changes everything.
+
+Markets work the same way. A rising price inside a broad bull market
+carries a different meaning than the same price movement during a
+brief bounce inside a crash. The overall **regime** — bull, bear, or
+sideways — is the season. Ignoring it means reading the temperature
+without knowing the time of year.
+
+The **Hidden Markov Model (HMM)** in this system detects the current
+regime from price patterns alone, without needing to know the cause.
+On 9 April 2026, all 47 scanned assets were classified as bull or
+sideways. Zero bear classifications. That single output shaped the
+entire signal distribution for the day.
+
+---
+
+### What Is Reinforcement Learning (RL)?
+
+A dog trainer does not explain rules. They give treats when the dog
+does the right thing and withhold treats when it does not. The dog
+figures out the rules on its own through trial and reward.
+
+An **RL agent** works exactly like this. It sits inside a simulated
+trading environment. It takes an action — buy, sell, hold. The
+environment gives it a reward (positive if the trade was good,
+negative if it lost money). Over thousands of simulated trading days,
+it slowly learns which actions in which market conditions tend to
+produce positive rewards.
+
+Three different RL agents are used here — SAC, TD3, and PPO — each
+with slightly different learning strategies. Requiring two of three to
+agree before acting means no single agent can drag the portfolio into
+a bad trade on its own.
+
+---
+
+### What Is the Kelly Criterion?
+
+Imagine you are at a casino and you know the coin is slightly biased —
+heads comes up 55% of the time. How much of your money do you bet on
+each flip?
+
+Bet too little and you leave easy profit on the table.  
+Bet everything and one bad run ruins you.
+
+The **Kelly criterion** calculates the mathematically optimal fraction:
+bet more when your edge is large and the outcome is predictable, bet
+less when your edge is small or the outcome is uncertain.
+
+This system uses **quarter-Kelly** — 25% of what the formula suggests —
+because financial models are never perfectly accurate. Dialling it down
+by 75% protects against the model being confidently wrong.
+
+---
+
+## Results
+
+### Daily Advisory (9 April 2026)
+
+| Signal | Count |
+|--------|-------|
+| BUY    | 17    |
+| SELL   | 2     |
+| HOLD   | 28    |
+
+Average confidence: 59% · All regimes: BULL or SIDEWAYS · 5-day forecast range: +1.5% to -0.4%
+
+### Walk-Forward Backtest (7,800 windows, 2004–2026)
+
+| Metric | Result |
+|--------|--------|
+| Average annual return | +1.85% per window |
+| Sharpe ratio | 0.91 |
+| Profitable windows | 59% |
+| Max drawdown, 2022 bear market | -1.2% |
+| S&P 500 drawdown, 2022 | -20% |
+| BTC drawdown, 2022 | -65% |
+
+### Deep Learning Laboratory (1,200 experiments)
+
+| Asset Class | Total | CNN/LSTM Promoted | Kept PatchTST |
+|-------------|-------|-------------------|---------------|
+| Equity      | 20    | 17                | 3             |
+| Crypto      | 5     | 5                 | 0             |
+| Commodity   | 7     | 5                 | 2             |
+| Forex       | 16    | 12                | 4             |
+| **Total**   | **48**| **39**            | **9**         |
+
+No single architecture won everywhere. MLP never promoted on any asset.
+CNN dominated crypto. LSTM dominated equities. PatchTST held on a focused
+set of major forex pairs where long-range session patterns matter most.
+
+---
+
+## The Models
+
+| Model | Role |
+|-------|------|
+| PatchTST Transformer | Reads 60 days of price history in 8-day chunks; predicts the 5-day forward return |
+| LightGBM | Second forecaster; gradient boosted trees on technical features; blended 50/50 with PatchTST |
+| HMM (5 models) | Detects bull / sideways / bear regime; one model per asset class |
+| SAC Agent | RL agent for stable equities, forex, commodities; explores aggressively |
+| TD3 Agent | RL agent for volatile stocks; uses two internal critics to stay cautious |
+| PPO Agent | RL agent for crypto; small update steps to avoid overreacting to violent sessions |
 
 ---
 
@@ -127,58 +296,40 @@ Market Summary:
 
 | Script | What it does |
 |--------|-------------|
-| `daily_advisor_v2.py` | **MAIN** — scan all 48 assets, top daily and swing trades |
-| `train_all_models.py` | Train all 48 PatchTST + SAC/TD3/PPO + LightGBM + HMM models |
+| `daily_advisor_v2.py` | **MAIN** — scan all 48 assets, print today's top trades |
+| `train_all_models.py` | Train all 48 assets: PatchTST + SAC/TD3/PPO + LightGBM + HMM |
 | `run_dl_lab.py` | Deep Learning Laboratory — 1,200 experiments across MLP/CNN/LSTM/PatchTST |
-| `promote_best.py` | Read lab results and promote winning architectures to production |
-| `robust_validation.py` | 7,800 anti-cheat walk-forward validation tests |
-| `backtest_v2.py` | Backtest on historical data |
-| `yearly_backtest.py` | Year-by-year results 2020–2026 |
-| `live_paper_trade.py` | Real-time monitor; auto-closes on TP/SL |
-| `paper_trade.py` | Quick one-shot signal report |
+| `promote_best.py` | Read lab results and replace PatchTST with winner if it beats by >5% |
+| `robust_validation.py` | 7,800 walk-forward validation windows |
+| `backtest_v2.py` | Historical backtest on price data |
+| `yearly_backtest.py` | Year-by-year breakdown 2020–2026 |
+| `live_paper_trade.py` | Real-time monitor; auto-closes on take-profit or stop-loss |
+| `paper_trade.py` | One-shot signal report |
 | `trade_log.py` | View trade history and accuracy stats |
-| `daily_advisor.py` | Original v1 advisor — legacy, do not use |
 
 ---
 
 ## Project Structure
+
 ```
 Project-for-PAI/
-├── scripts/                              ← All runnable scripts
+├── scripts/                    ← All runnable scripts
 ├── src/
-│   ├── forecast/
-│   │   ├── patchtst_forecast.py          ← PatchTST Transformer forecaster
-│   │   └── lgbm_forecast.py              ← LightGBM forecaster (blended with PatchTST)
-│   ├── lab/
-│   │   ├── models.py                     ← MLP, CNN, LSTM model definitions
-│   │   └── forecaster.py                 ← LabForecaster; same interface as PatchTST
-│   ├── regime/
-│   │   ├── hmm_regime.py                 ← Per-class HMM (equity/crypto/commodity/forex/semiconductor)
-│   │   └── pretrained_hmm.py             ← Legacy fallback only
-│   ├── rl/
-│   │   ├── trading_env.py                ← Trading simulation environment
-│   │   ├── sac_agent.py                  ← SAC agent
-│   │   ├── td3_agent.py                  ← TD3 agent
-│   │   ├── ppo_agent.py                  ← PPO agent
-│   │   ├── macro_sentiment_features.py   ← VIX, interest rates, sentiment, peer momentum
-│   │   └── integrated_pipeline.py        ← PatchTST signal builder
-│   ├── trading/
-│   │   ├── ensemble_trader.py            ← Ensemble signal combiner
-│   │   └── consensus.py                  ← Consensus voting logic
-│   └── utils/
-│       ├── currency.py                   ← Live EUR/NGN/USD exchange rates
-│       └── trade_logger.py               ← Persistent trade log
+│   ├── forecast/               ← PatchTST and LightGBM forecasters
+│   ├── lab/                    ← MLP, CNN, LSTM model definitions + LabForecaster
+│   ├── regime/                 ← HMM regime detection (per asset class)
+│   ├── rl/                     ← SAC, TD3, PPO agents + trading environment
+│   │                             + macro/sentiment features
+│   ├── trading/                ← Ensemble signal combiner + consensus voting
+│   └── utils/                  ← Currency rates, trade logger
 ├── data/
-│   ├── models/                           ← All saved models (150+ files)
-│   │   ├── patchtst_*.pt                 ← PatchTST or promoted lab model per asset (48 files)
-│   │   ├── sac_*.pt                      ← SAC agents
-│   │   ├── td3_*.pt                      ← TD3 agents
-│   │   ├── ppo_*.pt                      ← PPO agents
-│   │   ├── lgbm_*.pkl                    ← LightGBM per asset (48 files)
-│   │   └── hmm_*.pkl                     ← 5 HMM models (equity/crypto/commodity/forex/semiconductor)
-│   ├── output/                           ← Daily signals, lab results, backtest output
-│   └── cache/                            ← Per-asset macro feature cache
-└── README.md                             ← This file
+│   ├── models/                 ← Saved model checkpoints (patchtst, sac, td3, ppo, lgbm, hmm)
+│   ├── output/                 ← Daily signals, lab results, backtest output
+│   └── cache/                  ← Per-asset macro feature cache
+├── configs/                    ← Experiment configuration files
+├── updated_PAI_report.tex      ← IEEE group report (LaTeX source)
+├── Taiwo_Individual_Journal.txt← Individual development journal
+└── README.md
 ```
 
 ---
@@ -189,112 +340,71 @@ Project-for-PAI/
 |----------|--------|
 | US Indices | ^GSPC (S&P 500), ^IXIC (NASDAQ), ^DJI (Dow Jones) |
 | US Stocks | AAPL, MSFT, NVDA, TSLA, AMZN, META, GOOGL, JPM, CRWV* |
+| Semiconductor | MU, SMCI, ARM, TSM, VRT, MRVL, NBIS, IREN |
 | Crypto | BTC-USD, ETH-USD, SOL-USD, BNB-USD, XRP-USD |
 | Forex Major | EURUSD=X, GBPUSD=X, USDJPY=X, USDCHF=X, AUDUSD=X, NZDUSD=X, USDCAD=X |
 | Forex Cross | EURGBP=X, EURJPY=X, GBPJPY=X, AUDNZD=X |
 | African Forex | USDNGN=X, EURNGN=X, USDZAR=X, USDKES=X, USDGHS=X |
 | Commodities | GC=F (Gold), SI=F (Silver), CL=F (Crude Oil), NG=F (Natural Gas), HG=F (Copper), ZW=F (Wheat), ZC=F (Corn) |
 
-*CRWV (CoreWeave) is in the universe but currently skipped; not enough price history to train on yet.
+*CRWV (CoreWeave) listed March 2025. Only 268 rows of price history —
+not enough to train reliably. Kept in the universe but signals
+suppressed until data builds up.
 
 ---
 
 ## Agent Routing
 
-| Asset Class | RL Agents Used | Why |
-|------------|---------------|-----|
-| Equities | SAC + TD3 | More predictable trends; SAC explores, TD3 stabilises |
-| Crypto | PPO | High volatility; PPO's small updates prevent overreacting |
-| Commodities | SAC + TD3 | Similar reasoning to equities |
-| Forex | SAC + TD3 | Sequential dependencies across sessions |
+| Asset Class | SAC | TD3 | PPO | Why |
+|-------------|-----|-----|-----|-----|
+| Equities (stable) | ✓ | | | Predictable trend structure suits SAC's exploration |
+| Equities (volatile) | | ✓ | | TD3's two critics prevent overreacting to single-session spikes |
+| Crypto | | | ✓ | Extreme volatility; PPO's clipped updates prevent catastrophic collapse |
+| Forex | ✓ | | | Sequential session dependencies reward structured memory |
+| Commodities | ✓ | | | Similar reasoning to stable equities |
 
-All three agents (SAC, TD3, PPO) vote regardless; consensus requires 2 of 3.
-
----
-
-## Risk Profiles
-
-| Profile | Max per trade | Min confidence | Best for |
-|---------|--------------|----------------|---------|
-| 1 — Conservative | 5% | 100% unanimous | Small portfolio; capital preservation |
-| 2 — Moderate | 10% | 75% (3 of 4 agree) | Balanced risk and reward |
-| 3 — Aggressive | 20% | 50% (2 of 4 agree) | Higher risk tolerance |
-
----
-
-## Position Sizing
-
-Position size is calculated using the Kelly criterion; a formula that says bet more when the forecast is confident and the asset is calm, and bet less when the forecast is weak or the asset is volatile. The maximum allowed per asset is 25% of the portfolio. GPU-related stocks (NVDA, MSFT, META) are capped at a combined 25% to avoid concentration risk.
+All three agents vote regardless of asset class. A signal requires at
+least two votes in the same direction.
 
 ---
 
 ## Training Guide
 
-### Hardware Used
-- **Machine**: Taiwo's laptop — NVIDIA GeForce RTX 3050 (6GB VRAM), 20-core CPU, 16GB RAM
-- **OS**: Ubuntu 24, Python 3.11, CUDA 12.8
-- **Training time**: approximately 8 hours total for all 48 assets on first run
+### Hardware
+- GPU: NVIDIA GeForce RTX 3050 (6GB VRAM)
+- CPU: 20-core Intel, 16GB RAM
+- OS: Ubuntu 24, Python 3.12, CUDA 12.8
+- Full cold-start training time: **~40 hours** across all 48 assets
 
-### Model Files
-
-| Model type | Files | Trained on |
-|-----------|-------|-----------|
-| PatchTST or lab winner (48 files) | `patchtst_*.pt` | Each asset; 2004 to present |
-| SAC agents | `sac_*.pt` | Each asset individually |
-| TD3 agents | `td3_*.pt` | Each asset individually |
-| PPO agents | `ppo_*.pt` | Crypto assets |
-| LightGBM (48 files) | `lgbm_*.pkl` | Each asset; engineered features |
-| HMM (5 files) | `hmm_*.pkl` | Per asset class |
-
-### Retraining Commands
-
-**Retrain everything from scratch:**
+### Run training from the project root (important)
 ```bash
 cd ~/Desktop/NCI/programming_for_ai/Project-for-PAI
 nohup python3 scripts/train_all_models.py > data/output/training.log 2>&1 &
 tail -f data/output/training.log
 ```
 
-**Resume interrupted training (skips already saved models):**
+> Always run from the project root. Running from inside `scripts/`
+> causes models to save to `scripts/data/models/` instead of
+> `data/models/`, which the advisory pipeline cannot find.
+
+### Check how many models are saved
 ```bash
-python3 scripts/train_all_models.py
+ls data/models/patchtst_*.pt | wc -l   # target: 48
+ls data/models/sac_*.pt      | wc -l   # target: ~35
+ls data/models/td3_*.pt      | wc -l   # target: ~9
+ls data/models/ppo_*.pt      | wc -l   # target: ~5
+ls data/models/lgbm_*.pkl    | wc -l   # target: 47
+ls data/models/hmm_*.pkl     | wc -l   # target: 5
 ```
 
-**Retrain LightGBM only (after market conditions change):**
-```bash
-rm data/models/lgbm_*.pkl && python3 scripts/train_all_models.py
-```
+### When to retrain
 
-**Re-run the Deep Learning Laboratory:**
-```bash
-python3 scripts/run_dl_lab.py --resume   # skips already completed runs
-python3 scripts/promote_best.py          # promote winners to production
-```
-
-### When to Retrain
-
-| Situation | What to retrain |
-|-----------|----------------|
-| Every 6 months | Everything |
-| After a major market crash (>15% drop) | Everything |
-| After a major rally (>20% gain) | Everything |
-| One asset performing badly | That asset only |
-| LightGBM giving extreme forecasts | LightGBM only (rm lgbm_*.pkl) |
-
-### Monitor GPU During Training
-```bash
-watch -n 5 "nvidia-smi --query-gpu=temperature.gpu,utilization.gpu,memory.used --format=csv,noheader"
-```
-
-### Check How Many Models Are Saved
-```bash
-ls data/models/patchtst_*.pt  | wc -l   # should be 48
-ls data/models/sac_*.pt       | wc -l   # should be ~35
-ls data/models/td3_*.pt       | wc -l   # should be ~5
-ls data/models/ppo_*.pt       | wc -l   # should be ~5
-ls data/models/lgbm_*.pkl     | wc -l   # should be 47
-ls data/models/hmm_*.pkl      | wc -l   # should be 5
-```
+| Situation | Action |
+|-----------|--------|
+| Every 6 months | Full retrain |
+| After a major crash or rally (>15%) | Full retrain |
+| One asset performing badly | Delete that asset's files only |
+| Extreme forecasts reappearing | Check state_dim matches env dimensions |
 
 ---
 
@@ -302,16 +412,18 @@ ls data/models/hmm_*.pkl      | wc -l   # should be 5
 
 | Issue | Status |
 |-------|--------|
-| CRWV (CoreWeave) skipped | Not enough price history; will include when data builds up |
-| Intraday trading not supported | System is designed for daily and 5-day horizons only |
+| CRWV (CoreWeave) suppressed | Only 268 rows of history; Sharpe 6.009 during training is an overfit artifact, not a real result |
+| No intraday support | Built for daily and 5-day horizons only |
+| State dimension must match env | RL agents must be initialised with state_dim=19; env provides 19 dimensions |
 
 ---
 
 ## Dependencies
+
 ```bash
 pip install yfinance scikit-learn lightgbm hmmlearn torch joblib --break-system-packages
 ```
 
 ---
 
-> This project is for educational purposes only. Not financial advice.
+> Educational project. Not financial advice.
