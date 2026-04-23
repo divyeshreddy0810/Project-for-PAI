@@ -1,4 +1,4 @@
-# MRAT-RL — AI Trading Signal System
+# Multi-modal Regime Adaptive Reinforcement Learning AI Trading Signal System
 
 **MSc Artificial Intelligence · NCI Dublin · Programming for AI 2026**
 
