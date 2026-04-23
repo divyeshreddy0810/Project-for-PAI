@@ -38,7 +38,7 @@ That is everything. No training step needed.
 ## What This System Does
 
 Every morning, this system scans 48 global financial assets — stocks,
-crypto, forex, commodities — and says: **BUY, SELL, or HOLD**.
+crypto, forex, commodities, and says: **BUY, SELL, or HOLD**.
 
 It does not guess. It runs six AI models per asset, makes them vote,
 and only fires a signal when at least two of three agents agree. If
@@ -95,7 +95,7 @@ Wednesday: 82.1 kg
 Thursday:  81.5 kg
 ```
 
-That list is a **time series** — numbers recorded in order over time.
+That list is a **time series**, numbers recorded in order over time.
 
 Stock prices are exactly this. Every trading day the market closes at
 a price, and that number gets added to the list. The critical thing
@@ -104,7 +104,7 @@ before Tuesday's. Tuesday grew from Monday or fell from it. If you
 shuffle the list and put Wednesday before Monday, you have destroyed
 the information that makes it meaningful.
 
-Everything in this system — the Transformer, the RL agents, the HMM —
+Everything in this system, the Transformer, the RL agents, the HMM —
 is built around reading these ordered lists and finding patterns inside
 them.
 
@@ -122,8 +122,8 @@ but a tiny bit less wrong. After thousands of examples and thousands of
 adjustments, it starts to recognise patterns it was never explicitly
 told to find.
 
-That process — showing examples, measuring the error, adjusting,
-repeating — is **training**.
+That process, showing examples, measuring the error, adjusting,
+repeating, is **training**.
 
 ---
 
@@ -131,11 +131,11 @@ repeating — is **training**.
 
 Picture an exam. The teacher writes 100 practice questions. You study
 them all. You learn the answers. You ace the practice test. Then the
-real exam comes — it has completely different questions. And you fail.
+real exam comes, it has completely different questions. And you fail.
 
 If we train a model on all available data and then test it on that same
 data, we have the same problem. The model has already seen the answers.
-It is not learning patterns — it is memorising. The test result looks
+It is not learning patterns, it is memorising. The test result looks
 great. The live result is garbage.
 
 The fix is simple: **split the data in time**.
@@ -183,7 +183,7 @@ quarter of data it has never seen at all.
 
 For this system: **7,800 windows** across 48 assets and 22 years of
 history. 7,800 honest exams, each on a different slice of market
-conditions — the 2008 crash, the 2020 pandemic, the 2021 bull run,
+conditions, the 2008 crash, the 2020 pandemic, the 2021 bull run,
 the 2022 rate hike sell-off.
 
 The final Sharpe ratio of 0.91 is the average across all 7,800 of
@@ -202,8 +202,8 @@ money. You already know how the game ended. You just want to see how
 your strategy would have performed if it had been running at the time.
 
 The danger is peeking at the future. If your model saw tomorrow's price
-while deciding today's trade — even accidentally, through something as
-subtle as fitting a scaler on the full dataset — the backtest will look
+while deciding today's trade, even accidentally, through something as
+subtle as fitting a scaler on the full dataset, the backtest will look
 much better than reality. This is called **data leakage** and it is the
 most common way AI trading backtests lie. Every result in this project
 was produced under a strict no-leakage protocol.
@@ -218,8 +218,8 @@ are in — changes everything.
 
 Markets work the same way. A rising price inside a broad bull market
 carries a different meaning than the same price movement during a
-brief bounce inside a crash. The overall **regime** — bull, bear, or
-sideways — is the season. Ignoring it means reading the temperature
+brief bounce inside a crash. The overall **regime**, bull, bear, or
+sideways, is the season. Ignoring it means reading the temperature
 without knowing the time of year.
 
 The **Hidden Markov Model (HMM)** in this system detects the current
@@ -237,13 +237,13 @@ does the right thing and withhold treats when it does not. The dog
 figures out the rules on its own through trial and reward.
 
 An **RL agent** works exactly like this. It sits inside a simulated
-trading environment. It takes an action — buy, sell, hold. The
+trading environment. It takes an action, buy, sell, hold. The
 environment gives it a reward (positive if the trade was good,
 negative if it lost money). Over thousands of simulated trading days,
 it slowly learns which actions in which market conditions tend to
 produce positive rewards.
 
-Three different RL agents are used here — SAC, TD3, and PPO — each
+Three different RL agents are used here, SAC, TD3, and PPO, each
 with slightly different learning strategies. Requiring two of three to
 agree before acting means no single agent can drag the portfolio into
 a bad trade on its own.
@@ -252,7 +252,7 @@ a bad trade on its own.
 
 ### What Is the Kelly Criterion?
 
-Imagine you are at a casino and you know the coin is slightly biased —
+Imagine you are at a casino and you know the coin is slightly biased,
 heads comes up 55% of the time. How much of your money do you bet on
 each flip?
 
@@ -263,7 +263,7 @@ The **Kelly criterion** calculates the mathematically optimal fraction:
 bet more when your edge is large and the outcome is predictable, bet
 less when your edge is small or the outcome is uncertain.
 
-This system uses **quarter-Kelly** — 25% of what the formula suggests —
+This system uses **quarter-Kelly**, 25% of what the formula suggests,
 because financial models are never perfectly accurate. Dialling it down
 by 75% protects against the model being confidently wrong.
 
