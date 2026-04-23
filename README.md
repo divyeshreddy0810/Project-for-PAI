@@ -4,6 +4,35 @@
 
 Group: Taiwo Alabi · Divyesh Reddy Ellasiri · Sai Vivek Yerninti · Mukesh Saren Ramu
 
+**Individual Journal (Taiwo Alabi):** https://gist.github.com/iamtamilore/f44b01550d1e118faa421090a7cd01bc
+
+---
+
+## Run It Right Now — No Training Required
+
+Pre-trained models are included in the repo. Clone and go:
+
+```bash
+git clone https://github.com/divyeshreddy0810/Project-for-PAI.git
+cd Project-for-PAI
+git checkout full_works_v2
+
+pip install yfinance scikit-learn lightgbm hmmlearn torch joblib
+
+python3 scripts/daily_advisor_v2.py
+```
+
+The advisor pulls **live price data from Yahoo Finance** on each run,
+so you always get today's signals. When it asks:
+
+- **Portfolio amount** — type any amount, e.g. `1000`
+- **Risk profile** — type `2` (moderate) then press Enter
+
+That is everything. No training step needed.
+
+> **Important:** always run from the project root (`Project-for-PAI/`),
+> not from inside the `scripts/` folder.
+
 ---
 
 ## What This System Does
