@@ -43,6 +43,30 @@ data/lab_models/
 # Log files
 data/output/*.log
 
+# Claude Code settings
+.claude/
+
+# Old docs and drafts
+docs/
+DOCS/
+configs/
+FRONTEND_INTEGRATION.md
+Multi-Modal*.docx
+analyze_dataset_sizes.py
+test_suite.py
+tests/
+src/market_regime_model.py
+src/price_forecaster.py
+src/rl_trader.py
+scripts/backtest.py
+scripts/bull_regime_backtest.py
+scripts/compare_experiments.py
+scripts/enhanced_pipeline.py
+scripts/experiment_lab.py
+scripts/full_grid_search.py
+scripts/master_pipeline.py
+scripts/signal_validator.py
+
 # Keep .gitkeep files
 !data/output/.gitkeep
 !data/cache/.gitkeep
