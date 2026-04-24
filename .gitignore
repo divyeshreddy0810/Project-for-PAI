@@ -46,6 +46,10 @@ data/output/*.log
 # Claude Code settings
 .claude/
 
+# Personal/submission files
+updated_PAI_report.tex
+Taiwo_Individual_Journal.txt
+
 # Old docs and drafts
 docs/
 DOCS/
