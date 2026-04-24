@@ -36,6 +36,7 @@ PAI_Results_Sections_III_B_C_D.docx
 DOCS/
 Description_Programming_for_AI_final.docx
 *.pdf
+!Multimodal*.pdf
 
 # Large generated directories from training
 data/lab_models/
